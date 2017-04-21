@@ -1,3 +1,9 @@
+// Chess Final Project
+// Huck Kim and Tim Zwart
+//
+// Single player chess
+// 2017
+
 #include <iostream>
 
 using namespace std;
