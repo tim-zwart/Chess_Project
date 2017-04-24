@@ -34,6 +34,7 @@
 		</Compiler>
 		<Unit filename="bitboards.cpp" />
 		<Unit filename="bitboards.h" />
+		<Unit filename="libraries.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
