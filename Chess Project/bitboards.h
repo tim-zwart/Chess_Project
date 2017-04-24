@@ -1,6 +1,7 @@
 #ifndef BITBOARDS_H_INCLUDED
 #define BITBOARDS_H_INCLUDED
 
+<<<<<<< HEAD
 enum chess_piece{king, queen, bishop, knight, rook, pawn};
 
 struct pieces
@@ -11,5 +12,8 @@ struct pieces
 };
 
 void reset(pieces * piece);
+=======
+
+>>>>>>> refs/remotes/origin/master
 
 #endif // BITBOARDS_H_INCLUDED
