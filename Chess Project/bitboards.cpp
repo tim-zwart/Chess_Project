@@ -35,9 +35,31 @@ coord toCoord(int x, int y)
     return c;
 }
 
-void moves(pieces &piece, pieceBoard board)
+Piece::Piece()
 {
-    switch(piece.what_piece)
+    what_piece = blank;
+}
+
+Piece::Piece(coord l, chess_piece p, colour s)
+{
+    location=l;
+    what_piece=p;
+    side=s;
+}
+
+Piece::Piece(int x, int y, chess_piece p, colour s)
+{
+    coord c;
+    c.x=x;
+    c.y=y;
+    location=c;
+    what_piece=p;
+    side=s;
+}
+
+void Piece::moves(pieceBoard board)
+{
+    switch(what_piece)
     {
     case king:
         break;
@@ -53,25 +75,25 @@ void moves(pieces &piece, pieceBoard board)
         // Moves for pawns
 
         // If the pawn is black
-        if(piece.side==black)
+        if(side==black)
         {
             // Moving forward
-            if(board.board[piece.location.x][piece.location.y-1].what_piece==blank)
+            if(board.board[location.x][location.y-1].what_piece==blank)
             {
-                piece.attack.push_back(toCoord(piece.location.x, piece.location.y-1));
+                attack.push_back(toCoord(location.x, location.y-1));
 
                 // Moving forward 2 from the seventh rank
-                if(piece.location.y==6 && board.board[piece.location.x][piece.location.y-2].what_piece==blank)
-                    piece.attack.push_back(toCoord(piece.location.x, piece.location.y-2));
+                if(location.y==6 && board.board[location.x][location.y-2].what_piece==blank)
+                    attack.push_back(toCoord(location.x, location.y-2));
             }
 
             // Take to the right
-            if(board.board[piece.location.x+1][piece.location.y-1].what_piece!=blank && board.board[piece.location.x+1][piece.location.y-1].side==white && piece.location.x<7)
-                piece.attack.push_back(toCoord(piece.location.x+1, piece.location.y-1));
+            if(board.board[location.x+1][location.y-1].what_piece!=blank && board.board[location.x+1][location.y-1].side==white && location.x<7)
+                attack.push_back(toCoord(location.x+1, location.y-1));
 
             // Take to the left
-            if(board.board[piece.location.x-1][piece.location.y-1].what_piece!=blank && board.board[piece.location.x-1][piece.location.y-1].side==white && piece.location.x>0)
-                piece.attack.push_back(toCoord(piece.location.x-1, piece.location.y-1));
+            if(board.board[location.x-1][location.y-1].what_piece!=blank && board.board[location.x-1][location.y-1].side==white && location.x>0)
+                attack.push_back(toCoord(location.x-1, location.y-1));
 
             //
             // Insert En Passant
@@ -79,25 +101,25 @@ void moves(pieces &piece, pieceBoard board)
         }
 
         // If the pawn is white
-        if(piece.side==white)
+        if(side==white)
         {
             // Move forward
-            if(board.board[piece.location.x][piece.location.y+1].what_piece==blank)
+            if(board.board[location.x][location.y+1].what_piece==blank)
             {
-                piece.attack.push_back(toCoord(piece.location.x, piece.location.y+1));
+                attack.push_back(toCoord(location.x, location.y+1));
 
                 // Moving forward 2 from the second rank
-                if(piece.location.y==1 && board.board[piece.location.x][piece.location.y+2].what_piece==blank)
-                    piece.attack.push_back(toCoord(piece.location.x, piece.location.y+2));
+                if(location.y==1 && board.board[location.x][location.y+2].what_piece==blank)
+                    attack.push_back(toCoord(location.x, location.y+2));
             }
 
             // Take to the right
-            if(board.board[piece.location.x+1][piece.location.y+1].what_piece!=blank && board.board[piece.location.x+1][piece.location.y+1].side==black && piece.location.x<7)
-                piece.attack.push_back(toCoord(piece.location.x+1, piece.location.y+1));
+            if(board.board[location.x+1][location.y+1].what_piece!=blank && board.board[location.x+1][location.y+1].side==black && location.x<7)
+                attack.push_back(toCoord(location.x+1, location.y+1));
 
             // Take to the left
-            if(board.board[piece.location.x-1][piece.location.y+1].what_piece!=blank && board.board[piece.location.x-1][piece.location.y+1].side==black && piece.location.y>0)
-                piece.attack.push_back(toCoord(piece.location.x-1, piece.location.y+1));
+            if(board.board[location.x-1][location.y+1].what_piece!=blank && board.board[location.x-1][location.y+1].side==black && location.y>0)
+                attack.push_back(toCoord(location.x-1, location.y+1));
 
             //
             // Insert En Passant

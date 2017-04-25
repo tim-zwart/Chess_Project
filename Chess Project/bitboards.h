@@ -3,8 +3,8 @@
 
 #include "libraries.h"
 
-enum chess_piece{king, queen, bishop, knight, rook, pawn, blank};
-enum colour{white, black};
+enum chess_piece {king, queen, bishop, knight, rook, pawn, blank};
+enum colour {white, black};
 
 
 // Coordinate system
@@ -15,23 +15,31 @@ struct coord
 };
 
 coord toCoord(int x, int y);
-
-struct pieces
+struct pieceBoard;
+class Piece
 {
+private:
+
+
     coord location;
-    vector <coord> attack;
     chess_piece what_piece;
     colour side;
+public:
+    Piece(coord, chess_piece, colour);
+    Piece(int, int, chess_piece, colour);
+    Piece();
+    // Find possible moves
+    void moves(pieceBoard board);
+    vector <coord> attack;
+
 };
 
 // 8x8 board of pieces
 struct pieceBoard
 {
-    pieces board[8][8];
+    Piece board[8][8];
 };
 
-// Find possible moves
-void moves(pieces &piece, pieceBoard board);
 
 
 
@@ -46,6 +54,6 @@ struct bitboard
 bitboard operator +(bitboard first, bitboard second);
 bitboard operator -(bitboard first, bitboard second);
 
-void reset(pieces * piece);
+//void reset(pieces * piece);
 
 #endif // BITBOARDS_H_INCLUDED
