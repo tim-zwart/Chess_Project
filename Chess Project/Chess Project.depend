@@ -1,15 +1,15 @@
 # depslib dependency file v1.0
-1493127656 source:c:\users\tim\documents\github\chess_project\chess project\bitboards.cpp
+1493129963 source:c:\users\tim\documents\github\chess_project\chess project\bitboards.cpp
 	"bitboards.h"
 
-1493126565 c:\users\tim\documents\github\chess_project\chess project\bitboards.h
+1493130095 c:\users\tim\documents\github\chess_project\chess project\bitboards.h
 	"libraries.h"
 
-1493126355 c:\users\tim\documents\github\chess_project\chess project\libraries.h
+1493128278 c:\users\tim\documents\github\chess_project\chess project\libraries.h
 	<iostream>
 	<vector>
 
-1493127835 source:c:\users\tim\documents\github\chess_project\chess project\main.cpp
+1493130162 source:c:\users\tim\documents\github\chess_project\chess project\main.cpp
 	<iostream>
 	"bitboards.h"
 
