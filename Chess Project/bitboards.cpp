@@ -61,16 +61,16 @@ void moves(pieces &piece, pieceBoard board)
                 piece.attack.push_back(toCoord(piece.location.x, piece.location.y-1));
 
                 // Moving forward 2 from the seventh rank
-                if(piece.location.y==7 && board.board[piece.location.x][piece.location.y-2].what_piece==blank)
-                        piece.attack.push_back(toCoord(piece.location.x, piece.location.y-2));
+                if(piece.location.y==6 && board.board[piece.location.x][piece.location.y-2].what_piece==blank)
+                    piece.attack.push_back(toCoord(piece.location.x, piece.location.y-2));
             }
 
-        // Take to the right
-        if(board.board[piece.location.x+1][piece.location.y-1].what_piece!=blank && board.board[piece.location.x+1][piece.location.y-1].side==white && piece.location.x<8)
+            // Take to the right
+            if(board.board[piece.location.x+1][piece.location.y-1].what_piece!=blank && board.board[piece.location.x+1][piece.location.y-1].side==white && piece.location.x<7)
                 piece.attack.push_back(toCoord(piece.location.x+1, piece.location.y-1));
 
-            // Take to the lefy
-            if(board.board[piece.location.x-1][piece.location.y-1].what_piece!=blank && board.board[piece.location.x-1][piece.location.y-1].side==white && piece.location.x>1)
+            // Take to the left
+            if(board.board[piece.location.x-1][piece.location.y-1].what_piece!=blank && board.board[piece.location.x-1][piece.location.y-1].side==white && piece.location.x>0)
                 piece.attack.push_back(toCoord(piece.location.x-1, piece.location.y-1));
 
             //
@@ -87,16 +87,16 @@ void moves(pieces &piece, pieceBoard board)
                 piece.attack.push_back(toCoord(piece.location.x, piece.location.y+1));
 
                 // Moving forward 2 from the second rank
-                if(piece.location.y==2 && board.board[piece.location.x][piece.location.y+2].what_piece==blank)
-                        piece.attack.push_back(toCoord(piece.location.x, piece.location.y+2));
+                if(piece.location.y==1 && board.board[piece.location.x][piece.location.y+2].what_piece==blank)
+                    piece.attack.push_back(toCoord(piece.location.x, piece.location.y+2));
             }
 
-        // Take to the right
-        if(board.board[piece.location.x+1][piece.location.y+1].what_piece!=blank && board.board[piece.location.x+1][piece.location.y-1].side==black && piece.location.x<8)
+            // Take to the right
+            if(board.board[piece.location.x+1][piece.location.y+1].what_piece!=blank && board.board[piece.location.x+1][piece.location.y+1].side==black && piece.location.x<7)
                 piece.attack.push_back(toCoord(piece.location.x+1, piece.location.y+1));
 
             // Take to the left
-            if(board.board[piece.location.x-1][piece.location.y+1].what_piece!=blank && board.board[piece.location.x-1][piece.location.y-1].side==black && piece.location.y>1)
+            if(board.board[piece.location.x-1][piece.location.y+1].what_piece!=blank && board.board[piece.location.x-1][piece.location.y+1].side==black && piece.location.y>0)
                 piece.attack.push_back(toCoord(piece.location.x-1, piece.location.y+1));
 
             //

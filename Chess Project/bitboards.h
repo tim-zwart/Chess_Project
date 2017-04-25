@@ -2,7 +2,6 @@
 #define BITBOARDS_H_INCLUDED
 
 #include "libraries.h"
-using namespace std;
 
 enum chess_piece{king, queen, bishop, knight, rook, pawn, blank};
 enum colour{white, black};
@@ -24,6 +23,7 @@ struct pieces
     chess_piece what_piece;
     colour side;
 };
+
 // 8x8 board of pieces
 struct pieceBoard
 {
