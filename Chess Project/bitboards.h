@@ -19,11 +19,10 @@ struct pieceBoard;
 class Piece
 {
 private:
-
-
     coord location;
     chess_piece what_piece;
     colour side;
+    int dir;
 public:
     Piece(coord, chess_piece, colour);
     Piece(int, int, chess_piece, colour);
@@ -31,7 +30,6 @@ public:
     // Find possible moves
     void moves(pieceBoard board);
     vector <coord> attack;
-
 };
 
 // 8x8 board of pieces
