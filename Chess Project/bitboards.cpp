@@ -68,11 +68,17 @@ Piece::Piece(int x, int y, chess_piece p, colour s)
 
 void Piece::moves(pieceBoard board)
 {
-    // The 4 directions diagonal for pieces
-    bool tr=true;
-    bool tl=true;
-    bool br=true;
-    bool bl=true;
+    // The 4 diagonal directions for pieces
+    bool tr=true; // Top right
+    bool tl=true; // Top left
+    bool br=true; // Bottom right
+    bool bl=true; // Bottom left
+
+    // The 4 non diagonal directions for pieces
+    bool u=true; // Up
+    bool d=true; // Down
+    bool r=true; // Right
+    bool l=true; // Left
 
     switch(what_piece)
     {
@@ -133,6 +139,9 @@ void Piece::moves(pieceBoard board)
             }
             else if(bl)
                 attack.push_back(toCoord(location.x-i, location.y-i));
+
+            if(tr && tl && br && bl)
+                break;
         }
         break;
 
@@ -140,6 +149,52 @@ void Piece::moves(pieceBoard board)
         break;
 
     case rook:
+        for(int i=1; i<8; i++)
+        {
+            // Move Up
+            if(u && (location.y+i>7 || board.board[location.x][location.y+i].side == side))
+                u=false;
+            else if(u && board.board[location.x][location.y+i].what_piece != blank && board.board[location.x][location.y+i].side != side)
+            {
+                attack.push_back(toCoord(location.x, location.y+i));
+                u=false;
+            }
+            else if (u)
+                attack.push_back(toCoord(location.x, location.y+i));
+
+            // Move Down
+            if(d && (location.y-i<0 || board.board[location.x][location.y-i].side == side))
+                d=false;
+            else if(d && board.board[location.x][location.y-i].what_piece != blank && board.board[location.x][location.y-i].side != side)
+            {
+                attack.push_back(toCoord(location.x, location.y-i));
+                d=false;
+            }
+            else if (d)
+                attack.push_back(toCoord(location.x, location.y-i));
+
+            // Move Right
+            if(r && (location.x+i>7 || board.board[location.x+i][location.y].side == side))
+                r=false;
+            else if(r && board.board[location.x+i][location.y].what_piece != blank && board.board[location.x+i][location.y].side != side)
+            {
+                attack.push_back(toCoord(location.x+i, location.y));
+                r=false;
+            }
+            else if (r)
+                attack.push_back(toCoord(location.x+i, location.y));
+
+            // Move Left
+            if(l && (location.x-i<0 || board.board[location.x-i][location.y+i].side == side))
+                l=false;
+            else if(l && board.board[location.x-i][location.y].what_piece != blank && board.board[location.x-i][location.y].side != side)
+            {
+                attack.push_back(toCoord(location.x-i, location.y));
+                l=false;
+            }
+            else if (l)
+                attack.push_back(toCoord(location.x-i, location.y));
+        }
         break;
 
     case pawn:
