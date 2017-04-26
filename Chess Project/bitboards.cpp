@@ -68,6 +68,12 @@ Piece::Piece(int x, int y, chess_piece p, colour s)
 
 void Piece::moves(pieceBoard board)
 {
+    // The 4 directions diagonal for pieces
+    bool tr=true;
+    bool tl=true;
+    bool br=true;
+    bool bl=true;
+
     switch(what_piece)
     {
     case king:
@@ -77,17 +83,56 @@ void Piece::moves(pieceBoard board)
         break;
 
     case bishop:
-        for (int i=1;; i++)
+
+        for (int i=1; i<8; i++)
         {
+            // Top Right
             // If the position is off of the board or a piece of the same colour is in the way, you can't move there
-            if(i+location.x>7 || i+location.y>7 || board.board[location.x+i][location.y+i].side==side)
-                break;
-            if(board.board[location.x+i][location.y+i].side != side && board.board[location.x+i][location.y+i].side != none)
+            if(tr && (location.x+i>7 || location.y+i>7 || board.board[location.x+i][location.y+i].side==side))
+                tr=false;
+            else if(tr && board.board[location.x+i][location.y+i].side != side && board.board[location.x+i][location.y+i].side != none)
             {
                 attack.push_back(toCoord(location.x+i, location.y+i));
-                break;
+                tr=false;
             }
-            attack.push_back(toCoord(location.x+i, location.y+i));
+            else if(tr)
+                attack.push_back(toCoord(location.x+i, location.y+i));
+
+            // Top Left
+            // If the position is off of the board or a piece of the same colour is in the way, you can't move there
+            if(tl && (location.x-i < 0 || location.y+i > 7 || board.board[location.x-i][location.y+i].side == side))
+                tl=false;
+            else if(tl && board.board[location.x-i][location.y+i].side != side && board.board[location.x-i][location.y+i].side != none)
+            {
+                attack.push_back(toCoord(location.x-i, location.y+i));
+                tl=false;
+            }
+            else if(tl)
+                attack.push_back(toCoord(location.x-i, location.y+i));
+
+            // Bottom Right
+            // If the position is off of the board or a piece of the same colour is in the way, you can't move there
+            if(br && (location.x+i>7 || location.y-i<0 || board.board[location.x+i][location.y-i].side==side))
+                br=false;
+            else if(br && board.board[location.x+i][location.y-i].side != side && board.board[location.x+i][location.y-i].side != none)
+            {
+                attack.push_back(toCoord(location.x+i, location.y-i));
+                br=false;
+            }
+            else if(br)
+                attack.push_back(toCoord(location.x+i, location.y-i));
+
+            // Bottom Left
+            // If the position is off of the board or a piece of the same colour is in the way, you can't move there
+            if(bl && (location.x-i<0 || location.y-i<0 || board.board[location.x-i][location.y-i].side==side))
+                bl=false;
+            else if(bl && board.board[location.x-i][location.y-i].side != side && board.board[location.x-i][location.y-i].side != none)
+            {
+                attack.push_back(toCoord(location.x-i, location.y-i));
+                bl=false;
+            }
+            else if(bl)
+                attack.push_back(toCoord(location.x-i, location.y-i));
         }
         break;
 
