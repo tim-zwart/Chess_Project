@@ -13,7 +13,7 @@
 	<iostream>
 	"bitboards.h"
 
-1493215933 source:c:\users\huckkim\documents\github\chess_project\chess project\main.cpp
+1493217019 source:c:\users\huckkim\documents\github\chess_project\chess project\main.cpp
 	<iostream>
 	"bitboards.h"
 
@@ -24,6 +24,6 @@
 	<iostream>
 	<vector>
 
-1493215983 source:c:\users\huckkim\documents\github\chess_project\chess project\bitboards.cpp
+1493216975 source:c:\users\huckkim\documents\github\chess_project\chess project\bitboards.cpp
 	"bitboards.h"
 

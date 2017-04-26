@@ -66,13 +66,7 @@ void Piece::moves(pieceBoard board)
         break;
 
     case bishop:
-<<<<<<< HEAD
-        /*
-        for (int i=1;; i++)
-=======
-
         for (int i=1; i<8; i++)
->>>>>>> refs/remotes/origin/master
         {
             // Top Right
             // If the position is off of the board or a piece of the same colour is in the way, you can't move there
@@ -80,11 +74,12 @@ void Piece::moves(pieceBoard board)
                 tr=false;
             else if(tr && board.board[location.x+i][location.y+i].side != side && board.board[location.x+i][location.y+i].side != none)
             {
-                attack.push_back(toCoord(location.x+i, location.y+i));
+                attack_option.attack_coord.push_back(toCoord(location.x+i, location.y+i));
+                attack_option.which_piece.push_back(board.board[location.x+i][location.y+i].what_piece);
                 tr=false;
             }
             else if(tr)
-                attack.push_back(toCoord(location.x+i, location.y+i));
+                movement.push_back(toCoord(location.x+i, location.y+i));
 
             // Top Left
             // If the position is off of the board or a piece of the same colour is in the way, you can't move there
@@ -92,23 +87,25 @@ void Piece::moves(pieceBoard board)
                 tl=false;
             else if(tl && board.board[location.x-i][location.y+i].side != side && board.board[location.x-i][location.y+i].side != none)
             {
-                attack.push_back(toCoord(location.x-i, location.y+i));
+                attack_option.attack_coord.push_back(toCoord(location.x-i, location.y+i));
+                attack_option.which_piece.push_back(board.board[location.x-i][location.y+i].what_piece);
                 tl=false;
             }
             else if(tl)
-                attack.push_back(toCoord(location.x-i, location.y+i));
+                movement.push_back(toCoord(location.x-i, location.y+i));
 
             // Bottom Right
-            // If the position is off of the board or a piece of the same colour is in the way, you can't move there
+            // If the position is off ofconvert(movement[i]); the board or a piece of the same colour is in the way, you can't move there
             if(br && (location.x+i>7 || location.y-i<0 || board.board[location.x+i][location.y-i].side==side))
                 br=false;
             else if(br && board.board[location.x+i][location.y-i].side != side && board.board[location.x+i][location.y-i].side != none)
             {
-                attack.push_back(toCoord(location.x+i, location.y-i));
+                attack_option.attack_coord.push_back(toCoord(location.x+i, location.y-i));
+                attack_option.which_piece.push_back(board.board[location.x+i][location.y-i].what_piece);
                 br=false;
             }
             else if(br)
-                attack.push_back(toCoord(location.x+i, location.y-i));
+                movement.push_back(toCoord(location.x+i, location.y-i));
 
             // Bottom Left
             // If the position is off of the board or a piece of the same colour is in the way, you can't move there
@@ -116,17 +113,20 @@ void Piece::moves(pieceBoard board)
                 bl=false;
             else if(bl && board.board[location.x-i][location.y-i].side != side && board.board[location.x-i][location.y-i].side != none)
             {
-                attack.push_back(toCoord(location.x-i, location.y-i));
+                attack_option.attack_coord.push_back(toCoord(location.x-i, location.y-i));
+                attack_option.which_piece.push_back(board.board[location.x-i][location.y-i].what_piece);
                 bl=false;
             }
             else if(bl)
-                attack.push_back(toCoord(location.x-i, location.y-i));
+                movement.push_back(toCoord(location.x-i, location.y-i));
         }
         break;
-        */
 
     case knight:
-        for(int i=1;;)
+        for(int i = 1; ; )
+        {
+
+        }
         break;
 
     case rook:
@@ -194,4 +194,5 @@ void Piece::testing()
         convert(movement[i]);
         cout<<" ";
     }
+    cout<<endl;
 }
