@@ -11,8 +11,9 @@ using namespace std;
 
 int main()
 {
-    Piece whitePawn(1, 1, pawn, white);
-    Piece blackPawn(2, 2, pawn, black);
+    Piece whitePawn(5, 5, pawn, white);
+    Piece blackPawn(4, 6, pawn, black);
+    Piece blackBishop(0, 0, bishop, black);
     pieceBoard b;
     /*b.board[1][1].what_piece = pawn;
     b.board[1][1].side=white;
@@ -23,22 +24,32 @@ int main()
     b.board[2][2].location.x=2;
     b.board[2][2].location.y=2;
     moves(b.board[2][2], b);*/
-    b.board[1][1]=whitePawn;
-    b.board[2][2]=blackPawn;
-    b.board[1][1].moves(b);
-    b.board[2][2].moves(b);
-    cout<<"White"<<endl;
-    for (int i=0; i<b.board[1][1].attack.size(); i++)
+    b.board[5][5]=whitePawn;
+    b.board[4][6]=blackPawn;
+    b.board[0][0]=blackBishop;
+    b.board[5][5].moves(b);
+    b.board[4][6].moves(b);
+    b.board[0][0].moves(b);
+
+    cout<<"White Pawn"<<endl;
+    for (int i=0; i<b.board[5][5].attack.size(); i++)
     {
-        cout << "x: " << b.board[1][1].attack[i].x << endl;
-        cout << "y: " << b.board[1][1].attack[i].y << endl;
+        cout << "x: " << b.board[5][5].attack[i].x << endl;
+        cout << "y: " << b.board[5][5].attack[i].y << endl;
         cout << endl;
     }
-    cout<<"Black"<<endl;
-    for (int i=0; i<b.board[2][2].attack.size(); i++)
+    cout<<"Black Pawn"<<endl;
+    for (int i=0; i<b.board[4][6].attack.size(); i++)
     {
-        cout << "x: " << b.board[2][2].attack[i].x << endl;
-        cout << "y: " << b.board[2][2].attack[i].y << endl;
+        cout << "x: " << b.board[4][6].attack[i].x << endl;
+        cout << "y: " << b.board[4][6].attack[i].y << endl;
+        cout << endl;
+    }
+    cout<<"Black Bishop"<<endl;
+    for (int i=0; i<b.board[0][0].attack.size(); i++)
+    {
+        cout << "x: " << b.board[0][0].attack[i].x << endl;
+        cout << "y: " << b.board[0][0].attack[i].y << endl;
         cout << endl;
     }
 
