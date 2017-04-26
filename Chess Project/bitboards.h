@@ -4,7 +4,7 @@
 #include "libraries.h"
 
 enum chess_piece {king, queen, bishop, knight, rook, pawn, blank};
-enum colour {white, black};
+enum colour {white, black, none};
 
 
 // Coordinate system

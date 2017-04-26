@@ -38,6 +38,7 @@ coord toCoord(int x, int y)
 Piece::Piece()
 {
     what_piece = blank;
+    side = none;
 }
 
 Piece::Piece(coord l, chess_piece p, colour s)
@@ -78,15 +79,15 @@ void Piece::moves(pieceBoard board)
     case bishop:
         for (int i=1;; i++)
         {
-            if(i+location.x>7 && 1+location.y>7)
+            // If the position is off of the board or a piece of the same colour is in the way, you can't move there
+            if(i+location.x>7 || i+location.y>7 || board.board[location.x+i][location.y+i].side==side)
                 break;
-            if(board.board[location.x+i][location.y+i].what_piece==blank)
-                attack.push_back(toCoord(location.x+i, location.y+i));
-            else if(board.board[location.x+i][location.y+i].side != side)
+            if(board.board[location.x+i][location.y+i].side != side && board.board[location.x+i][location.y+i].side != none)
             {
                 attack.push_back(toCoord(location.x+i, location.y+i));
                 break;
             }
+            attack.push_back(toCoord(location.x+i, location.y+i));
         }
         break;
 
