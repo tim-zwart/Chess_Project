@@ -15,6 +15,7 @@ int main()
     Piece whiteRook(5, 6, rook, white);
     Piece blackPawn(4, 6, pawn, black);
     Piece blackBishop(4, 5, bishop, black);
+    Piece blackQueen(6, 5, queen, black);
     pieceBoard b;
     /*b.board[1][1].what_piece = pawn;
     b.board[1][1].side=white;
@@ -29,10 +30,12 @@ int main()
     b.board[5][6]=whiteRook;
     b.board[4][6]=blackPawn;
     b.board[4][5]=blackBishop;
+    b.board[6][5]=blackQueen;
     b.board[5][5].moves(b);
     b.board[5][6].moves(b);
     b.board[4][6].moves(b);
     b.board[4][5].moves(b);
+    b.board[6][5].moves(b);
 
     cout<<"White Pawn"<<endl;
     for (int i=0; i<b.board[5][5].attack.size(); i++)
@@ -60,6 +63,13 @@ int main()
     {
         cout << "x: " << b.board[4][5].attack[i].x << endl;
         cout << "y: " << b.board[4][5].attack[i].y << endl;
+        cout << endl;
+    }
+    cout<<"Black Queen"<<endl;
+    for (int i=0; i<b.board[6][5].attack.size(); i++)
+    {
+        cout << "x: " << b.board[6][5].attack[i].x << endl;
+        cout << "y: " << b.board[6][5].attack[i].y << endl;
         cout << endl;
     }
 

@@ -86,6 +86,17 @@ void Piece::moves(pieceBoard board)
         break;
 
     case queen:
+        // Move as if the queen was a bishop
+        what_piece=bishop;
+        this->moves(board);
+
+        // Move as if the queen was a rook
+        what_piece=rook;
+        this->moves(board);
+
+        // Change piece back to a queen
+        what_piece=queen;
+
         break;
 
     case bishop:
