@@ -36,6 +36,7 @@ Piece::Piece()
 {
     what_piece = blank;
     side = none;
+    castle=false;
 }
 
 Piece::Piece(coord l, chess_piece p, colour s)
@@ -47,6 +48,10 @@ Piece::Piece(coord l, chess_piece p, colour s)
         dir=1;
     else
         dir=-1;
+    if(chess_piece == king || chess_piece == rook)
+        castle=true;
+    else
+        castle=false;
 }
 
 void Piece::moves(pieceBoard board)
@@ -184,6 +189,15 @@ void Piece::moves(pieceBoard board)
             // If the square is empty, note it down as a movement
             else
                 movement.push_back(toCoord(location.x-1, location.y+1));
+        }
+
+        // Castling
+        if(castle)
+        {
+            // Castle Kingside
+            if(board.board[7][3.5-3.5*dir].castle && board.board[7][3.5-3.5*dir].side == side);
+
+
         }
         break;
 

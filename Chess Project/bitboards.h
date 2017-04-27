@@ -29,6 +29,7 @@ private:
     chess_piece what_piece;
     colour side;
     int dir;
+    bool castle;
 public:
     Piece(coord, chess_piece, colour);
     Piece();
