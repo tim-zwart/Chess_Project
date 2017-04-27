@@ -27,3 +27,17 @@
 1493219376 source:c:\users\huckkim\documents\github\chess_project\chess project\bitboards.cpp
 	"bitboards.h"
 
+1493253952 source:c:\users\matilda\documents\github\chess_project\chess project\bitboards.cpp
+	"bitboards.h"
+
+1493242253 c:\users\matilda\documents\github\chess_project\chess project\bitboards.h
+	"libraries.h"
+
+1493242253 c:\users\matilda\documents\github\chess_project\chess project\libraries.h
+	<iostream>
+	<vector>
+
+1493253685 source:c:\users\matilda\documents\github\chess_project\chess project\main.cpp
+	<iostream>
+	"bitboards.h"
+
