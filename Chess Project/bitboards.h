@@ -20,8 +20,18 @@ struct attacked
     vector <chess_piece> which_piece;
 };
 
+// 8x8 board of integers
+struct bitboard
+{
+    int board[8][8];
+};
+
+void outputBitboard(bitboard board);
+
 coord toCoord(int x, int y);
+
 struct pieceBoard;
+
 class Piece
 {
 private:
@@ -33,7 +43,7 @@ public:
     Piece(coord, chess_piece, colour);
     Piece();
     // Find possible moves
-    void moves(pieceBoard board);
+    void moves(pieceBoard board, bitboard attackBoard);
     // Saves the movement
     vector <coord> movement;
     // Saves what pieces it can attack
@@ -49,12 +59,6 @@ public:
 struct pieceBoard
 {
     Piece board[8][8];
-};
-
-// 8x8 board of integers
-struct bitboard
-{
-    int board[8][8];
 };
 
 void calcBoard(bitboard &write, pieceBoard b, colour side);
