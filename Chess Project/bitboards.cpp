@@ -48,7 +48,7 @@ Piece::Piece(coord l, chess_piece p, colour s)
         dir=1;
     else
         dir=-1;
-    if(chess_piece == king || chess_piece == rook)
+    if(p == king || p == rook)
         castle=true;
     else
         castle=false;
@@ -195,7 +195,7 @@ void Piece::moves(pieceBoard board)
         if(castle)
         {
             // Castle Kingside
-            if(board.board[7][3.5-3.5*dir].castle && board.board[7][3.5-3.5*dir].side == side);
+            if(board.board[7][int(3.5-3.5*dir)].castle && board.board[7][int(3.5-3.5*dir)].side == side);
 
 
         }

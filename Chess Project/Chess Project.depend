@@ -2,14 +2,14 @@
 1493219879 source:c:\users\tim\documents\github\chess_project\chess project\bitboards.cpp
 	"bitboards.h"
 
-1493219879 c:\users\tim\documents\github\chess_project\chess project\bitboards.h
+1493233877 c:\users\tim\documents\github\chess_project\chess project\bitboards.h
 	"libraries.h"
 
 1493219879 c:\users\tim\documents\github\chess_project\chess project\libraries.h
 	<iostream>
 	<vector>
 
-1493220093 source:c:\users\tim\documents\github\chess_project\chess project\main.cpp
+1493233495 source:c:\users\tim\documents\github\chess_project\chess project\main.cpp
 	<iostream>
 	"bitboards.h"
 
