@@ -66,6 +66,125 @@ void Piece::moves(pieceBoard board)
     switch(what_piece)
     {
     case king:
+        // Up
+        // Ensure that the square is not occupied by a piece of the same colour
+        if(board.board[location.x][location.y+1].side != side)
+        {
+            // If the square is not empty, note it down as an attack
+            if(board.board[location.x][location.y+1].side != none)
+            {
+                attack_option.attack_coord.push_back(toCoord(location.x, location.y+1));
+                attack_option.which_piece.push_back(board.board[location.x][location.y+1].what_piece);
+            }
+            // If the square is empty, note it down as a movement
+            else
+                movement.push_back(toCoord(location.x, location.y+1));
+        }
+
+        // Up right
+        // Ensure that the square is not occupied by a piece of the same colour
+        if(board.board[location.x+1][location.y+1].side != side)
+        {
+            // If the square is not empty, note it down as an attack
+            if(board.board[location.x+1][location.y+1].side != none)
+            {
+                attack_option.attack_coord.push_back(toCoord(location.x+1, location.y+1));
+                attack_option.which_piece.push_back(board.board[location.x+1][location.y+1].what_piece);
+            }
+            // If the square is empty, note it down as a movement
+            else
+                movement.push_back(toCoord(location.x+1, location.y+1));
+        }
+
+        // Right
+        // Ensure that the square is not occupied by a piece of the same colour
+        if(board.board[location.x+1][location.y].side != side)
+        {
+            // If the square is not empty, note it down as an attack
+            if(board.board[location.x+1][location.y].side != none)
+            {
+                attack_option.attack_coord.push_back(toCoord(location.x+1, location.y));
+                attack_option.which_piece.push_back(board.board[location.x+1][location.y].what_piece);
+            }
+            // If the square is empty, note it down as a movement
+            else
+                movement.push_back(toCoord(location.x+1, location.y));
+        }
+
+        // Down Right
+        // Ensure that the square is not occupied by a piece of the same colour
+        if(board.board[location.x+1][location.y-1].side != side)
+        {
+            // If the square is not empty, note it down as an attack
+            if(board.board[location.x+1][location.y-1].side != none)
+            {
+                attack_option.attack_coord.push_back(toCoord(location.x+1, location.y-1));
+                attack_option.which_piece.push_back(board.board[location.x+1][location.y-1].what_piece);
+            }
+            // If the square is empty, note it down as a movement
+            else
+                movement.push_back(toCoord(location.x+1, location.y-1));
+        }
+
+        // Down
+        // Ensure that the square is not occupied by a piece of the same colour
+        if(board.board[location.x][location.y-1].side != side)
+        {
+            // If the square is not empty, note it down as an attack
+            if(board.board[location.x][location.y-1].side != none)
+            {
+                attack_option.attack_coord.push_back(toCoord(location.x, location.y-1));
+                attack_option.which_piece.push_back(board.board[location.x][location.y-1].what_piece);
+            }
+            // If the square is empty, note it down as a movement
+            else
+                movement.push_back(toCoord(location.x, location.y-1));
+        }
+
+        // Down Left
+        // Ensure that the square is not occupied by a piece of the same colour
+        if(board.board[location.x-1][location.y-1].side != side)
+        {
+            // If the square is not empty, note it down as an attack
+            if(board.board[location.x-1][location.y-1].side != none)
+            {
+                attack_option.attack_coord.push_back(toCoord(location.x-1, location.y-1));
+                attack_option.which_piece.push_back(board.board[location.x-1][location.y-1].what_piece);
+            }
+            // If the square is empty, note it down as a movement
+            else
+                movement.push_back(toCoord(location.x-1, location.y-1));
+        }
+
+        // Left
+        // Ensure that the square is not occupied by a piece of the same colour
+        if(board.board[location.x-1][location.y].side != side)
+        {
+            // If the square is not empty, note it down as an attack
+            if(board.board[location.x-1][location.y].side != none)
+            {
+                attack_option.attack_coord.push_back(toCoord(location.x-1, location.y));
+                attack_option.which_piece.push_back(board.board[location.x-1][location.y].what_piece);
+            }
+            // If the square is empty, note it down as a movement
+            else
+                movement.push_back(toCoord(location.x-1, location.y));
+        }
+
+        // Up Left
+        // Ensure that the square is not occupied by a piece of the same colour
+        if(board.board[location.x-1][location.y+1].side != side)
+        {
+            // If the square is not empty, note it down as an attack
+            if(board.board[location.x-1][location.y+1].side != none)
+            {
+                attack_option.attack_coord.push_back(toCoord(location.x-1, location.y+1));
+                attack_option.which_piece.push_back(board.board[location.x-1][location.y+1].what_piece);
+            }
+            // If the square is empty, note it down as a movement
+            else
+                movement.push_back(toCoord(location.x-1, location.y+1));
+        }
         break;
 
     case queen:
@@ -142,9 +261,55 @@ void Piece::moves(pieceBoard board)
         break;
 
     case knight:
-        for(int i = 1; ; )
-        {
 
+        // Knight Movement for tr, tl, dr, dl
+        for(int i = -2; i <= 2; i += 4)
+        {
+            if(location.x + i < 8 && location.x + i > 0 && location.y + 1 < 8 && location.y + 1> 0 &&
+               board.board[location.x + i][location.y + 1].side != side)
+            {
+                if(board.board[location.x + i][location.y + 1].what_piece != blank)
+                {
+                    attack_option.attack_coord.push_back(toCoord(location.x + i, location.y + 1));
+                    attack_option.which_piece.push_back(board.board[location.x + i][location.y + 1].what_piece);
+                }
+                else
+                    movement.push_back(toCoord(location.x + i, location.y + 1));
+            }
+
+            if(location.x + i < 8 && location.x + i > 0 && location.y - 1 < 8 && location.y - 1 > 0 &&
+               board.board[location.x + i][location.y - 1].side != side)
+            {
+                if(board.board[location.x + i][location.y - 1].what_piece != blank)
+                {
+                    attack_option.attack_coord.push_back(toCoord(location.x + i, location.y - 1));
+                    attack_option.which_piece.push_back(board.board[location.x + i][location.y - 1].what_piece);
+                }
+                else
+                    movement.push_back(toCoord(location.x + i, location.y - 1));
+            }
+            if(location.x + 1 < 8 && location.x + 1 > 0 && location.y + i < 8 && location.y + i > 0 &&
+               board.board[location.x + 1][location.y + i].side != side)
+            {
+                if(board.board[location.x + 1][location.y + i].what_piece != blank)
+                {
+                    attack_option.attack_coord.push_back(toCoord(location.x + 1, location.y + i));
+                    attack_option.which_piece.push_back(board.board[location.x + 1][location.y + i].what_piece);
+                }
+                else
+                    movement.push_back(toCoord(location.x + 1, location.y + i));
+            }
+            if(location.x - 1 < 8 && location.x - 1 > 0 && location.y + i < 8 && location.y + i > 0 &&
+               board.board[location.x - 1][location.y + i].side != side)
+            {
+                if(board.board[location.x - 1][location.y + i].what_piece != blank)
+                {
+                    attack_option.attack_coord.push_back(toCoord(location.x - 1, location.y + i));
+                    attack_option.which_piece.push_back(board.board[location.x - 1][location.y + i].what_piece);
+                }
+                else
+                    movement.push_back(toCoord(location.x - 1, location.y + i));
+            }
         }
         break;
 
