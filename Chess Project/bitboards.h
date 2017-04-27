@@ -27,7 +27,6 @@ class Piece
 private:
     coord location;
     chess_piece what_piece;
-    colour side;
     int dir;
     bool castle;
 public:
@@ -39,6 +38,7 @@ public:
     vector <coord> movement;
     // Saves what pieces it can attack
     attacked attack_option;
+    colour side;
 
     //testing functions
     void testing();
@@ -56,6 +56,8 @@ struct bitboard
 {
     int board[8][8];
 };
+
+void calcBoard(bitboard &write, pieceBoard b, colour side);
 
 // Add and subtract bitboards
 bitboard operator +(bitboard first, bitboard second);

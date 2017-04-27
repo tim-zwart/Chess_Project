@@ -194,8 +194,18 @@ void Piece::moves(pieceBoard board)
         // Castling
         if(castle)
         {
+            int y = 3.5-3.5*dir;
+
             // Castle Kingside
-            if(board.board[7][int(3.5-3.5*dir)].castle && board.board[7][int(3.5-3.5*dir)].side == side);
+            // Make sure that the squares are not occupied and castling is allowed
+            if(board.board[7][y].castle && board.board[7][y].side == side && board.board[6][y].side == none && board.board[5][5].side == none)
+            {
+                // Make sure that the king is not castling out of or through check
+            }
+
+
+            // Castle Queenside
+            if(board.board[0][int(3.5-3.5*dir)].castle && board.board[0][int(3.5-3.5*dir)].side == side);
 
 
         }
@@ -382,6 +392,9 @@ void Piece::convert(coord position)
 
 void Piece::testing()
 {
+    cout<<"Source: " << location.x<<" "<<location.y<<endl;
+    cout<<"Piece:"<<what_piece<<endl;
+    cout<<"Colour:"<<side<<endl;
     cout<<"Attacking:";
     for(int i = 0; i < attack_option.attack_coord.size(); i++)
     {
@@ -399,3 +412,30 @@ void Piece::testing()
     }
     cout<<endl;
 }
+
+// Add up the squares that are being attacked
+void calcBoard(bitboard &write, pieceBoard b, colour side)
+{
+    for (int i=0; i<8; i++)
+        for (int j=0; j<8; j++)
+            write.board[i][j] = 0;
+
+    for (int x=0; x<8; x++)
+        for (int y=0; y<8; y++)
+        {
+            if(b.board[x][y].side == side)
+            {
+                for (int z=0; z<b.board[x][y].attack_option.attack_coord.size(); z++)
+                {
+                    coord temp = b.board[x][y].attack_option.attack_coord[z];
+                    write.board[temp.x][temp.y]++;
+                }
+                for (int z=0; z<b.board[x][y].movement.size(); z++)
+                {
+                    coord temp = b.board[x][y].movement[z];
+                    write.board[temp.x][temp.y]++;
+                }
+            }
+        }
+}
+
