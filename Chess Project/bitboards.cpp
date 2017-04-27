@@ -284,7 +284,7 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
             }
             else if(bl)
                 movement.push_back(toCoord(location.x-i, location.y-i));
-            if(tr && tl && br && bl)
+            if(!tr && !tl && !br && !bl)
                 break;
         }
         break;

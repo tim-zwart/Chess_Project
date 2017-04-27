@@ -11,7 +11,7 @@ using namespace std;
 
 int main()
 {
-    /*
+
     Piece whitePawn(toCoord(5, 5), pawn, white);
     Piece whiteRook(toCoord(0, 0), rook, white);
     Piece whiteRook2(toCoord(7, 0), rook, white);
@@ -20,14 +20,14 @@ int main()
     Piece blackBishop(toCoord(4, 5), bishop, black);
     Piece blackQueen(toCoord(6, 5), queen, black);
     pieceBoard b;
-<<<<<<< HEAD
+//<<<<<<< HEAD
 
     // Bitboard for the squares that white is attacking
     bitboard attackWhite;
 
     // Bitboard for the squares that black is attacking
     bitboard attackBlack;
-
+/*
 =======
     b.board[1][1].what_piece = pawn;
     b.board[1][1].side=white;
@@ -38,7 +38,7 @@ int main()
     b.board[2][2].location.x=2;
     b.board[2][2].location.y=2;
     moves(b.board[2][2], b);
->>>>>>> master
+>>>>>>> master*/
     b.board[5][5]=whitePawn;
     b.board[0][0]=whiteRook;
     b.board[7][0]=whiteRook2;
@@ -61,9 +61,9 @@ int main()
     b.board[4][6].testing();
     b.board[4][5].testing();
     b.board[6][5].testing();
-    */
 
-<<<<<<< HEAD
+
+//<<<<<<< HEAD
     calcBoard(attackWhite, b, white);
 
     // Output all of the squares that white is attacking
@@ -73,7 +73,7 @@ int main()
 
     // Output all of the squares that black is attacking
     outputBitboard(attackWhite);
-
+/*
 =======
     Piece whiteKnight(toCoord(5, 5), knight, white);
     Piece blackPawn(toCoord(4, 3), pawn, black);
@@ -83,6 +83,6 @@ int main()
     b.board[4][3].moves(b);
     b.board[5][5].moves(b);
     b.board[5][5].testing();
->>>>>>> master
+>>>>>>> master*/
     return 0;
 }
