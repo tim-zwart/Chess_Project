@@ -40,13 +40,13 @@ Piece::Piece()
 
 Piece::Piece(coord l, chess_piece p, colour s)
 {
-    location=l;
-    what_piece=p;
-    side=s;
-    if(s==white)
-        dir=1;
+    location = l;
+    what_piece = p;
+    side = s;
+    if(s == white)
+        dir = 1;
     else
-        dir=-1;
+        dir = -1;
 }
 
 void Piece::moves(pieceBoard board)
