@@ -42,13 +42,13 @@ Piece::Piece()
 
 Piece::Piece(coord l, chess_piece p, colour s)
 {
-    location=l;
-    what_piece=p;
-    side=s;
-    if(s==white)
-        dir=1;
+    location = l;
+    what_piece = p;
+    side = s;
+    if(s == white)
+        dir = 1;
     else
-        dir=-1;
+        dir = -1;
     if(p == king || p == rook)
         castle=true;
     else
@@ -296,48 +296,58 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
         // Knight Movement for tr, tl, dr, dl
         for(int i = -2; i <= 2; i += 4)
         {
+            // Checks if the location is within the board and doesn't contain a piece from their side
             if(location.x + i < 8 && location.x + i > 0 && location.y + 1 < 8 && location.y + 1> 0 &&
                     board.board[location.x + i][location.y + 1].side != side)
             {
+                //Checks if the location isn't blank
                 if(board.board[location.x + i][location.y + 1].what_piece != blank)
                 {
                     attack_option.attack_coord.push_back(toCoord(location.x + i, location.y + 1));
                     attack_option.which_piece.push_back(board.board[location.x + i][location.y + 1].what_piece);
                 }
+                // If there isn't a piece adds it to movement
                 else
                     movement.push_back(toCoord(location.x + i, location.y + 1));
             }
 
+            // Checks if the location is within the board and doesn't contain a piece from their side
             if(location.x + i < 8 && location.x + i > 0 && location.y - 1 < 8 && location.y - 1 > 0 &&
                     board.board[location.x + i][location.y - 1].side != side)
             {
+                //Checks if the location isn't blank
                 if(board.board[location.x + i][location.y - 1].what_piece != blank)
                 {
                     attack_option.attack_coord.push_back(toCoord(location.x + i, location.y - 1));
                     attack_option.which_piece.push_back(board.board[location.x + i][location.y - 1].what_piece);
                 }
+                // If there isn't a piece adds it to movement
                 else
                     movement.push_back(toCoord(location.x + i, location.y - 1));
             }
             if(location.x + 1 < 8 && location.x + 1 > 0 && location.y + i < 8 && location.y + i > 0 &&
                     board.board[location.x + 1][location.y + i].side != side)
             {
+                //Checks if the location isn't blank
                 if(board.board[location.x + 1][location.y + i].what_piece != blank)
                 {
                     attack_option.attack_coord.push_back(toCoord(location.x + 1, location.y + i));
                     attack_option.which_piece.push_back(board.board[location.x + 1][location.y + i].what_piece);
                 }
+                // If there isn't a piece adds it to movement
                 else
                     movement.push_back(toCoord(location.x + 1, location.y + i));
             }
             if(location.x - 1 < 8 && location.x - 1 > 0 && location.y + i < 8 && location.y + i > 0 &&
                     board.board[location.x - 1][location.y + i].side != side)
             {
+                //Checks if the location isn't blank
                 if(board.board[location.x - 1][location.y + i].what_piece != blank)
                 {
                     attack_option.attack_coord.push_back(toCoord(location.x - 1, location.y + i));
                     attack_option.which_piece.push_back(board.board[location.x - 1][location.y + i].what_piece);
                 }
+                // If there isn't a piece adds it to movement
                 else
                     movement.push_back(toCoord(location.x - 1, location.y + i));
             }
@@ -420,6 +430,7 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
                 attack_option.which_piece.push_back(board.board[location.x + 1][location.y+dir].what_piece);
             }
         }
+        // Taking via en passant to the right
         else if(location.y==3.5+0.5*dir && board.board[location.x+1][location.y].enpassant)
         {
             attack_option.attack_coord.push_back(toCoord(location.x+1, location.y+dir));
@@ -432,6 +443,7 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
             attack_option.which_piece.push_back(board.board[location.x - 1][location.y + dir].what_piece);
         }
 
+        // Taking via en passant to the left
         else if(location.y==3.5+0.5*dir && board.board[location.x-1][location.y].enpassant)
         {
             attack_option.attack_coord.push_back(toCoord(location.x-1, location.y+dir));
@@ -471,6 +483,7 @@ void Piece::testing()
     }
     cout<<endl;
     cout<<"Movement:";
+
     for(int i = 0; i < int(movement.size()); i++)
     {
         convert(movement[i]);
