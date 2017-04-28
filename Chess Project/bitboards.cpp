@@ -265,48 +265,58 @@ void Piece::moves(pieceBoard board)
         // Knight Movement for tr, tl, dr, dl
         for(int i = -2; i <= 2; i += 4)
         {
+            // Checks if the location is within the board and doesn't contain a piece from their side
             if(location.x + i < 8 && location.x + i > 0 && location.y + 1 < 8 && location.y + 1> 0 &&
                board.board[location.x + i][location.y + 1].side != side)
             {
+                //Checks if the location isn't blank
                 if(board.board[location.x + i][location.y + 1].what_piece != blank)
                 {
                     attack_option.attack_coord.push_back(toCoord(location.x + i, location.y + 1));
                     attack_option.which_piece.push_back(board.board[location.x + i][location.y + 1].what_piece);
                 }
+                // If there isn't a piece adds it to movement
                 else
                     movement.push_back(toCoord(location.x + i, location.y + 1));
             }
 
+            // Checks if the location is within the board and doesn't contain a piece from their side
             if(location.x + i < 8 && location.x + i > 0 && location.y - 1 < 8 && location.y - 1 > 0 &&
                board.board[location.x + i][location.y - 1].side != side)
             {
+                //Checks if the location isn't blank
                 if(board.board[location.x + i][location.y - 1].what_piece != blank)
                 {
                     attack_option.attack_coord.push_back(toCoord(location.x + i, location.y - 1));
                     attack_option.which_piece.push_back(board.board[location.x + i][location.y - 1].what_piece);
                 }
+                // If there isn't a piece adds it to movement
                 else
                     movement.push_back(toCoord(location.x + i, location.y - 1));
             }
             if(location.x + 1 < 8 && location.x + 1 > 0 && location.y + i < 8 && location.y + i > 0 &&
                board.board[location.x + 1][location.y + i].side != side)
             {
+                //Checks if the location isn't blank
                 if(board.board[location.x + 1][location.y + i].what_piece != blank)
                 {
                     attack_option.attack_coord.push_back(toCoord(location.x + 1, location.y + i));
                     attack_option.which_piece.push_back(board.board[location.x + 1][location.y + i].what_piece);
                 }
+                // If there isn't a piece adds it to movement
                 else
                     movement.push_back(toCoord(location.x + 1, location.y + i));
             }
             if(location.x - 1 < 8 && location.x - 1 > 0 && location.y + i < 8 && location.y + i > 0 &&
                board.board[location.x - 1][location.y + i].side != side)
             {
+                //Checks if the location isn't blank
                 if(board.board[location.x - 1][location.y + i].what_piece != blank)
                 {
                     attack_option.attack_coord.push_back(toCoord(location.x - 1, location.y + i));
                     attack_option.which_piece.push_back(board.board[location.x - 1][location.y + i].what_piece);
                 }
+                // If there isn't a piece adds it to movement
                 else
                     movement.push_back(toCoord(location.x - 1, location.y + i));
             }
@@ -392,9 +402,7 @@ void Piece::moves(pieceBoard board)
             attack_option.attack_coord.push_back(toCoord(location.x-1, location.y+dir));
             attack_option.which_piece.push_back(board.board[location.x + 1][location.y + dir].what_piece);
         }
-        //
-        // Insert En Passant
-        //
+
 
         break;
 
@@ -415,7 +423,7 @@ void Piece::convert(coord position)
 void Piece::testing()
 {
     cout<<"Attacking:";
-    for(int i = 0; i < attack_option.attack_coord.size(); i++)
+    for(unsigned int i = 0; i < attack_option.attack_coord.size(); i++)
     {
         convert(location);
         cout<<"x";
@@ -424,10 +432,30 @@ void Piece::testing()
     }
     cout<<endl;
     cout<<"Movement:";
-    for(int i = 0; i < movement.size(); i++)
+    for(unsigned int i = 0; i < movement.size(); i++)
     {
         convert(movement[i]);
         cout<<" ";
     }
     cout<<endl;
+}
+pieceBoard Piece::reset()
+{
+    pieceBoard B;
+    Piece white_pawn_1(toCoord(0, 1), pawn, white);
+    Piece white_pawn_2(toCoord(1, 1), pawn, white);
+    Piece white_pawn_3(toCoord(2, 1), pawn, white);
+    Piece white_pawn_4(toCoord(3, 1), pawn, white);
+    Piece white_pawn_5(toCoord(4, 1), pawn, white);
+    Piece white_pawn_6(toCoord(5, 1), pawn, white);
+    Piece white_pawn_7(toCoord(6, 1), pawn, white);
+    Piece white_pawn_8(toCoord(7, 1), pawn, white);
+    Piece white_rook_1(toCoord(0, 0), rook, white);
+    Piece white_rook_2(toCoord(7, 0), rook, white);
+    Piece white_bishop_1(toCoord(2, 0), bishop, white);
+    Piece white_bishop_2(toCoord(5, 0), bishop, white);
+    Piece white_knight_1(toCoord(1, 0), knight, white);
+    Piece white_knight_2(toCoord(6, 0), knight, white);
+    Piece white_queen(toCoord(3, 0), queen, white);
+
 }
