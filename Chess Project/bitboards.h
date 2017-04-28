@@ -42,6 +42,7 @@ public:
     //testing functions
     void testing();
     void convert(coord position);
+    pieceBoard reset();
 };
 
 // 8x8 board of pieces
