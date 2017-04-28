@@ -36,6 +36,8 @@ Piece::Piece()
 {
     what_piece = blank;
     side = none;
+    castle=false;
+    enpassant=false;
 }
 
 Piece::Piece(coord l, chess_piece p, colour s)
@@ -47,9 +49,14 @@ Piece::Piece(coord l, chess_piece p, colour s)
         dir = 1;
     else
         dir = -1;
+    if(p == king || p == rook)
+        castle=true;
+    else
+        castle=false;
+    enpassant=false;
 }
 
-void Piece::moves(pieceBoard board)
+void Piece::moves(pieceBoard board, bitboard attackBoard)
 {
     // The 4 diagonal directions for pieces
     bool tr=true; // Top right
@@ -68,7 +75,7 @@ void Piece::moves(pieceBoard board)
     case king:
         // Up
         // Ensure that the square is not occupied by a piece of the same colour
-        if(board.board[location.x][location.y+1].side != side)
+        if(board.board[location.x][location.y+1].side != side && location.y<7)
         {
             // If the square is not empty, note it down as an attack
             if(board.board[location.x][location.y+1].side != none)
@@ -83,7 +90,7 @@ void Piece::moves(pieceBoard board)
 
         // Up right
         // Ensure that the square is not occupied by a piece of the same colour
-        if(board.board[location.x+1][location.y+1].side != side)
+        if(board.board[location.x+1][location.y+1].side != side && location.x<7 && location.y<7)
         {
             // If the square is not empty, note it down as an attack
             if(board.board[location.x+1][location.y+1].side != none)
@@ -98,7 +105,7 @@ void Piece::moves(pieceBoard board)
 
         // Right
         // Ensure that the square is not occupied by a piece of the same colour
-        if(board.board[location.x+1][location.y].side != side)
+        if(board.board[location.x+1][location.y].side != side && location.x<7)
         {
             // If the square is not empty, note it down as an attack
             if(board.board[location.x+1][location.y].side != none)
@@ -113,7 +120,7 @@ void Piece::moves(pieceBoard board)
 
         // Down Right
         // Ensure that the square is not occupied by a piece of the same colour
-        if(board.board[location.x+1][location.y-1].side != side)
+        if(board.board[location.x+1][location.y-1].side != side && location.x<7 && location.y>0)
         {
             // If the square is not empty, note it down as an attack
             if(board.board[location.x+1][location.y-1].side != none)
@@ -128,7 +135,7 @@ void Piece::moves(pieceBoard board)
 
         // Down
         // Ensure that the square is not occupied by a piece of the same colour
-        if(board.board[location.x][location.y-1].side != side)
+        if(board.board[location.x][location.y-1].side != side && location.y<0)
         {
             // If the square is not empty, note it down as an attack
             if(board.board[location.x][location.y-1].side != none)
@@ -143,7 +150,7 @@ void Piece::moves(pieceBoard board)
 
         // Down Left
         // Ensure that the square is not occupied by a piece of the same colour
-        if(board.board[location.x-1][location.y-1].side != side)
+        if(board.board[location.x-1][location.y-1].side != side && location.x>0 && location.y>0)
         {
             // If the square is not empty, note it down as an attack
             if(board.board[location.x-1][location.y-1].side != none)
@@ -158,7 +165,7 @@ void Piece::moves(pieceBoard board)
 
         // Left
         // Ensure that the square is not occupied by a piece of the same colour
-        if(board.board[location.x-1][location.y].side != side)
+        if(board.board[location.x-1][location.y].side != side && location.x>0)
         {
             // If the square is not empty, note it down as an attack
             if(board.board[location.x-1][location.y].side != none)
@@ -173,7 +180,7 @@ void Piece::moves(pieceBoard board)
 
         // Up Left
         // Ensure that the square is not occupied by a piece of the same colour
-        if(board.board[location.x-1][location.y+1].side != side)
+        if(board.board[location.x-1][location.y+1].side != side && location.x>0 && location.y<7)
         {
             // If the square is not empty, note it down as an attack
             if(board.board[location.x-1][location.y+1].side != none)
@@ -185,16 +192,40 @@ void Piece::moves(pieceBoard board)
             else
                 movement.push_back(toCoord(location.x-1, location.y+1));
         }
+
+        // Castling
+        if(castle)
+        {
+            int y = 3.5-3.5*dir;
+
+            // Castle Kingside
+            // Make sure that the squares are not occupied and castling is allowed
+            if(board.board[7][y].castle && board.board[6][y].side == none && board.board[5][y].side == none)
+            {
+                // Make sure that the king is not castling out of or through check
+                if(attackBoard.board[4][y]==0 && attackBoard.board[5][y]==0)
+                    movement.push_back(toCoord(6, y));
+            }
+
+
+            // Castle Queenside
+            if(board.board[0][y].castle && board.board[1][y].side == none && board.board[2][y].side == none && board.board[3][y].side == none)
+            {
+                // Make sure that the king is not castling out of or through check
+                if(attackBoard.board[4][y]==0 && attackBoard.board[3][y]==0 && attackBoard.board[2][y]==0)
+                    movement.push_back(toCoord(2, y));
+            }
+        }
         break;
 
     case queen:
         // Move as if the queen was a bishop
         what_piece=bishop;
-        this->moves(board);
+        this->moves(board, attackBoard);
 
         // Move as if the queen was a rook
         what_piece=rook;
-        this->moves(board);
+        this->moves(board, attackBoard);
 
         // Change piece back to a queen
         what_piece=queen;
@@ -255,7 +286,7 @@ void Piece::moves(pieceBoard board)
             }
             else if(bl)
                 movement.push_back(toCoord(location.x-i, location.y-i));
-            if(tr && tl && br && bl)
+            if(!tr && !tl && !br && !bl)
                 break;
         }
         break;
@@ -267,7 +298,7 @@ void Piece::moves(pieceBoard board)
         {
             // Checks if the location is within the board and doesn't contain a piece from their side
             if(location.x + i < 8 && location.x + i > 0 && location.y + 1 < 8 && location.y + 1> 0 &&
-               board.board[location.x + i][location.y + 1].side != side)
+                    board.board[location.x + i][location.y + 1].side != side)
             {
                 //Checks if the location isn't blank
                 if(board.board[location.x + i][location.y + 1].what_piece != blank)
@@ -282,7 +313,7 @@ void Piece::moves(pieceBoard board)
 
             // Checks if the location is within the board and doesn't contain a piece from their side
             if(location.x + i < 8 && location.x + i > 0 && location.y - 1 < 8 && location.y - 1 > 0 &&
-               board.board[location.x + i][location.y - 1].side != side)
+                    board.board[location.x + i][location.y - 1].side != side)
             {
                 //Checks if the location isn't blank
                 if(board.board[location.x + i][location.y - 1].what_piece != blank)
@@ -295,7 +326,7 @@ void Piece::moves(pieceBoard board)
                     movement.push_back(toCoord(location.x + i, location.y - 1));
             }
             if(location.x + 1 < 8 && location.x + 1 > 0 && location.y + i < 8 && location.y + i > 0 &&
-               board.board[location.x + 1][location.y + i].side != side)
+                    board.board[location.x + 1][location.y + i].side != side)
             {
                 //Checks if the location isn't blank
                 if(board.board[location.x + 1][location.y + i].what_piece != blank)
@@ -308,7 +339,7 @@ void Piece::moves(pieceBoard board)
                     movement.push_back(toCoord(location.x + 1, location.y + i));
             }
             if(location.x - 1 < 8 && location.x - 1 > 0 && location.y + i < 8 && location.y + i > 0 &&
-               board.board[location.x - 1][location.y + i].side != side)
+                    board.board[location.x - 1][location.y + i].side != side)
             {
                 //Checks if the location isn't blank
                 if(board.board[location.x - 1][location.y + i].what_piece != blank)
@@ -363,7 +394,7 @@ void Piece::moves(pieceBoard board)
                 movement.push_back(toCoord(location.x+i, location.y));
 
             // Move Left
-            if(l && (location.x-i<0 || board.board[location.x-i][location.y+i].side == side))
+            if(l && (location.x-i<0 || board.board[location.x-i][location.y].side == side))
                 l=false;
             else if(l && board.board[location.x-i][location.y].what_piece != blank && board.board[location.x-i][location.y].side != side)
             {
@@ -391,18 +422,31 @@ void Piece::moves(pieceBoard board)
         }
 
         // Take to the right
-        if(board.board[location.x+1][location.y+dir].what_piece!=blank && board.board[location.x+1][location.y+dir].side!=side)
+        if(board.board[location.x+1][location.y+dir].what_piece!=blank)
+        {
+            if(board.board[location.x+1][location.y+dir].side!=side)
+            {
+                attack_option.attack_coord.push_back(toCoord(location.x+1, location.y+dir));
+                attack_option.which_piece.push_back(board.board[location.x + 1][location.y+dir].what_piece);
+            }
+        }
+        else if(location.y==3.5+0.5*dir && board.board[location.x+1][location.y].enpassant)
         {
             attack_option.attack_coord.push_back(toCoord(location.x+1, location.y+dir));
-            attack_option.which_piece.push_back(board.board[location.x + 1][location.y+dir].what_piece);
+            attack_option.which_piece.push_back(board.board[location.x + 1][location.y].what_piece);
         }
         // Take to the left
         if(board.board[location.x-1][location.y+dir].what_piece!=blank && board.board[location.x-1][location.y+dir].side!=side)
         {
             attack_option.attack_coord.push_back(toCoord(location.x-1, location.y+dir));
-            attack_option.which_piece.push_back(board.board[location.x + 1][location.y + dir].what_piece);
+            attack_option.which_piece.push_back(board.board[location.x - 1][location.y + dir].what_piece);
         }
 
+        else if(location.y==3.5+0.5*dir && board.board[location.x-1][location.y].enpassant)
+        {
+            attack_option.attack_coord.push_back(toCoord(location.x-1, location.y+dir));
+            attack_option.which_piece.push_back(board.board[location.x - 1][location.y].what_piece);
+        }
 
         break;
 
@@ -422,8 +466,13 @@ void Piece::convert(coord position)
 
 void Piece::testing()
 {
+    cout<<"Source: ";
+    convert(location);
+    cout << endl;
+    cout<<"Piece:"<<what_piece<<endl;
+    cout<<"Colour:"<<side<<endl;
     cout<<"Attacking:";
-    for(unsigned int i = 0; i < attack_option.attack_coord.size(); i++)
+    for(int i = 0; i < int(attack_option.attack_coord.size()); i++)
     {
         convert(location);
         cout<<"x";
@@ -432,30 +481,54 @@ void Piece::testing()
     }
     cout<<endl;
     cout<<"Movement:";
-    for(unsigned int i = 0; i < movement.size(); i++)
+
+    for(int i = 0; i < int(movement.size()); i++)
     {
         convert(movement[i]);
         cout<<" ";
     }
     cout<<endl;
 }
-pieceBoard Piece::reset()
-{
-    pieceBoard B;
-    Piece white_pawn_1(toCoord(0, 1), pawn, white);
-    Piece white_pawn_2(toCoord(1, 1), pawn, white);
-    Piece white_pawn_3(toCoord(2, 1), pawn, white);
-    Piece white_pawn_4(toCoord(3, 1), pawn, white);
-    Piece white_pawn_5(toCoord(4, 1), pawn, white);
-    Piece white_pawn_6(toCoord(5, 1), pawn, white);
-    Piece white_pawn_7(toCoord(6, 1), pawn, white);
-    Piece white_pawn_8(toCoord(7, 1), pawn, white);
-    Piece white_rook_1(toCoord(0, 0), rook, white);
-    Piece white_rook_2(toCoord(7, 0), rook, white);
-    Piece white_bishop_1(toCoord(2, 0), bishop, white);
-    Piece white_bishop_2(toCoord(5, 0), bishop, white);
-    Piece white_knight_1(toCoord(1, 0), knight, white);
-    Piece white_knight_2(toCoord(6, 0), knight, white);
-    Piece white_queen(toCoord(3, 0), queen, white);
 
+void outputBitboard(bitboard board)
+{
+    for (int i=7; i>=0; i--)
+    {
+        for (int j=0; j<8; j++)
+            cout << board.board[j][i] << " ";
+        cout << endl;
+    }
 }
+
+// Add up the squares that are being attacked
+void calcBoard(bitboard &write, pieceBoard b, colour side)
+{
+    // Set everything to 0
+    for (int i=0; i<8; i++)
+        for (int j=0; j<8; j++)
+            write.board[i][j] = 0;
+
+    // Add all of the things
+    for (int x=0; x<8; x++)
+        for (int y=0; y<8; y++)
+        {
+            // If the piece is the right side
+            if(b.board[x][y].side == side)
+            {
+                // Add all of the possible takes to the board
+                for (int z=0; z<int(b.board[x][y].attack_option.attack_coord.size()); z++)
+                {
+                    coord temp = b.board[x][y].attack_option.attack_coord[z];
+                    write.board[temp.x][temp.y]++;
+                }
+
+                // Add all of the possible movements to the board
+                for (int z=0; z<int(b.board[x][y].movement.size()); z++)
+                {
+                    coord temp = b.board[x][y].movement[z];
+                    write.board[temp.x][temp.y]++;
+                }
+            }
+        }
+}
+

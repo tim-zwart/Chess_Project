@@ -7,6 +7,7 @@ typedef vector<Piece> pvec;
 
 generate_move(pieceBoard Board, colour which_colour)
 {
+    /*
     pvec attack_loc[8][8];
     for(int i = 0; i < 8; i++)
     {
@@ -19,5 +20,5 @@ generate_move(pieceBoard Board, colour which_colour)
             }
 
         }
-    }
+    }*/
 }
