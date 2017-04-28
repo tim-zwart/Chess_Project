@@ -42,13 +42,13 @@ Piece::Piece()
 
 Piece::Piece(coord l, chess_piece p, colour s)
 {
-    location=l;
-    what_piece=p;
-    side=s;
-    if(s==white)
-        dir=1;
+    location = l;
+    what_piece = p;
+    side = s;
+    if(s == white)
+        dir = 1;
     else
-        dir=-1;
+        dir = -1;
     if(p == king || p == rook)
         castle=true;
     else
@@ -296,48 +296,58 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
         // Knight Movement for tr, tl, dr, dl
         for(int i = -2; i <= 2; i += 4)
         {
+            // Checks if the location is within the board and doesn't contain a piece from their side
             if(location.x + i < 8 && location.x + i > 0 && location.y + 1 < 8 && location.y + 1> 0 &&
                     board.board[location.x + i][location.y + 1].side != side)
             {
+                //Checks if the location isn't blank
                 if(board.board[location.x + i][location.y + 1].what_piece != blank)
                 {
                     attack_option.attack_coord.push_back(toCoord(location.x + i, location.y + 1));
                     attack_option.which_piece.push_back(board.board[location.x + i][location.y + 1].what_piece);
                 }
+                // If there isn't a piece adds it to movement
                 else
                     movement.push_back(toCoord(location.x + i, location.y + 1));
             }
 
+            // Checks if the location is within the board and doesn't contain a piece from their side
             if(location.x + i < 8 && location.x + i > 0 && location.y - 1 < 8 && location.y - 1 > 0 &&
                     board.board[location.x + i][location.y - 1].side != side)
             {
+                //Checks if the location isn't blank
                 if(board.board[location.x + i][location.y - 1].what_piece != blank)
                 {
                     attack_option.attack_coord.push_back(toCoord(location.x + i, location.y - 1));
                     attack_option.which_piece.push_back(board.board[location.x + i][location.y - 1].what_piece);
                 }
+                // If there isn't a piece adds it to movement
                 else
                     movement.push_back(toCoord(location.x + i, location.y - 1));
             }
             if(location.x + 1 < 8 && location.x + 1 > 0 && location.y + i < 8 && location.y + i > 0 &&
                     board.board[location.x + 1][location.y + i].side != side)
             {
+                //Checks if the location isn't blank
                 if(board.board[location.x + 1][location.y + i].what_piece != blank)
                 {
                     attack_option.attack_coord.push_back(toCoord(location.x + 1, location.y + i));
                     attack_option.which_piece.push_back(board.board[location.x + 1][location.y + i].what_piece);
                 }
+                // If there isn't a piece adds it to movement
                 else
                     movement.push_back(toCoord(location.x + 1, location.y + i));
             }
             if(location.x - 1 < 8 && location.x - 1 > 0 && location.y + i < 8 && location.y + i > 0 &&
                     board.board[location.x - 1][location.y + i].side != side)
             {
+                //Checks if the location isn't blank
                 if(board.board[location.x - 1][location.y + i].what_piece != blank)
                 {
                     attack_option.attack_coord.push_back(toCoord(location.x - 1, location.y + i));
                     attack_option.which_piece.push_back(board.board[location.x - 1][location.y + i].what_piece);
                 }
+                // If there isn't a piece adds it to movement
                 else
                     movement.push_back(toCoord(location.x - 1, location.y + i));
             }
@@ -420,6 +430,7 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
                 attack_option.which_piece.push_back(board.board[location.x + 1][location.y+dir].what_piece);
             }
         }
+        // Taking via en passant to the right
         else if(location.y==3.5+0.5*dir && board.board[location.x+1][location.y].enpassant)
         {
             attack_option.attack_coord.push_back(toCoord(location.x+1, location.y+dir));
@@ -432,6 +443,7 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
             attack_option.which_piece.push_back(board.board[location.x - 1][location.y + dir].what_piece);
         }
 
+        // Taking via en passant to the left
         else if(location.y==3.5+0.5*dir && board.board[location.x-1][location.y].enpassant)
         {
             attack_option.attack_coord.push_back(toCoord(location.x-1, location.y+dir));
@@ -471,6 +483,7 @@ void Piece::testing()
     }
     cout<<endl;
     cout<<"Movement:";
+
     for(int i = 0; i < int(movement.size()); i++)
     {
         convert(movement[i]);
@@ -521,3 +534,79 @@ void calcBoard(bitboard &write, pieceBoard b, colour side)
         }
 }
 
+void resetBoard (pieceBoard &b)
+{
+    for (int i=0;i<8;i++)
+    {
+        // Set up white pawns
+        Piece whitePawn(toCoord(i, 1), pawn, white);
+        b.board[i][1]=whitePawn;
+
+        // Set up black pawns
+        Piece blackPawn(toCoord(i, 6), pawn, black);
+        b.board[i][6]=whitePawn;
+    }
+    // Create white rooks
+    Piece whiteRook(toCoord(0, 0), rook, white);
+    Piece whiteRook2(toCoord(7, 0), rook, white);
+
+    // Place white rooks on board
+    b.board[0][0]=whiteRook;
+    b.board[7][0]=whiteRook2;
+
+    // Create black rooks
+    Piece blackRook(toCoord(0, 7), rook, white);
+    Piece blackRook2(toCoord(7, 7), rook, white);
+
+    // Place black rooks on board
+    b.board[0][7]=blackRook;
+    b.board[7][7]=blackRook2;
+
+    // Create white knights
+    Piece whiteKnight(toCoord(1, 0), knight, white);
+    Piece whiteKnight2(toCoord(6, 0), knight, white);
+
+    // Place white knights on board
+    b.board[1][0]=whiteKnight;
+    b.board[6][0]=whiteKnight2;
+
+    // Create black knights
+    Piece blackKnight(toCoord(1, 7), knight, black);
+    Piece blackKnight2(toCoord(6, 7), knight, black);
+
+    // Place black knights
+    b.board[1][7]=blackKnight;
+    b.board[6][7]=blackKnight2;
+
+    // Create white bishops
+    Piece whiteBishop(toCoord(2, 0), bishop, white);
+    Piece whiteBishop2(toCoord(5, 0), bishop, white);
+
+    // Place white bishops
+    b.board[2][0]=whiteBishop;
+    b.board[5][0]=whiteBishop2;
+
+    // Create black bishops
+    Piece blackBishop(toCoord(2, 7), bishop, black);
+    Piece blackBishop2(toCoord(5, 7), bishop, black);
+
+    // Place black bishops
+    b.board[2][7]=blackBishop;
+    b.board[5][7]=blackBishop2;
+
+    // Create kings
+    Piece whiteKing(toCoord(4, 0), king, white);
+    Piece blackKing(toCoord(4, 7), king, black);
+
+    // Place kings on board
+    b.board[4][0]=whiteKing;
+    b.board[4][7]=blackKing;
+
+    // Create queens
+    Piece whiteQueen(toCoord(3, 0), queen, white);
+    Piece blackQueen(toCoord(3, 7), queen, black);
+
+    // Place queens on board
+    b.board[3][0]=whiteQueen;
+    b.board[3][7]=blackQueen;
+}

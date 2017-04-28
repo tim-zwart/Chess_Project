@@ -36,6 +36,8 @@
 		<Unit filename="bitboards.h" />
 		<Unit filename="libraries.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="movegen.cpp" />
+		<Unit filename="movegen.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

@@ -54,6 +54,7 @@ public:
     //testing functions
     void testing();
     void convert(coord position);
+    pieceBoard reset();
 };
 
 // 8x8 board of pieces
@@ -63,6 +64,7 @@ struct pieceBoard
     Piece *movedDouble;
 };
 
+void resetBoard (pieceBoard &b);
 void calcBoard(bitboard &write, pieceBoard b, colour side);
 
 // Add and subtract bitboards
