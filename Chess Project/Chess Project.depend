@@ -1,0 +1,43 @@
+# depslib dependency file v1.0
+1493387574 source:c:\users\tim\documents\github\chess_project\chess project\bitboards.cpp
+	"bitboards.h"
+
+1493386850 c:\users\tim\documents\github\chess_project\chess project\bitboards.h
+	"libraries.h"
+
+1493219879 c:\users\tim\documents\github\chess_project\chess project\libraries.h
+	<iostream>
+	<vector>
+
+1493387767 source:c:\users\tim\documents\github\chess_project\chess project\main.cpp
+	<iostream>
+	"bitboards.h"
+
+1493219513 source:c:\users\huckkim\documents\github\chess_project\chess project\main.cpp
+	<iostream>
+	"bitboards.h"
+
+1493215421 c:\users\huckkim\documents\github\chess_project\chess project\bitboards.h
+	"libraries.h"
+
+1493214415 c:\users\huckkim\documents\github\chess_project\chess project\libraries.h
+	<iostream>
+	<vector>
+
+1493219376 source:c:\users\huckkim\documents\github\chess_project\chess project\bitboards.cpp
+	"bitboards.h"
+
+1493253952 source:c:\users\matilda\documents\github\chess_project\chess project\bitboards.cpp
+	"bitboards.h"
+
+1493242253 c:\users\matilda\documents\github\chess_project\chess project\bitboards.h
+	"libraries.h"
+
+1493242253 c:\users\matilda\documents\github\chess_project\chess project\libraries.h
+	<iostream>
+	<vector>
+
+1493253685 source:c:\users\matilda\documents\github\chess_project\chess project\main.cpp
+	<iostream>
+	"bitboards.h"
+
