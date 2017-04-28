@@ -13,18 +13,18 @@
 	<iostream>
 	"bitboards.h"
 
-1493219513 source:c:\users\huckkim\documents\github\chess_project\chess project\main.cpp
+1493391647 source:c:\users\huckkim\documents\github\chess_project\chess project\main.cpp
 	<iostream>
 	"bitboards.h"
 
-1493215421 c:\users\huckkim\documents\github\chess_project\chess project\bitboards.h
+1493391647 c:\users\huckkim\documents\github\chess_project\chess project\bitboards.h
 	"libraries.h"
 
 1493214415 c:\users\huckkim\documents\github\chess_project\chess project\libraries.h
 	<iostream>
 	<vector>
 
-1493219376 source:c:\users\huckkim\documents\github\chess_project\chess project\bitboards.cpp
+1493391818 source:c:\users\huckkim\documents\github\chess_project\chess project\bitboards.cpp
 	"bitboards.h"
 
 1493253952 source:c:\users\matilda\documents\github\chess_project\chess project\bitboards.cpp
