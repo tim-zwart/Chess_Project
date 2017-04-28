@@ -11,9 +11,6 @@ using namespace std;
 
 int main()
 {
-<<<<<<< HEAD
-
-=======
     pieceBoard b;
 
     // Bitboard for the squares that white is attacking
@@ -37,5 +34,4 @@ int main()
     outputBitboard(attackWhite);
 
     return 0;
->>>>>>> refs/remotes/origin/master
 }

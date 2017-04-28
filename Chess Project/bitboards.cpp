@@ -430,6 +430,7 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
                 attack_option.which_piece.push_back(board.board[location.x + 1][location.y+dir].what_piece);
             }
         }
+        // Taking via en passant to the right
         else if(location.y==3.5+0.5*dir && board.board[location.x+1][location.y].enpassant)
         {
             attack_option.attack_coord.push_back(toCoord(location.x+1, location.y+dir));
@@ -442,6 +443,7 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
             attack_option.which_piece.push_back(board.board[location.x - 1][location.y + dir].what_piece);
         }
 
+        // Taking via en passant to the left
         else if(location.y==3.5+0.5*dir && board.board[location.x-1][location.y].enpassant)
         {
             attack_option.attack_coord.push_back(toCoord(location.x-1, location.y+dir));
