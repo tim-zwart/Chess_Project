@@ -12,13 +12,13 @@ using namespace std;
 int main()
 {
 
-    Piece whitePawn(toCoord(5, 5), pawn, white);
+    Piece whitePawn(toCoord(5, 4), pawn, white);
     Piece whiteRook(toCoord(0, 0), rook, white);
     Piece whiteRook2(toCoord(7, 0), rook, white);
     Piece whiteKing(toCoord(4, 0), king, white);
-    Piece blackPawn(toCoord(4, 6), pawn, black);
-    Piece blackBishop(toCoord(4, 5), bishop, black);
-    Piece blackQueen(toCoord(6, 5), queen, black);
+    Piece blackPawn(toCoord(4, 4), pawn, black);
+    Piece blackBishop(toCoord(6, 5), bishop, black);
+    Piece blackQueen(toCoord(6, 6), queen, black);
     pieceBoard b;
 //<<<<<<< HEAD
 
@@ -39,28 +39,28 @@ int main()
     b.board[2][2].location.y=2;
     moves(b.board[2][2], b);
 >>>>>>> master*/
-    b.board[5][5]=whitePawn;
+    b.board[5][4]=whitePawn;
     b.board[0][0]=whiteRook;
     b.board[7][0]=whiteRook2;
     b.board[4][0]=whiteKing;
-    b.board[4][6]=blackPawn;
-    b.board[4][5]=blackBishop;
-    b.board[6][5]=blackQueen;
-    b.board[4][6].moves(b, attackWhite);
-    b.board[4][5].moves(b, attackWhite);
+    b.board[4][4]=blackPawn;
+    b.board[6][5]=blackBishop;
+    b.board[6][6]=blackQueen;
+    b.board[4][4].moves(b, attackWhite);
     b.board[6][5].moves(b, attackWhite);
+    b.board[6][6].moves(b, attackWhite);
     calcBoard(attackBlack, b, black);
-    b.board[5][5].moves(b, attackBlack);
+    b.board[5][4].moves(b, attackBlack);
     b.board[0][0].moves(b, attackBlack);
     b.board[7][0].moves(b, attackBlack);
     b.board[4][0].moves(b, attackBlack);
-    b.board[5][5].testing();
+    b.board[5][4].testing();
     b.board[0][0].testing();
     b.board[7][0].testing();
     b.board[4][0].testing();
-    b.board[4][6].testing();
-    b.board[4][5].testing();
+    b.board[4][4].testing();
     b.board[6][5].testing();
+    b.board[6][6].testing();
 
 
 //<<<<<<< HEAD

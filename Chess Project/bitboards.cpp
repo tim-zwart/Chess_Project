@@ -37,6 +37,7 @@ Piece::Piece()
     what_piece = blank;
     side = none;
     castle=false;
+    enpassant=false;
 }
 
 Piece::Piece(coord l, chess_piece p, colour s)
@@ -52,6 +53,7 @@ Piece::Piece(coord l, chess_piece p, colour s)
         castle=true;
     else
         castle=false;
+    enpassant=false;
 }
 
 void Piece::moves(pieceBoard board, bitboard attackBoard)
@@ -295,7 +297,7 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
         for(int i = -2; i <= 2; i += 4)
         {
             if(location.x + i < 8 && location.x + i > 0 && location.y + 1 < 8 && location.y + 1> 0 &&
-               board.board[location.x + i][location.y + 1].side != side)
+                    board.board[location.x + i][location.y + 1].side != side)
             {
                 if(board.board[location.x + i][location.y + 1].what_piece != blank)
                 {
@@ -307,7 +309,7 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
             }
 
             if(location.x + i < 8 && location.x + i > 0 && location.y - 1 < 8 && location.y - 1 > 0 &&
-               board.board[location.x + i][location.y - 1].side != side)
+                    board.board[location.x + i][location.y - 1].side != side)
             {
                 if(board.board[location.x + i][location.y - 1].what_piece != blank)
                 {
@@ -318,7 +320,7 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
                     movement.push_back(toCoord(location.x + i, location.y - 1));
             }
             if(location.x + 1 < 8 && location.x + 1 > 0 && location.y + i < 8 && location.y + i > 0 &&
-               board.board[location.x + 1][location.y + i].side != side)
+                    board.board[location.x + 1][location.y + i].side != side)
             {
                 if(board.board[location.x + 1][location.y + i].what_piece != blank)
                 {
@@ -329,7 +331,7 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
                     movement.push_back(toCoord(location.x + 1, location.y + i));
             }
             if(location.x - 1 < 8 && location.x - 1 > 0 && location.y + i < 8 && location.y + i > 0 &&
-               board.board[location.x - 1][location.y + i].side != side)
+                    board.board[location.x - 1][location.y + i].side != side)
             {
                 if(board.board[location.x - 1][location.y + i].what_piece != blank)
                 {
@@ -410,20 +412,31 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
         }
 
         // Take to the right
-        if(board.board[location.x+1][location.y+dir].what_piece!=blank && board.board[location.x+1][location.y+dir].side!=side)
+        if(board.board[location.x+1][location.y+dir].what_piece!=blank)
+        {
+            if(board.board[location.x+1][location.y+dir].side!=side)
+            {
+                attack_option.attack_coord.push_back(toCoord(location.x+1, location.y+dir));
+                attack_option.which_piece.push_back(board.board[location.x + 1][location.y+dir].what_piece);
+            }
+        }
+        else if(location.y==3.5+0.5*dir && board.board[location.x+1][location.y].enpassant)
         {
             attack_option.attack_coord.push_back(toCoord(location.x+1, location.y+dir));
-            attack_option.which_piece.push_back(board.board[location.x + 1][location.y+dir].what_piece);
+            attack_option.which_piece.push_back(board.board[location.x + 1][location.y].what_piece);
         }
         // Take to the left
         if(board.board[location.x-1][location.y+dir].what_piece!=blank && board.board[location.x-1][location.y+dir].side!=side)
         {
             attack_option.attack_coord.push_back(toCoord(location.x-1, location.y+dir));
-            attack_option.which_piece.push_back(board.board[location.x + 1][location.y + dir].what_piece);
+            attack_option.which_piece.push_back(board.board[location.x - 1][location.y + dir].what_piece);
         }
-        //
-        // Insert En Passant
-        //
+
+        else if(location.y==3.5+0.5*dir && board.board[location.x-1][location.y].enpassant)
+        {
+            attack_option.attack_coord.push_back(toCoord(location.x-1, location.y+dir));
+            attack_option.which_piece.push_back(board.board[location.x - 1][location.y].what_piece);
+        }
 
         break;
 
@@ -449,7 +462,7 @@ void Piece::testing()
     cout<<"Piece:"<<what_piece<<endl;
     cout<<"Colour:"<<side<<endl;
     cout<<"Attacking:";
-    for(int i = 0; i < attack_option.attack_coord.size(); i++)
+    for(int i = 0; i < int(attack_option.attack_coord.size()); i++)
     {
         convert(location);
         cout<<"x";
@@ -458,7 +471,7 @@ void Piece::testing()
     }
     cout<<endl;
     cout<<"Movement:";
-    for(int i = 0; i < movement.size(); i++)
+    for(int i = 0; i < int(movement.size()); i++)
     {
         convert(movement[i]);
         cout<<" ";
@@ -492,14 +505,14 @@ void calcBoard(bitboard &write, pieceBoard b, colour side)
             if(b.board[x][y].side == side)
             {
                 // Add all of the possible takes to the board
-                for (int z=0; z<b.board[x][y].attack_option.attack_coord.size(); z++)
+                for (int z=0; z<int(b.board[x][y].attack_option.attack_coord.size()); z++)
                 {
                     coord temp = b.board[x][y].attack_option.attack_coord[z];
                     write.board[temp.x][temp.y]++;
                 }
 
                 // Add all of the possible movements to the board
-                for (int z=0; z<b.board[x][y].movement.size(); z++)
+                for (int z=0; z<int(b.board[x][y].movement.size()); z++)
                 {
                     coord temp = b.board[x][y].movement[z];
                     write.board[temp.x][temp.y]++;

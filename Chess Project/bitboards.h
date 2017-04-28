@@ -39,6 +39,7 @@ private:
     chess_piece what_piece;
     int dir;
     bool castle;
+    bool enpassant;
 public:
     Piece(coord, chess_piece, colour);
     Piece();
@@ -59,6 +60,7 @@ public:
 struct pieceBoard
 {
     Piece board[8][8];
+    Piece *movedDouble;
 };
 
 void calcBoard(bitboard &write, pieceBoard b, colour side);
