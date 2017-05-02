@@ -39,22 +39,33 @@ private:
     bool castle;
     bool enpassant;
 public:
+
+    //constructor
     Piece(coord, chess_piece, colour);
     Piece();
+
+    /**< Moving Functions */
     // Find possible moves
     void moves(pieceBoard board, bitboard attackBoard);
     // Saves the movement
+    int move_piece(color side, pieceBoard &main_board, coord start, coord endLoc);
+
+    /**< Saved Values */
     vector <coord> movement;
     // Saves what pieces it can attack
     attacked attack_option;
+    // Saves pieces side black, white, or none
     colour side;
+    // Saves what piece it is
     chess_piece what_piece;
+    // Saves it's lcoation
     coord location;
 
-    //testing functions
+    /**< Testing Functions */
     void testing();
     void convert(coord position);
     pieceBoard reset();
+    void piece_clear();
 };
 
 // 8x8 board of pieces

@@ -299,6 +299,7 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
         // Knight Movement for tr, tl, dr, dl
         for(int i = -2; i <= 2; i += 4)
         {
+            // Knight movement for two squares to the left and right, and one square up
             // Checks if the location is within the board and doesn't contain a piece from their side
             if(location.x + i < 8 && location.x + i >= 0 && location.y + 1 < 8 &&
                     board.board[location.x + i][location.y + 1].side != side)
@@ -314,6 +315,7 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
                     movement.push_back(toCoord(location.x + i, location.y + 1));
             }
 
+            // Knight movement for two squares to the left and right, and one square down
             // Checks if the location is within the board and doesn't contain a piece from their side
             if(location.x + i < 8 && location.x + i >= 0 && location.y - 1 >= 0 &&
                     board.board[location.x + i][location.y - 1].side != side)
@@ -328,6 +330,8 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
                 else
                     movement.push_back(toCoord(location.x + i, location.y - 1));
             }
+            // Knight movement for two squares up and down, and one square to the right
+            // Checks if the location is within the board and doesn't contain a piece from their side
             if(location.x + 1 < 8 && location.y + i < 8 && location.y + i >= 0 &&
                     board.board[location.x + 1][location.y + i].side != side)
             {
@@ -341,6 +345,8 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
                 else
                     movement.push_back(toCoord(location.x + 1, location.y + i));
             }
+            // Knight movement for two squares up and down, and one square to the left
+            // Checks if the location is within the board and doesn't contain a piece nfrom their side
             if(location.x - 1 >= 0 && location.y + i < 8 && location.y + i >= 0 &&
                     board.board[location.x - 1][location.y + i].side != side)
             {
@@ -617,4 +623,28 @@ void resetBoard (pieceBoard &b)
     // Place queens on board
     b.board[3][0]=whiteQueen;
     b.board[3][7]=blackQueen;
+}
+
+// Function that moves a piece given the color, start, and end location
+// Returns a -1 if it is an invalid move
+// Returns a 0 if it is only movement
+// Returns a 1-6 if it captures a piece with the piece corresponding to the number
+int Piece::move_piece(color side, pieceBoard &main_board, coord start, coord endLoc)
+{
+    int piece;
+    piece buffer;
+    buffer = main_board.board[start.x][start.y];
+    main_board.board[start.x][start.y].clear();
+    piece = (int)main_board.board[endLoc.x][endLoc.y].what_piece;
+    main_board.board[endLoc.x][endLoc.y] = buffer;
+    return piece;
+}
+
+void Piece::piece_clear()
+{
+    movement.clear();
+    attack_option.attack_coord.clear();
+    attack_option.which_piece.clear();
+    side = none;
+    what_piece = blank;
 }

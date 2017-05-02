@@ -14,12 +14,12 @@
 	"bitboards.h"
 	"movegen.h"
 
-1493648689 source:c:\users\huckkim\documents\github\chess_project\chess project\main.cpp
+1493766889 source:c:\users\huckkim\documents\github\chess_project\chess project\main.cpp
 	<iostream>
 	"bitboards.h"
 	"movegen.h"
 
-1493392536 c:\users\huckkim\documents\github\chess_project\chess project\bitboards.h
+1493769639 c:\users\huckkim\documents\github\chess_project\chess project\bitboards.h
 	"libraries.h"
 
 1493214415 c:\users\huckkim\documents\github\chess_project\chess project\libraries.h
@@ -47,7 +47,7 @@
 	"movegen.h"
 	"bitboards.h"
 
-1493648046 c:\users\huckkim\documents\github\chess_project\chess project\movegen.h
+1493731711 c:\users\huckkim\documents\github\chess_project\chess project\movegen.h
 	"libraries.h"
 	"bitboards.h"
 
