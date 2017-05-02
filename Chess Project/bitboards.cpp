@@ -300,7 +300,7 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
         for(int i = -2; i <= 2; i += 4)
         {
             // Checks if the location is within the board and doesn't contain a piece from their side
-            if(location.x + i < 8 && location.x + i > 0 && location.y + 1 < 8 && location.y + 1> 0 &&
+            if(location.x + i < 8 && location.x + i >= 0 && location.y + 1 < 8 &&
                     board.board[location.x + i][location.y + 1].side != side)
             {
                 //Checks if the location isn't blank
@@ -315,7 +315,7 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
             }
 
             // Checks if the location is within the board and doesn't contain a piece from their side
-            if(location.x + i < 8 && location.x + i > 0 && location.y - 1 < 8 && location.y - 1 > 0 &&
+            if(location.x + i < 8 && location.x + i >= 0 && location.y - 1 >= 0 &&
                     board.board[location.x + i][location.y - 1].side != side)
             {
                 //Checks if the location isn't blank
@@ -328,7 +328,7 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
                 else
                     movement.push_back(toCoord(location.x + i, location.y - 1));
             }
-            if(location.x + 1 < 8 && location.x + 1 > 0 && location.y + i < 8 && location.y + i > 0 &&
+            if(location.x + 1 < 8 && location.y + i < 8 && location.y + i >= 0 &&
                     board.board[location.x + 1][location.y + i].side != side)
             {
                 //Checks if the location isn't blank
@@ -341,7 +341,7 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
                 else
                     movement.push_back(toCoord(location.x + 1, location.y + i));
             }
-            if(location.x - 1 < 8 && location.x - 1 > 0 && location.y + i < 8 && location.y + i > 0 &&
+            if(location.x - 1 >= 0 && location.y + i < 8 && location.y + i >= 0 &&
                     board.board[location.x - 1][location.y + i].side != side)
             {
                 //Checks if the location isn't blank
@@ -520,18 +520,22 @@ void calcBoard(bitboard &write, pieceBoard b, colour side)
             // If the piece is the right side
             if(b.board[x][y].side == side)
             {
-                /*
+
                 // Add all of the possible takes to the board
                 for (int z=0; z<int(b.board[x][y].attack_option.attack_coord.size()); z++)
                 {
                     coord temp = b.board[x][y].attack_option.attack_coord[z];
                     write.board[temp.x][temp.y]++;
                 }
-                */
+
                 // Add all of the possible movements to the board
                 for (int z=0; z<int(b.board[x][y].movement.size()); z++)
                 {
                     coord temp = b.board[x][y].movement[z];
+                    if(b.board[x][y].movement[z].x==5 && b.board[x][y].movement[z].y==2)
+                    {
+                        cout<<x<<endl;
+                    }
                     write.board[temp.x][temp.y]++;
                 }
             }
@@ -540,7 +544,7 @@ void calcBoard(bitboard &write, pieceBoard b, colour side)
 
 void resetBoard (pieceBoard &b)
 {
-    for (int i=0;i<8;i++)
+    for (int i=0; i<8; i++)
     {
         // Set up white pawns
         Piece whitePawn(toCoord(i, 1), pawn, white);
@@ -548,7 +552,7 @@ void resetBoard (pieceBoard &b)
 
         // Set up black pawns
         Piece blackPawn(toCoord(i, 6), pawn, black);
-        b.board[i][6]=whitePawn;
+        b.board[i][6]=blackPawn;
     }
     // Create white rooks
     Piece whiteRook(toCoord(0, 0), rook, white);
@@ -559,8 +563,8 @@ void resetBoard (pieceBoard &b)
     b.board[7][0]=whiteRook2;
 
     // Create black rooks
-    Piece blackRook(toCoord(0, 7), rook, white);
-    Piece blackRook2(toCoord(7, 7), rook, white);
+    Piece blackRook(toCoord(0, 7), rook, black);
+    Piece blackRook2(toCoord(7, 7), rook, black);
 
     // Place black rooks on board
     b.board[0][7]=blackRook;
