@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include "bitboards.h"
+#include "movegen.h"
 
 using namespace std;
 
@@ -22,7 +23,7 @@ int main()
     // Set the board to the default starting position
     resetBoard(b);
 
-    // Calculate the squares that white is attacking
+    calcMoves(b, attackBlack, white);
     calcBoard(attackWhite, b, white);
 
     // Output all of the squares that white is attacking

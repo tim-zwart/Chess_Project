@@ -58,6 +58,9 @@ Piece::Piece(coord l, chess_piece p, colour s)
 
 void Piece::moves(pieceBoard board, bitboard attackBoard)
 {
+    movement.clear();
+    attack_option.attack_coord.clear();
+    attack_option.which_piece.clear();
     // The 4 diagonal directions for pieces
     bool tr=true; // Top right
     bool tl=true; // Top left
@@ -517,13 +520,14 @@ void calcBoard(bitboard &write, pieceBoard b, colour side)
             // If the piece is the right side
             if(b.board[x][y].side == side)
             {
+                /*
                 // Add all of the possible takes to the board
                 for (int z=0; z<int(b.board[x][y].attack_option.attack_coord.size()); z++)
                 {
                     coord temp = b.board[x][y].attack_option.attack_coord[z];
                     write.board[temp.x][temp.y]++;
                 }
-
+                */
                 // Add all of the possible movements to the board
                 for (int z=0; z<int(b.board[x][y].movement.size()); z++)
                 {
