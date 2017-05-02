@@ -37,7 +37,7 @@ int main()
     outputBitboard(attackWhite);
 
     cout << endl << endl;
-    b.board[0][1].testing();
+    b.board[1][0].testing();
 
     return 0;
 }
