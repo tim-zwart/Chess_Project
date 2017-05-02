@@ -35,8 +35,6 @@ struct pieceBoard;
 class Piece
 {
 private:
-    coord location;
-    chess_piece what_piece;
     int dir;
     bool castle;
     bool enpassant;
@@ -50,6 +48,8 @@ public:
     // Saves what pieces it can attack
     attacked attack_option;
     colour side;
+    chess_piece what_piece;
+    coord location;
 
     //testing functions
     void testing();
