@@ -26,6 +26,8 @@ int main()
     calcMoves(b, attackBlack, white);
     calcBoard(attackWhite, b, white);
 
+    calcBoard(attackBlack, b, black);
+
     // Output all of the squares that white is attacking
     outputBitboard(attackBlack);
 
@@ -33,6 +35,9 @@ int main()
 
     // Output all of the squares that black is attacking
     outputBitboard(attackWhite);
+
+    cout << endl << endl;
+    b.board[0][1].testing();
 
     return 0;
 }
