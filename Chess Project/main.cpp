@@ -12,32 +12,29 @@ using namespace std;
 
 int main()
 {
-    pieceBoard b;
-
-    // Bitboard for the squares that white is attacking
-    bitboard attackWhite;
-
-    // Bitboard for the squares that black is attacking
-    bitboard attackBlack;
+    Board b;
 
     // Set the board to the default starting position
-    resetBoard(b);
+    b.reset();
 
-    calcMoves(b, attackBlack, white);
-    calcBoard(attackWhite, b, white);
+    b.calcMoves(white);
+    b.calcBoard(white);
 
-    calcBoard(attackBlack, b, black);
+    b.calcMoves(black);
+    b.calcBoard(black);
 
     // Output all of the squares that white is attacking
-    outputBitboard(attackBlack);
+    b.outputBoard(black);
 
     cout << endl << endl;
 
     // Output all of the squares that black is attacking
-    outputBitboard(attackWhite);
+    b.outputBoard(white);
 
     cout << endl << endl;
-    b.board[1][0].testing();
+
+    // Output board
+    cout << b << endl;
 
     return 0;
 }

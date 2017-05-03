@@ -5,7 +5,7 @@
 
 typedef vector<attacked> avec;
 /*
-generate_move(pieceBoard Board, colour which_colour)
+generate_move(Board Board, colour which_colour)
 {
 
     avec attack_loc[8][8];
@@ -13,9 +13,9 @@ generate_move(pieceBoard Board, colour which_colour)
     {
         for(int j = 0; j < 8; j++)
         {
-            if(pieceBoard.board[i][j].attack_option.attack_coord.size() != 0)
+            if(Board.board[i][j].attack_option.attack_coord.size() != 0)
             {
-                for(int t = 0; t < pieceBoard.board[i][j].attack_option.attack_coord.size(); t++)
+                for(int t = 0; t < Board.board[i][j].attack_option.attack_coord.size(); t++)
                     attack_loc[i][j].attack_option.attack_coord;
             }
 
@@ -24,15 +24,19 @@ generate_move(pieceBoard Board, colour which_colour)
 
 }
 */
-void calcMoves(pieceBoard &board, bitboard attackBoard, colour side)
+void Board::calcMoves(colour side)
 {
-    vector <int> moves;
-    for (int i=0;i<8;i++)
+    for (int i=0; i<8; i++)
     {
-        for (int j=0;j<8;j++)
+        for (int j=0; j<8; j++)
         {
-            if(board.board[i][j].side==side)
-                board.board[i][j].moves(board, attackBoard);
+            if(board[i][j].side==side)
+            {
+                if(side==white)
+                    board[i][j].moves(*this);
+                else
+                    board[i][j].moves(*this);
+            }
         }
     }
 }
