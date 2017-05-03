@@ -47,8 +47,6 @@ public:
     /**< Moving Functions */
     // Find possible moves
     void moves(pieceBoard board, bitboard attackBoard);
-    // Saves the movement
-    int move_piece(color side, pieceBoard &main_board, coord start, coord endLoc);
 
     /**< Saved Values */
     vector <coord> movement;

@@ -36,8 +36,5 @@ int main()
     // Output all of the squares that black is attacking
     outputBitboard(attackWhite);
 
-    cout << endl << endl;
-    b.board[1][0].testing();
-
     return 0;
 }

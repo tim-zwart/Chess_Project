@@ -625,21 +625,6 @@ void resetBoard (pieceBoard &b)
     b.board[3][7]=blackQueen;
 }
 
-// Function that moves a piece given the color, start, and end location
-// Returns a -1 if it is an invalid move
-// Returns a 0 if it is only movement
-// Returns a 1-6 if it captures a piece with the piece corresponding to the number
-int Piece::move_piece(color side, pieceBoard &main_board, coord start, coord endLoc)
-{
-    int piece;
-    piece buffer;
-    buffer = main_board.board[start.x][start.y];
-    main_board.board[start.x][start.y].clear();
-    piece = (int)main_board.board[endLoc.x][endLoc.y].what_piece;
-    main_board.board[endLoc.x][endLoc.y] = buffer;
-    return piece;
-}
-
 void Piece::piece_clear()
 {
     movement.clear();
