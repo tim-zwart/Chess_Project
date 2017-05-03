@@ -12,14 +12,17 @@ using namespace std;
 
 int main()
 {
+    // Declare chessboard
     Board b;
 
     // Set the board to the default starting position
     b.reset();
 
+    // Calculate moves for white and group onto a board
     b.calcMoves(white);
     b.calcBoard(white);
 
+    // Calculate moves for black and group onto a board
     b.calcMoves(black);
     b.calcBoard(black);
 

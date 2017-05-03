@@ -26,10 +26,12 @@ generate_move(Board Board, colour which_colour)
 */
 void Board::calcMoves(colour side)
 {
+    // Check all squares
     for (int i=0; i<8; i++)
     {
         for (int j=0; j<8; j++)
         {
+            // If the piece is the right colour, calculate moves for piece
             if(board[i][j].side==side)
             {
                 if(side==white)
