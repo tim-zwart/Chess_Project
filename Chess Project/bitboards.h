@@ -20,20 +20,13 @@ struct attacked
     vector <chess_piece> which_piece;
 };
 
-// 8x8 board of integers
-struct bitboard
-{
-    int board[8][8];
-};
-
-void outputBitboard(bitboard board);
-
 coord toCoord(int x, int y);
 
-struct pieceBoard;
+class Board;
 
 class Piece
 {
+    friend class Board;
 private:
     int dir;
     bool castle;
@@ -46,9 +39,14 @@ public:
 
     /**< Moving Functions */
     // Find possible moves
+<<<<<<< HEAD
     void moves(pieceBoard board, bitboard attackBoard);
 
     /**< Saved Values */
+=======
+    void moves(Board &board);
+    // Saves the movement
+>>>>>>> refs/remotes/origin/master
     vector <coord> movement;
     // Saves what pieces it can attack
     attacked attack_option;
@@ -62,23 +60,36 @@ public:
     /**< Testing Functions */
     void testing();
     void convert(coord position);
+<<<<<<< HEAD
     pieceBoard reset();
     void piece_clear();
+=======
+    Board reset();
+>>>>>>> refs/remotes/origin/master
 };
 
 // 8x8 board of pieces
-struct pieceBoard
+class Board
 {
+    friend ostream & operator<<(ostream & stream, Board b);
+    friend class Piece;
+private:
     Piece board[8][8];
-    Piece *movedDouble;
+    int whiteControl[8][8];
+    int blackControl[8][8];
+
+public:
+    void outputBoard(colour side);
+    void reset();
+
+
+    void outputBitboard();
+    void calcBoard(colour side);
+    void generate_move();
+    void calcMoves(colour side);
 };
 
-void resetBoard (pieceBoard &b);
-void calcBoard(bitboard &write, pieceBoard b, colour side);
-
-// Add and subtract bitboards
-bitboard operator +(bitboard first, bitboard second);
-bitboard operator -(bitboard first, bitboard second);
+ostream & operator<<(ostream & stream, Board b);
 
 //void reset(pieces * piece);
 
