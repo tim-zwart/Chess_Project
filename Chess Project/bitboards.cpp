@@ -2,26 +2,44 @@
 
 #include "bitboards.h"
 
-bitboard operator +(bitboard first, bitboard second)
+ostream & operator<<(ostream & stream, Board b)
 {
-    // Add boards
-    for (int i=0; i<8; i++)
+    for (int i=7; i>=0; i--)
     {
         for (int j=0; j<8; j++)
-            first.board[i][j]+=second.board[i][j];
+        {
+            char c;
+            switch(b.board[j][i].what_piece)
+            {
+            case king:
+                c='K';
+                break;
+            case queen:
+                c='Q';
+                break;
+            case bishop:
+                c='B';
+                break;
+            case knight:
+                c='N';
+                break;
+            case rook:
+                c='R';
+                break;
+            case pawn:
+                c='P';
+                break;
+            default:
+                c='*';
+                break;
+            }
+            if(b.board[j][i].side==black)
+                c += 32;
+            stream << c << " ";
+        }
+        stream << endl;
     }
-    return first;
-}
-
-bitboard operator -(bitboard first, bitboard second)
-{
-    // Subtract boards
-    for (int i=0; i<8; i++)
-    {
-        for (int j=0; j<8; j++)
-            first.board[i][j]-=second.board[i][j];
-    }
-    return first;
+    return stream;
 }
 
 coord toCoord(int x, int y)
@@ -56,8 +74,17 @@ Piece::Piece(coord l, chess_piece p, colour s)
     enpassant=false;
 }
 
-void Piece::moves(pieceBoard board, bitboard attackBoard)
+void Piece::moves(Board &board)
 {
+    int *b[8];
+    if(side==white)
+    {
+        for (int i=0; i<8; i++)
+            b[i]=(int*)board.whiteControl[i];
+    }
+    else if(side==black)
+        for (int i=0; i<8; i++)
+            b[i]=(int*)board.blackControl[i];
     movement.clear();
     attack_option.attack_coord.clear();
     attack_option.which_piece.clear();
@@ -206,7 +233,7 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
             if(board.board[7][y].castle && board.board[6][y].side == none && board.board[5][y].side == none)
             {
                 // Make sure that the king is not castling out of or through check
-                if(attackBoard.board[4][y]==0 && attackBoard.board[5][y]==0)
+                if(b[4][y]==0 && b[5][y]==0)
                     movement.push_back(toCoord(6, y));
             }
 
@@ -215,7 +242,7 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
             if(board.board[0][y].castle && board.board[1][y].side == none && board.board[2][y].side == none && board.board[3][y].side == none)
             {
                 // Make sure that the king is not castling out of or through check
-                if(attackBoard.board[4][y]==0 && attackBoard.board[3][y]==0 && attackBoard.board[2][y]==0)
+                if(b[4][y]==0 && b[3][y]==0 && b[2][y]==0)
                     movement.push_back(toCoord(2, y));
             }
         }
@@ -224,11 +251,11 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
     case queen:
         // Move as if the queen was a bishop
         what_piece=bishop;
-        this->moves(board, attackBoard);
+        this->moves(board);
 
         // Move as if the queen was a rook
         what_piece=rook;
-        this->moves(board, attackBoard);
+        this->moves(board);
 
         // Change piece back to a queen
         what_piece=queen;
@@ -425,7 +452,7 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
         }
 
         // Take to the right
-        if(board.board[location.x+1][location.y+dir].what_piece!=blank)
+        if(location.x<7 && board.board[location.x+1][location.y+dir].what_piece!=blank)
         {
             if(board.board[location.x+1][location.y+dir].side!=side)
             {
@@ -440,7 +467,7 @@ void Piece::moves(pieceBoard board, bitboard attackBoard)
             attack_option.which_piece.push_back(board.board[location.x + 1][location.y].what_piece);
         }
         // Take to the left
-        if(board.board[location.x-1][location.y+dir].what_piece!=blank && board.board[location.x-1][location.y+dir].side!=side)
+        if(location.x>0 && board.board[location.x-1][location.y+dir].what_piece!=blank && board.board[location.x-1][location.y+dir].side!=side)
         {
             attack_option.attack_coord.push_back(toCoord(location.x-1, location.y+dir));
             attack_option.which_piece.push_back(board.board[location.x - 1][location.y + dir].what_piece);
@@ -495,126 +522,153 @@ void Piece::testing()
     cout<<endl;
 }
 
-void outputBitboard(bitboard board)
+void Board::outputBoard(colour side)
 {
+    int *b[8];
+    if(side==white)
+    {
+        for (int i=0; i<8; i++)
+            b[i]=(int*)this->whiteControl[i];
+    }
+    else if(side==black)
+        for (int i=0; i<8; i++)
+            b[i]=(int*)this->blackControl[i];
     for (int i=7; i>=0; i--)
     {
         for (int j=0; j<8; j++)
-            cout << board.board[j][i] << " ";
+            cout << b[j][i] << " ";
         cout << endl;
     }
 }
 
 // Add up the squares that are being attacked
-void calcBoard(bitboard &write, pieceBoard b, colour side)
+void Board::calcBoard(colour side)
 {
+    int *b[8];
+    //int (*p)[3] = &(a[0]);
+    //int (*b)[8];
+    //int (*b)[8];
+    if(side==white)
+    {
+        for (int i=0; i<8; i++)
+            b[i]=(int*)this->whiteControl[i];
+    }
+    else if(side==black)
+        for (int i=0; i<8; i++)
+            b[i]=(int*)this->blackControl[i];
     // Set everything to 0
     for (int i=0; i<8; i++)
         for (int j=0; j<8; j++)
-            write.board[i][j] = 0;
+            b[i][j] = 0;
 
     // Add all of the things
     for (int x=0; x<8; x++)
         for (int y=0; y<8; y++)
         {
             // If the piece is the right side
-            if(b.board[x][y].side == side)
+            if(board[x][y].side == side)
             {
 
                 // Add all of the possible takes to the board
-                for (int z=0; z<int(b.board[x][y].attack_option.attack_coord.size()); z++)
+                for (int z=0; z<int(board[x][y].attack_option.attack_coord.size()); z++)
                 {
-                    coord temp = b.board[x][y].attack_option.attack_coord[z];
-                    write.board[temp.x][temp.y]++;
+                    coord temp = board[x][y].attack_option.attack_coord[z];
+                    b[temp.x][temp.y]++;
+                    if(board[x][y].movement[z].x==7 && board[x][y].movement[z].y==5)
+                    {
+                        cout<<board[x][y].location.x << " " << board[x][y].location.y<<endl;
+                        cout<<board[x][y].what_piece<<endl;
+                        cout<<board[x][y].side<<endl;
+                        cout<<side<<endl;
+                        cout << board[x][y].attack_option.which_piece[z] << endl;
+                    }
                 }
 
                 // Add all of the possible movements to the board
-                for (int z=0; z<int(b.board[x][y].movement.size()); z++)
+                for (int z=0; z<int(board[x][y].movement.size()); z++)
                 {
-                    coord temp = b.board[x][y].movement[z];
-                    if(b.board[x][y].movement[z].x==5 && b.board[x][y].movement[z].y==2)
-                    {
-                        cout<<x<<endl;
-                    }
-                    write.board[temp.x][temp.y]++;
+                    coord temp = board[x][y].movement[z];
+                    b[temp.x][temp.y]++;
                 }
             }
         }
 }
 
-void resetBoard (pieceBoard &b)
+void Board::reset()
 {
     for (int i=0; i<8; i++)
     {
         // Set up white pawns
         Piece whitePawn(toCoord(i, 1), pawn, white);
-        b.board[i][1]=whitePawn;
+        board[i][1]=whitePawn;
 
         // Set up black pawns
         Piece blackPawn(toCoord(i, 6), pawn, black);
-        b.board[i][6]=blackPawn;
+        board[i][6]=blackPawn;
     }
     // Create white rooks
     Piece whiteRook(toCoord(0, 0), rook, white);
     Piece whiteRook2(toCoord(7, 0), rook, white);
 
     // Place white rooks on board
-    b.board[0][0]=whiteRook;
-    b.board[7][0]=whiteRook2;
+    board[0][0]=whiteRook;
+    board[7][0]=whiteRook2;
 
     // Create black rooks
     Piece blackRook(toCoord(0, 7), rook, black);
     Piece blackRook2(toCoord(7, 7), rook, black);
 
     // Place black rooks on board
-    b.board[0][7]=blackRook;
-    b.board[7][7]=blackRook2;
+    board[0][7]=blackRook;
+    board[7][7]=blackRook2;
 
     // Create white knights
     Piece whiteKnight(toCoord(1, 0), knight, white);
     Piece whiteKnight2(toCoord(6, 0), knight, white);
 
     // Place white knights on board
-    b.board[1][0]=whiteKnight;
-    b.board[6][0]=whiteKnight2;
+    board[1][0]=whiteKnight;
+    board[6][0]=whiteKnight2;
 
     // Create black knights
     Piece blackKnight(toCoord(1, 7), knight, black);
     Piece blackKnight2(toCoord(6, 7), knight, black);
 
     // Place black knights
-    b.board[1][7]=blackKnight;
-    b.board[6][7]=blackKnight2;
+    board[1][7]=blackKnight;
+    board[6][7]=blackKnight2;
 
     // Create white bishops
     Piece whiteBishop(toCoord(2, 0), bishop, white);
     Piece whiteBishop2(toCoord(5, 0), bishop, white);
 
     // Place white bishops
-    b.board[2][0]=whiteBishop;
-    b.board[5][0]=whiteBishop2;
+    board[2][0]=whiteBishop;
+    board[5][0]=whiteBishop2;
 
     // Create black bishops
     Piece blackBishop(toCoord(2, 7), bishop, black);
     Piece blackBishop2(toCoord(5, 7), bishop, black);
 
     // Place black bishops
-    b.board[2][7]=blackBishop;
-    b.board[5][7]=blackBishop2;
+    board[2][7]=blackBishop;
+    board[5][7]=blackBishop2;
 
     // Create kings
     Piece whiteKing(toCoord(4, 0), king, white);
     Piece blackKing(toCoord(4, 7), king, black);
 
     // Place kings on board
-    b.board[4][0]=whiteKing;
-    b.board[4][7]=blackKing;
+    board[4][0]=whiteKing;
+    board[4][7]=blackKing;
 
     // Create queens
     Piece whiteQueen(toCoord(3, 0), queen, white);
     Piece blackQueen(toCoord(3, 7), queen, black);
 
     // Place queens on board
-    b.board[3][0]=whiteQueen;
-    b.board[3][7]=blackQueen;
+    board[3][0]=whiteQueen;
+    board[3][7]=blackQueen;
 }
+
+
