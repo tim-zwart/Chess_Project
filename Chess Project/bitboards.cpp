@@ -2,12 +2,15 @@
 
 #include "bitboards.h"
 
+// Output Board class
 ostream & operator<<(ostream & stream, Board b)
 {
+    // Go throught the entire board
     for (int i=7; i>=0; i--)
     {
         for (int j=0; j<8; j++)
         {
+            // Convert to a representation as a character
             char c;
             switch(b.board[j][i].what_piece)
             {
@@ -33,10 +36,14 @@ ostream & operator<<(ostream & stream, Board b)
                 c='*';
                 break;
             }
+            // If the piece is black, make the representation lower case
             if(b.board[j][i].side==black)
                 c += 32;
+
+            // Output character onto space on board
             stream << c << " ";
         }
+        // New line on board
         stream << endl;
     }
     return stream;
@@ -50,24 +57,32 @@ coord toCoord(int x, int y)
     return c;
 }
 
+// Piece constructor
 Piece::Piece()
 {
+    // Set everything to false / blank
     what_piece = blank;
     side = none;
     castle=false;
     enpassant=false;
 }
 
+// Piece constructor
 Piece::Piece(coord l, chess_piece p, colour s)
 {
+    // Set everything to the input
     location = l;
     what_piece = p;
     side = s;
+
+    // Set direction depending on side
     if(s == white)
         dir = 1;
     else
         dir = -1;
-    if(p == king || p == rook)
+
+    // Chec whether pieces can castle
+    if((p == king || p == rook) && l.y==3.5-3.5*dir)
         castle=true;
     else
         castle=false;
@@ -76,6 +91,7 @@ Piece::Piece(coord l, chess_piece p, colour s)
 
 void Piece::moves(Board &board)
 {
+    // Get adress to read from depending on colour
     int *b[8];
     if(side==white)
     {
@@ -85,9 +101,12 @@ void Piece::moves(Board &board)
     else if(side==black)
         for (int i=0; i<8; i++)
             b[i]=(int*)board.blackControl[i];
+
+    // Reset vectors
     movement.clear();
     attack_option.attack_coord.clear();
     attack_option.which_piece.clear();
+
     // The 4 diagonal directions for pieces
     bool tr=true; // Top right
     bool tl=true; // Top left
@@ -491,6 +510,7 @@ void Piece::moves(Board &board)
 
 void Piece::convert(coord position)
 {
+    // Convert x and y (from 0 to 7) to chess notation
     cout<<(char)(position.x + 97);
 
     cout<<position.y + 1;
@@ -498,11 +518,14 @@ void Piece::convert(coord position)
 
 void Piece::testing()
 {
+    // Output information
     cout<<"Source: ";
     convert(location);
     cout << endl;
     cout<<"Piece:"<<what_piece<<endl;
     cout<<"Colour:"<<side<<endl;
+
+    // Output attacking squares
     cout<<"Attacking:";
     for(int i = 0; i < int(attack_option.attack_coord.size()); i++)
     {
@@ -512,8 +535,9 @@ void Piece::testing()
         cout<<" ";
     }
     cout<<endl;
-    cout<<"Movement:";
 
+    // Output movement
+    cout<<"Movement:";
     for(int i = 0; i < int(movement.size()); i++)
     {
         convert(movement[i]);
@@ -524,6 +548,7 @@ void Piece::testing()
 
 void Board::outputBoard(colour side)
 {
+    // Find location to read from
     int *b[8];
     if(side==white)
     {
@@ -533,6 +558,8 @@ void Board::outputBoard(colour side)
     else if(side==black)
         for (int i=0; i<8; i++)
             b[i]=(int*)this->blackControl[i];
+
+    // Go through board and output
     for (int i=7; i>=0; i--)
     {
         for (int j=0; j<8; j++)
@@ -544,10 +571,8 @@ void Board::outputBoard(colour side)
 // Add up the squares that are being attacked
 void Board::calcBoard(colour side)
 {
+    // Find location to write to
     int *b[8];
-    //int (*p)[3] = &(a[0]);
-    //int (*b)[8];
-    //int (*b)[8];
     if(side==white)
     {
         for (int i=0; i<8; i++)
@@ -556,12 +581,13 @@ void Board::calcBoard(colour side)
     else if(side==black)
         for (int i=0; i<8; i++)
             b[i]=(int*)this->blackControl[i];
+
     // Set everything to 0
     for (int i=0; i<8; i++)
         for (int j=0; j<8; j++)
             b[i][j] = 0;
 
-    // Add all of the things
+    // Add all of the attacks and movements
     for (int x=0; x<8; x++)
         for (int y=0; y<8; y++)
         {
@@ -569,7 +595,7 @@ void Board::calcBoard(colour side)
             if(board[x][y].side == side)
             {
 
-                // Add all of the possible takes to the board
+                // Add all of the possible captures to the board
                 for (int z=0; z<int(board[x][y].attack_option.attack_coord.size()); z++)
                 {
                     coord temp = board[x][y].attack_option.attack_coord[z];
