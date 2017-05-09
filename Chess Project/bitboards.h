@@ -50,6 +50,9 @@ public:
     // Saves the movement
     vector <coord> movement;
 
+    // Saves the squares that the piece can control
+    vector <coord> control;
+
     // Saves what pieces it can attack
     attacked attack_option;
 
