@@ -37,16 +37,9 @@ public:
     Piece(coord, chess_piece, colour);
     Piece();
 
-    /**< Moving Functions */
-    // Find possible moves
-<<<<<<< HEAD
-    void moves(pieceBoard board, bitboard attackBoard);
-
     /**< Saved Values */
-=======
     void moves(Board &board);
     // Saves the movement
->>>>>>> refs/remotes/origin/master
     vector <coord> movement;
     // Saves what pieces it can attack
     attacked attack_option;
@@ -60,12 +53,8 @@ public:
     /**< Testing Functions */
     void testing();
     void convert(coord position);
-<<<<<<< HEAD
-    pieceBoard reset();
     void piece_clear();
-=======
-    Board reset();
->>>>>>> refs/remotes/origin/master
+
 };
 
 // 8x8 board of pieces
@@ -82,7 +71,7 @@ public:
     void outputBoard(colour side);
     void reset();
 
-
+    void do_move(coord start_loc, coord end_loc);
     void outputBitboard();
     void calcBoard(colour side);
     void generate_move();

@@ -2,6 +2,7 @@
 
 #include "bitboards.h"
 
+// Outputs the entire board with pieces represented with upper and lower case letter.
 ostream & operator<<(ostream & stream, Board b)
 {
     for (int i=7; i>=0; i--)
@@ -42,6 +43,7 @@ ostream & operator<<(ostream & stream, Board b)
     return stream;
 }
 
+// Changes a given x and y integer to a coord struct.
 coord toCoord(int x, int y)
 {
     coord c;
@@ -50,6 +52,7 @@ coord toCoord(int x, int y)
     return c;
 }
 
+// Piece constructor
 Piece::Piece()
 {
     what_piece = blank;
@@ -58,6 +61,7 @@ Piece::Piece()
     enpassant=false;
 }
 
+// Piece constructor with given values
 Piece::Piece(coord l, chess_piece p, colour s)
 {
     location = l;
@@ -74,6 +78,7 @@ Piece::Piece(coord l, chess_piece p, colour s)
     enpassant=false;
 }
 
+//
 void Piece::moves(Board &board)
 {
     int *b[8];
@@ -677,7 +682,6 @@ void Board::reset()
     board[3][7]=blackQueen;
 }
 
-<<<<<<< HEAD
 void Piece::piece_clear()
 {
     movement.clear();
@@ -686,6 +690,3 @@ void Piece::piece_clear()
     side = none;
     what_piece = blank;
 }
-=======
-
->>>>>>> refs/remotes/origin/master

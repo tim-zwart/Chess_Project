@@ -31,13 +31,9 @@ int main()
     // Output all of the squares that black is attacking
     b.outputBoard(white);
 
-<<<<<<< HEAD
-=======
     cout << endl << endl;
 
     // Output board
     cout << b << endl;
-
->>>>>>> refs/remotes/origin/master
     return 0;
 }
