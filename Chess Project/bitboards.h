@@ -40,20 +40,11 @@ private:
     // Can en passant be used on the piece
     bool enpassant;
 public:
-<<<<<<< HEAD
-
-    //constructor
-    Piece(coord, chess_piece, colour);
-    Piece();
-
-    /**< Saved Values */
-=======
     // Constructors
     Piece(coord, chess_piece, colour);
     Piece();
 
     // Find possible moves
->>>>>>> refs/remotes/origin/master
     void moves(Board &board);
 
     // Saves the movement
@@ -64,7 +55,6 @@ public:
 
     // Saves what pieces it can attack
     attacked attack_option;
-<<<<<<< HEAD
     // Saves pieces side black, white, or none
     colour side;
     // Saves what piece it is
@@ -77,21 +67,6 @@ public:
     void convert(coord position);
     void piece_clear();
 
-=======
-
-    // Whic colour the piece is
-    colour side;
-
-    // What type of piece it is
-    chess_piece what_piece;
-
-    // The location of the piece
-    coord location;
-
-    // Testing functions
-    void testing();
-    void convert(coord position);
->>>>>>> refs/remotes/origin/master
 };
 
 // 8x8 board of pieces
@@ -113,15 +88,10 @@ public:
     // Output control board
     void outputBoard(colour side);
 
-<<<<<<< HEAD
     void do_move(coord start_loc, coord end_loc);
     void outputBitboard();
-=======
-    // Reset the board to the starting configuration
-    void reset();
 
     // Calculate control board
->>>>>>> refs/remotes/origin/master
     void calcBoard(colour side);
 
     //
@@ -129,6 +99,7 @@ public:
 
     // Calculate all possible moves from a position
     void calcMoves(colour side);
+    void reset();
 };
 
 // Output board
