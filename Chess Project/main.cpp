@@ -38,6 +38,5 @@ int main()
 
     // Output board
     cout << b << endl;
-
     return 0;
 }
