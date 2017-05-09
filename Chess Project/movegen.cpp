@@ -8,10 +8,24 @@ typedef vector<coord> cvec;
 
 void Board::calcMoves(colour side)
 {
+    // Check all squares
     for (int i=0; i<8; i++)
     {
         for (int j=0; j<8; j++)
+<<<<<<< HEAD
             board[i][j].moves(*this);
+=======
+        {
+            // If the piece is the right colour, calculate moves for piece
+            if(board[i][j].side==side)
+            {
+                if(side==white)
+                    board[i][j].moves(*this);
+                else
+                    board[i][j].moves(*this);
+            }
+        }
+>>>>>>> refs/remotes/origin/master
     }
 }
 
