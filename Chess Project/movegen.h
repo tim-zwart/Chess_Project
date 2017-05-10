@@ -5,5 +5,4 @@
 #include "bitboards.h"
 
 
-
 #endif // MOVEGEN_H_INCLUDED

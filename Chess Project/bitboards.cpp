@@ -49,7 +49,6 @@ ostream & operator<<(ostream & stream, Board b)
     return stream;
 }
 
-// Changes a given x and y integer to a coord struct.
 coord toCoord(int x, int y)
 {
     coord c;
@@ -90,7 +89,6 @@ Piece::Piece(coord l, chess_piece p, colour s)
     enpassant=false;
 }
 
-//
 void Piece::moves(Board &board)
 {
     // Get adress to read from depending on colour
@@ -128,8 +126,23 @@ void Piece::moves(Board &board)
     switch(what_piece)
     {
     case king:
-        // Go throuch as if the king was a bishop and a rook but only going one move deep
+        // Go through as if the king was a bishop and a rook but only going one square
         distance = 2;
+
+        if(castle)
+        {
+            int y = 3.5-3.5*dir;
+
+            // Queenside castle
+            if(board.board[0][y].castle && b[1][y] + b[2][y] + b[3][y] + b[4][y]==0 && board.board[1][y].what_piece==none
+                && board.board[2][y].what_piece==none && board.board[3][y].what_piece==none)
+                movement.push_back(toCoord(2, dir));
+
+            // Kingside castle
+            if(board.board[7][y].castle && b[6][y] + b[5][y] + b[4][y]==0 && board.board[6][y].what_piece==none
+                && board.board[5][y].what_piece==none)
+                movement.push_back(toCoord(6, dir));
+        }
 
     case queen:
     // Go through as if the queen was a bishop and a rook
@@ -215,76 +228,8 @@ void Piece::moves(Board &board)
             if(!tr && !tl && !br && !bl)
                 break;
         }
-        break;
-
-    case knight:
-
-        // Knight Movement for tr, tl, dr, dl
-        for(int i = -2; i <= 2; i += 4)
-        {
-            // Knight movement for two squares to the left and right, and one square up
-            // Checks if the location is within the board and doesn't contain a piece from their side
-            if(location.x + i < 8 && location.x + i >= 0 && location.y + 1 < 8 &&
-                    board.board[location.x + i][location.y + 1].side != side)
-            {
-                //Checks if the location isn't blank
-                if(board.board[location.x + i][location.y + 1].what_piece != blank)
-                {
-                    attack_option.attack_coord.push_back(toCoord(location.x + i, location.y + 1));
-                    attack_option.which_piece.push_back(board.board[location.x + i][location.y + 1].what_piece);
-                }
-                // If there isn't a piece adds it to movement
-                else
-                    movement.push_back(toCoord(location.x + i, location.y + 1));
-            }
-
-            // Knight movement for two squares to the left and right, and one square down
-            // Checks if the location is within the board and doesn't contain a piece from their side
-            if(location.x + i < 8 && location.x + i >= 0 && location.y - 1 >= 0 &&
-                    board.board[location.x + i][location.y - 1].side != side)
-            {
-                //Checks if the location isn't blank
-                if(board.board[location.x + i][location.y - 1].what_piece != blank)
-                {
-                    attack_option.attack_coord.push_back(toCoord(location.x + i, location.y - 1));
-                    attack_option.which_piece.push_back(board.board[location.x + i][location.y - 1].what_piece);
-                }
-                // If there isn't a piece adds it to movement
-                else
-                    movement.push_back(toCoord(location.x + i, location.y - 1));
-            }
-            // Knight movement for two squares up and down, and one square to the right
-            // Checks if the location is within the board and doesn't contain a piece from their side
-            if(location.x + 1 < 8 && location.y + i < 8 && location.y + i >= 0 &&
-                    board.board[location.x + 1][location.y + i].side != side)
-            {
-                //Checks if the location isn't blank
-                if(board.board[location.x + 1][location.y + i].what_piece != blank)
-                {
-                    attack_option.attack_coord.push_back(toCoord(location.x + 1, location.y + i));
-                    attack_option.which_piece.push_back(board.board[location.x + 1][location.y + i].what_piece);
-                }
-                // If there isn't a piece adds it to movement
-                else
-                    movement.push_back(toCoord(location.x + 1, location.y + i));
-            }
-            // Knight movement for two squares up and down, and one square to the left
-            // Checks if the location is within the board and doesn't contain a piece nfrom their side
-            if(location.x - 1 >= 0 && location.y + i < 8 && location.y + i >= 0 &&
-                    board.board[location.x - 1][location.y + i].side != side)
-            {
-                //Checks if the location isn't blank
-                if(board.board[location.x - 1][location.y + i].what_piece != blank)
-                {
-                    attack_option.attack_coord.push_back(toCoord(location.x - 1, location.y + i));
-                    attack_option.which_piece.push_back(board.board[location.x - 1][location.y + i].what_piece);
-                }
-                // If there isn't a piece adds it to movement
-                else
-                    movement.push_back(toCoord(location.x - 1, location.y + i));
-            }
-        }
-        break;
+        if(what_piece==bishop)
+            break;
 
     case rook:
         for(int i=1; i<distance; i++)
@@ -345,6 +290,81 @@ void Piece::moves(Board &board)
             }
             else if (l)
                 movement.push_back(toCoord(location.x-i, location.y));
+        }
+        break;
+
+    case knight:
+
+        // Knight Movement for tr, tl, dr, dl
+        for(int i = -2; i <= 2; i += 4)
+        {
+            // Checks if the location is within the board and doesn't contain a piece from their side
+            if(location.x + i < 8 && location.x + i >= 0 && location.y + 1 < 8)
+            {
+                control.push_back(toCoord(location.x + i, location.y + 1));
+                if(board.board[location.x + i][location.y + 1].side != side)
+                {
+                    //Checks if the location isn't blank
+                    if(board.board[location.x + i][location.y + 1].what_piece != blank)
+                    {
+                        attack_option.attack_coord.push_back(toCoord(location.x + i, location.y + 1));
+                        attack_option.which_piece.push_back(board.board[location.x + i][location.y + 1].what_piece);
+                    }
+                    // If there isn't a piece adds it to movement
+                    else
+                        movement.push_back(toCoord(location.x + i, location.y + 1));
+                }
+            }
+
+            // Checks if the location is within the board and doesn't contain a piece from their side
+            if(location.x + i < 8 && location.x + i >= 0 && location.y - 1 >= 0)
+            {
+                control.push_back(toCoord(location.x + i, location.y - 1));
+                if(board.board[location.x + i][location.y - 1].side != side)
+                {
+                    //Checks if the location isn't blank
+                    if(board.board[location.x + i][location.y - 1].what_piece != blank)
+                    {
+                        attack_option.attack_coord.push_back(toCoord(location.x + i, location.y - 1));
+                        attack_option.which_piece.push_back(board.board[location.x + i][location.y - 1].what_piece);
+                    }
+                    // If there isn't a piece adds it to movement
+                    else
+                        movement.push_back(toCoord(location.x + i, location.y - 1));
+                }
+            }
+            if(location.x + 1 < 8 && location.y + i < 8 && location.y + i >= 0)
+            {
+                control.push_back(toCoord(location.x + 1, location.y + i));
+                if(board.board[location.x + 1][location.y + i].side != side)
+                {
+                    //Checks if the location isn't blank
+                    if(board.board[location.x + 1][location.y + i].what_piece != blank)
+                    {
+                        attack_option.attack_coord.push_back(toCoord(location.x + 1, location.y + i));
+                        attack_option.which_piece.push_back(board.board[location.x + 1][location.y + i].what_piece);
+                    }
+                    // If there isn't a piece adds it to movement
+                    else
+                        movement.push_back(toCoord(location.x + 1, location.y + i));
+                }
+            }
+            if(location.x - 1 >= 0 && location.y + i < 8 && location.y + i >= 0)
+            {
+                control.push_back(toCoord(location.x - 1, location.y + i));
+                if(board.board[location.x - 1][location.y + i].side != side)
+                {
+                    //Checks if the location isn't blank
+                    if(board.board[location.x - 1][location.y + i].what_piece != blank)
+                    {
+                        attack_option.attack_coord.push_back(toCoord(location.x - 1, location.y + i));
+                        attack_option.which_piece.push_back(board.board[location.x - 1][location.y + i].what_piece);
+                    }
+                    // If there isn't a piece adds it to movement
+                    else
+                        movement.push_back(toCoord(location.x - 1, location.y + i));
+                }
+            }
         }
         break;
 
@@ -584,11 +604,4 @@ void Board::reset()
     board[3][7]=blackQueen;
 }
 
-void Piece::piece_clear()
-{
-    movement.clear();
-    attack_option.attack_coord.clear();
-    attack_option.which_piece.clear();
-    side = none;
-    what_piece = blank;
-}
+
