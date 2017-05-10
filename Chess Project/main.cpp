@@ -26,15 +26,17 @@ int main()
     // Output all of the squares that white is attacking
     b.outputBoard(black);
 
-    cout << endl << endl;
-
     // Output all of the squares that black is attacking
     b.outputBoard(white);
 
-    cout << endl << endl;
+    b.generate_move(white);
+    b.generate_move(black);
 
     // Output board
     cout << b << endl;
+
+    cout<<"White Attacking "<<b.white_attack;
+    cout<<"Black Attacking "<<b.black_attack;
 
     return 0;
 }

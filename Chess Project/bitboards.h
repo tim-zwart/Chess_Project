@@ -67,7 +67,7 @@ public:
 
     // Testing functions
     void testing();
-    void convert(coord position);
+    void piece_clear();
 };
 
 // 8x8 board of pieces
@@ -86,6 +86,9 @@ private:
     int blackControl[8][8];
 
 public:
+    //List of Coord that are being attacked
+    vector <coord> white_attack;
+    vector <coord> black_attack;
     // Initialize the board
     Board();
 
@@ -99,16 +102,20 @@ public:
     void calcBoard(colour side);
 
     //
-    void generate_move();
+    void generate_move(colour side);
 
     // Calculate all possible moves from a position
     void calcMoves(colour side);
 
+    void do_move(coord start_loc, coord end_loc);
     // Test a piece on the board
     void testing(int x, int y);
 };
 
+void convert(coord position);
+
 // Output board
 ostream & operator<<(ostream & stream, Board b);
+ostream & operator<<(ostream & stream, vector<coord>);
 
 #endif // BITBOARDS_H_INCLUDED
