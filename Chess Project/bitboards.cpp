@@ -404,7 +404,7 @@ void Piece::moves(Board &board)
     return;
 }
 
-void Piece::convert(coord position)
+void convert(coord position)
 {
     // Convert x and y (from 0 to 7) to chess notation
     cout<<(char)(position.x + 97);
@@ -591,4 +591,27 @@ void Piece::piece_clear()
     attack_option.which_piece.clear();
     side = none;
     what_piece = blank;
+}
+
+void Board::generate_move(colour side)
+{
+    vector <coord> move_option;
+    Piece buff_board[8][8];
+
+    for(int i = 0; i < 8; i++)
+    {
+        for(int j = 0; j < 8; j++)
+        {
+            buff_board[i][j] = board[i][j];
+            if(board[i][j].side == side)
+            {
+                for(int t = 0; t < board[i][j].movement.size(); t++)
+                    move_option.push_back(board[i][j].movement[t]);
+            }
+        }
+    }
+    if(side == black)
+        black_attack = move_option;
+    if(side == white)
+        white_attack = move_option;
 }

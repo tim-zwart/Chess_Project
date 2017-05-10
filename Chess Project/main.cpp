@@ -34,6 +34,14 @@ int main()
     // Output all of the squares that black is attacking
     b.outputBoard(white);
 
+    b.generate_move(white);
+
+    for(int i = 0; i < b.white_attack.size(); i++)
+    {
+        convert(b.white_attack[i]);
+        cout<<" ";
+    }
+
     cout << endl << endl;
 
     // Output board

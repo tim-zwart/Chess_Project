@@ -64,7 +64,6 @@ public:
 
     /**< Testing Functions */
     void testing();
-    void convert(coord position);
     void piece_clear();
 
 };
@@ -85,6 +84,11 @@ private:
     int blackControl[8][8];
 
 public:
+
+    //List of Coord that are being attacked
+    vector <coord> white_attack;
+    vector <coord> black_attack;
+
     // Output control board
     void outputBoard(colour side);
 
@@ -95,12 +99,14 @@ public:
     void calcBoard(colour side);
 
     //
-    void generate_move();
+    void generate_move(colour side);
 
     // Calculate all possible moves from a position
     void calcMoves(colour side);
     void reset();
 };
+
+void convert(coord position);
 
 // Output board
 ostream & operator<<(ostream & stream, Board b);
