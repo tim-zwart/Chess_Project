@@ -2,31 +2,43 @@
 1494336131 source:c:\users\tim\documents\github\chess_project\chess project\bitboards.cpp
 	"bitboards.h"
 
-1493908097 c:\users\tim\documents\github\chess_project\chess project\bitboards.h
+1494362793 c:\users\tim\documents\github\chess_project\chess project\bitboards.h
 	"libraries.h"
 
 1493388064 c:\users\tim\documents\github\chess_project\chess project\libraries.h
 	<iostream>
 	<vector>
 
-1493821367 source:c:\users\tim\documents\github\chess_project\chess project\main.cpp
+1494362793 source:c:\users\tim\documents\github\chess_project\chess project\main.cpp
 	<iostream>
 	"bitboards.h"
 	"movegen.h"
 
+<<<<<<< HEAD
 1494422855 source:c:\users\huckkim\documents\github\chess_project\chess project\main.cpp
+=======
+1493648689 source:c:\users\huckkim\documents\github\chess_project\chess project\main.cpp
+>>>>>>> refs/remotes/origin/master
 	<iostream>
 	"bitboards.h"
 	"movegen.h"
 
+<<<<<<< HEAD
 1494339012 c:\users\huckkim\documents\github\chess_project\chess project\bitboards.h
+=======
+1493392536 c:\users\huckkim\documents\github\chess_project\chess project\bitboards.h
+>>>>>>> refs/remotes/origin/master
 	"libraries.h"
 
 1493214415 c:\users\huckkim\documents\github\chess_project\chess project\libraries.h
 	<iostream>
 	<vector>
 
+<<<<<<< HEAD
 1494423050 source:c:\users\huckkim\documents\github\chess_project\chess project\bitboards.cpp
+=======
+1493648194 source:c:\users\huckkim\documents\github\chess_project\chess project\bitboards.cpp
+>>>>>>> refs/remotes/origin/master
 	"bitboards.h"
 
 1493253952 source:c:\users\matilda\documents\github\chess_project\chess project\bitboards.cpp
@@ -43,19 +55,27 @@
 	<iostream>
 	"bitboards.h"
 
+<<<<<<< HEAD
 1494338105 source:c:\users\huckkim\documents\github\chess_project\chess project\movegen.cpp
 	"movegen.h"
 	"bitboards.h"
 
 1494336662 c:\users\huckkim\documents\github\chess_project\chess project\movegen.h
+=======
+1493648046 source:c:\users\huckkim\documents\github\chess_project\chess project\movegen.cpp
+	"movegen.h"
+	"bitboards.h"
+
+1493648046 c:\users\huckkim\documents\github\chess_project\chess project\movegen.h
+>>>>>>> refs/remotes/origin/master
 	"libraries.h"
 	"bitboards.h"
 
-1493817807 c:\users\tim\documents\github\chess_project\chess project\movegen.h
+1494362793 c:\users\tim\documents\github\chess_project\chess project\movegen.h
 	"libraries.h"
 	"bitboards.h"
 
-1493825726 source:c:\users\tim\documents\github\chess_project\chess project\movegen.cpp
+1494362793 source:c:\users\tim\documents\github\chess_project\chess project\movegen.cpp
 	"movegen.h"
 	"bitboards.h"
 

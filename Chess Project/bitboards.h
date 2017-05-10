@@ -55,17 +55,24 @@ public:
 
     // Saves what pieces it can attack
     attacked attack_option;
-    // Saves pieces side black, white, or none
+
+    // Whic colour the piece is
     colour side;
-    // Saves what piece it is
+
+    // What type of piece it is
     chess_piece what_piece;
-    // Saves it's lcoation
+
+    // The location of the piece
     coord location;
 
-    /**< Testing Functions */
+    // Testing functions
     void testing();
+<<<<<<< HEAD
     void piece_clear();
 
+=======
+    void convert(coord position);
+>>>>>>> refs/remotes/origin/master
 };
 
 // 8x8 board of pieces
@@ -92,8 +99,8 @@ public:
     // Output control board
     void outputBoard(colour side);
 
-    void do_move(coord start_loc, coord end_loc);
-    void outputBitboard();
+    // Reset the board to the starting configuration
+    void reset();
 
     // Calculate control board
     void calcBoard(colour side);
@@ -103,7 +110,6 @@ public:
 
     // Calculate all possible moves from a position
     void calcMoves(colour side);
-    void reset();
 };
 
 void convert(coord position);
