@@ -86,10 +86,15 @@ private:
     int blackControl[8][8];
 
 public:
+<<<<<<< HEAD
 
     //List of Coord that are being attacked
     vector <coord> white_attack;
     vector <coord> black_attack;
+=======
+    // Initialize the board
+    Board();
+>>>>>>> refs/remotes/origin/master
 
     // Output control board
     void outputBoard(colour side);
@@ -106,7 +111,12 @@ public:
     // Calculate all possible moves from a position
     void calcMoves(colour side);
 
+<<<<<<< HEAD
     void do_move(coord start_loc, coord end_loc);
+=======
+    // Test a piece on the board
+    void testing(int x, int y);
+>>>>>>> refs/remotes/origin/master
 };
 
 void convert(coord position);

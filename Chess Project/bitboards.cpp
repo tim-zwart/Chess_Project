@@ -147,12 +147,20 @@ void Piece::moves(Board &board)
 
             // Queenside castle
             if(board.board[0][y].castle && b[1][y] + b[2][y] + b[3][y] + b[4][y]==0 && board.board[1][y].what_piece==blank
+<<<<<<< HEAD
                 && board.board[2][y].what_piece==blank && board.board[3][y].what_piece==blank)
+=======
+                    && board.board[2][y].what_piece==blank && board.board[3][y].what_piece==blank)
+>>>>>>> refs/remotes/origin/master
                 movement.push_back(toCoord(2, dir));
 
             // Kingside castle
             if(board.board[7][y].castle && b[6][y] + b[5][y] + b[4][y]==0 && board.board[6][y].what_piece==blank
+<<<<<<< HEAD
                 && board.board[5][y].what_piece==blank)
+=======
+                    && board.board[5][y].what_piece==blank)
+>>>>>>> refs/remotes/origin/master
                 movement.push_back(toCoord(6, dir));
         }
 
@@ -474,6 +482,25 @@ void Piece::testing()
     cout<<endl;
 }
 
+void Board::testing(int x, int y)
+{
+    board[x][y].testing();
+}
+
+Board::Board()
+{
+    // Reset pieces on board
+    reset();
+
+    // Set all squares on control to 0
+    for (int i=0; i<8; i++)
+        for (int j=0; j<8; j++)
+        {
+            whiteControl[i][j]=0;
+            blackControl[i][j]=0;
+        }
+}
+
 void Board::outputBoard(colour side)
 {
     // Find location to read from
@@ -528,13 +555,6 @@ void Board::calcBoard(colour side)
                 {
                     coord temp = board[x][y].control[z];
                     b[temp.x][temp.y]++;
-
-                    if(temp.x==0 && temp.y==7)
-                    {
-                        cout << board[x][y].what_piece << endl << "x:" << x << "  y:" << y << "\n\n";
-                    }
-
-
                 }
             }
         }
