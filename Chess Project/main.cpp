@@ -60,5 +60,9 @@ int main()
     cout<<"White Attacking "<<b.white_attack;
     cout<<"Black Attacking "<<b.black_attack;
 
+    string loc = "d2";
+    coord c = convert(loc);
+    cout << "x: " << c.x << "  y: " << c.y << endl;
+
     return 0;
 }
