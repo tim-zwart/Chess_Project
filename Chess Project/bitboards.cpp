@@ -126,8 +126,23 @@ void Piece::moves(Board &board)
     switch(what_piece)
     {
     case king:
-        // Go throuch as if the king was a bishop and a rook but only going one move deep
+        // Go through as if the king was a bishop and a rook but only going one square
         distance = 2;
+
+        if(castle)
+        {
+            int y = 3.5-3.5*dir;
+
+            // Queenside castle
+            if(board.board[0][y].castle && b[1][y] + b[2][y] + b[3][y] + b[4][y]==0 && board.board[1][y].what_piece==none
+                && board.board[2][y].what_piece==none && board.board[3][y].what_piece==none)
+                movement.push_back(toCoord(2, dir));
+
+            // Kingside castle
+            if(board.board[7][y].castle && b[6][y] + b[5][y] + b[4][y]==0 && board.board[6][y].what_piece==none
+                && board.board[5][y].what_piece==none)
+                movement.push_back(toCoord(6, dir));
+        }
 
     case queen:
     // Go through as if the queen was a bishop and a rook
