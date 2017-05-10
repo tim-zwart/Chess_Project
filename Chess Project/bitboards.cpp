@@ -147,20 +147,12 @@ void Piece::moves(Board &board)
 
             // Queenside castle
             if(board.board[0][y].castle && b[1][y] + b[2][y] + b[3][y] + b[4][y]==0 && board.board[1][y].what_piece==blank
-<<<<<<< HEAD
                 && board.board[2][y].what_piece==blank && board.board[3][y].what_piece==blank)
-=======
-                    && board.board[2][y].what_piece==blank && board.board[3][y].what_piece==blank)
->>>>>>> refs/remotes/origin/master
                 movement.push_back(toCoord(2, dir));
 
             // Kingside castle
             if(board.board[7][y].castle && b[6][y] + b[5][y] + b[4][y]==0 && board.board[6][y].what_piece==blank
-<<<<<<< HEAD
-                && board.board[5][y].what_piece==blank)
-=======
                     && board.board[5][y].what_piece==blank)
->>>>>>> refs/remotes/origin/master
                 movement.push_back(toCoord(6, dir));
         }
 
