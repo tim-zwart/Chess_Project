@@ -35,6 +35,28 @@ int main()
     // Output board
     cout << b << endl;
 
+    b.do_move(toCoord(6, 1), toCoord(6, 3));
+
+    // Calculate moves for white and group onto a board
+    b.calcMoves(white);
+    b.calcBoard(white);
+
+    // Calculate moves for black and group onto a board
+    b.calcMoves(black);
+    b.calcBoard(black);
+
+    // Output all of the squares that white is attacking
+    b.outputBoard(black);
+
+    // Output all of the squares that black is attacking
+    b.outputBoard(white);
+
+    b.generate_move(white);
+    b.generate_move(black);
+
+    // Output board
+    cout << b << endl;
+
     cout<<"White Attacking "<<b.white_attack;
     cout<<"Black Attacking "<<b.black_attack;
 

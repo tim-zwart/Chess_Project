@@ -172,14 +172,10 @@ void Piece::moves(Board &board)
             {
                 attack_option.attack_coord.push_back(toCoord(location.x+i, location.y+i));
                 attack_option.which_piece.push_back(board.board[location.x+i][location.y+i].what_piece);
-                control.push_back(toCoord(location.x+i, location.y+i));
                 tr=false;
             }
             else if(tr)
-            {
                 movement.push_back(toCoord(location.x+i, location.y+i));
-                control.push_back(toCoord(location.x+i, location.y+i));
-            }
 
             // Top Left
             if(tl && location.x-i>=0 && location.y+i<8)
@@ -191,14 +187,10 @@ void Piece::moves(Board &board)
             {
                 attack_option.attack_coord.push_back(toCoord(location.x-i, location.y+i));
                 attack_option.which_piece.push_back(board.board[location.x-i][location.y+i].what_piece);
-                control.push_back(toCoord(location.x-i, location.y+i));
                 tl=false;
             }
             else if(tl)
-            {
                 movement.push_back(toCoord(location.x-i, location.y+i));
-                control.push_back(toCoord(location.x-i, location.y+i));
-            }
 
             // Bottom Right
             if(br && location.x+i<8 && location.y-i>0)
@@ -210,14 +202,10 @@ void Piece::moves(Board &board)
             {
                 attack_option.attack_coord.push_back(toCoord(location.x+i, location.y-i));
                 attack_option.which_piece.push_back(board.board[location.x+i][location.y-i].what_piece);
-                control.push_back(toCoord(location.x+i, location.y-i));
                 br=false;
             }
             else if(br)
-            {
                 movement.push_back(toCoord(location.x+i, location.y-i));
-                control.push_back(toCoord(location.x+i, location.y-i));
-            }
 
             // Bottom Left
             if(bl && location.x-i>=0 && location.y-i>=0)
@@ -229,14 +217,12 @@ void Piece::moves(Board &board)
             {
                 attack_option.attack_coord.push_back(toCoord(location.x-i, location.y-i));
                 attack_option.which_piece.push_back(board.board[location.x-i][location.y-i].what_piece);
-                control.push_back(toCoord(location.x-i, location.y-i));
                 bl=false;
             }
             else if(bl)
-            {
                 movement.push_back(toCoord(location.x-i, location.y-i));
-                control.push_back(toCoord(location.x-i, location.y-i));
-            }
+
+            // If the bishop is restricted by pieces in all diagonals, end movement
             if(!tr && !tl && !br && !bl)
                 break;
         }
