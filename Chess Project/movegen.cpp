@@ -50,6 +50,16 @@ void breadth_search(colour start_side, int ply)
 
 void Board::do_move(coord start_loc, coord end_loc)
 {
+    // Set new square to piece
     board[end_loc.x][end_loc.y] = board[start_loc.x][start_loc.y];
+
+    // Update piece location
+    board[end_loc.x][end_loc.y].location = end_loc;
+
+    // If the piece could castle before, make it so that it can't any more
+    if(board[end_loc.x][end_loc.y].castle)
+        board[end_loc.x][end_loc.y].castle=false;
+
+    // Clear the old square
     board[start_loc.x][start_loc.y].piece_clear();
 }
