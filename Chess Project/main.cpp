@@ -15,9 +15,6 @@ int main()
     // Declare chessboard
     Board b;
 
-    // Set the board to the default starting position
-    b.reset();
-
     // Calculate moves for white and group onto a board
     b.calcMoves(white);
     b.calcBoard(white);

@@ -86,6 +86,9 @@ private:
     int blackControl[8][8];
 
 public:
+    // Initialize the board
+    Board();
+
     // Output control board
     void outputBoard(colour side);
 
@@ -100,6 +103,9 @@ public:
 
     // Calculate all possible moves from a position
     void calcMoves(colour side);
+
+    // Test a piece on the board
+    void testing(int x, int y);
 };
 
 // Output board
