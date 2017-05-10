@@ -2,6 +2,18 @@
 
 #include "bitboards.h"
 
+ostream & operator<<(ostream & stream, vector<coord> cvec)
+{
+    cout<<endl;
+    for(unsigned int i = 0; i < cvec.size(); i++)
+    {
+        convert(cvec[i]);
+        cout<<" ";
+    }
+    cout<<endl;
+    return stream;
+}
+
 // Output Board class
 ostream & operator<<(ostream & stream, Board b)
 {
@@ -134,13 +146,13 @@ void Piece::moves(Board &board)
             int y = 3.5-3.5*dir;
 
             // Queenside castle
-            if(board.board[0][y].castle && b[1][y] + b[2][y] + b[3][y] + b[4][y]==0 && board.board[1][y].what_piece==none
-                && board.board[2][y].what_piece==none && board.board[3][y].what_piece==none)
+            if(board.board[0][y].castle && b[1][y] + b[2][y] + b[3][y] + b[4][y]==0 && board.board[1][y].what_piece==blank
+                && board.board[2][y].what_piece==blank && board.board[3][y].what_piece==blank)
                 movement.push_back(toCoord(2, dir));
 
             // Kingside castle
-            if(board.board[7][y].castle && b[6][y] + b[5][y] + b[4][y]==0 && board.board[6][y].what_piece==none
-                && board.board[5][y].what_piece==none)
+            if(board.board[7][y].castle && b[6][y] + b[5][y] + b[4][y]==0 && board.board[6][y].what_piece==blank
+                && board.board[5][y].what_piece==blank)
                 movement.push_back(toCoord(6, dir));
         }
 
@@ -482,6 +494,7 @@ void Board::outputBoard(colour side)
             cout << b[j][i] << " ";
         cout << endl;
     }
+    cout<<endl;
 }
 
 // Add up the squares that are being attacked
@@ -604,7 +617,6 @@ void Board::reset()
     board[3][7]=blackQueen;
 }
 
-<<<<<<< HEAD
 void Piece::piece_clear()
 {
     movement.clear();
@@ -626,7 +638,7 @@ void Board::generate_move(colour side)
             buff_board[i][j] = board[i][j];
             if(board[i][j].side == side)
             {
-                for(int t = 0; t < board[i][j].movement.size(); t++)
+                for(unsigned int t = 0; t < board[i][j].movement.size(); t++)
                     move_option.push_back(board[i][j].movement[t]);
             }
         }
@@ -636,6 +648,3 @@ void Board::generate_move(colour side)
     if(side == white)
         white_attack = move_option;
 }
-=======
-
->>>>>>> refs/remotes/origin/master

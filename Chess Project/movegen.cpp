@@ -43,7 +43,6 @@ void Board::calcMoves(colour side)
     }
 }
 
-<<<<<<< HEAD
 void breadth_search(colour start_side, int ply)
 {
 
@@ -54,5 +53,3 @@ void Board::do_move(coord start_loc, coord end_loc)
     board[end_loc.x][end_loc.y] = board[start_loc.x][start_loc.y];
     board[start_loc.x][start_loc.y].piece_clear();
 }
-=======
->>>>>>> refs/remotes/origin/master

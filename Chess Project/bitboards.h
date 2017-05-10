@@ -67,12 +67,7 @@ public:
 
     // Testing functions
     void testing();
-<<<<<<< HEAD
     void piece_clear();
-
-=======
-    void convert(coord position);
->>>>>>> refs/remotes/origin/master
 };
 
 // 8x8 board of pieces
@@ -110,11 +105,14 @@ public:
 
     // Calculate all possible moves from a position
     void calcMoves(colour side);
+
+    void do_move(coord start_loc, coord end_loc);
 };
 
 void convert(coord position);
 
 // Output board
 ostream & operator<<(ostream & stream, Board b);
+ostream & operator<<(ostream & stream, vector<coord>);
 
 #endif // BITBOARDS_H_INCLUDED
