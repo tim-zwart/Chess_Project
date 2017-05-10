@@ -113,6 +113,7 @@ public:
 };
 
 void convert(coord position);
+coord convert(string s);
 
 // Output board
 ostream & operator<<(ostream & stream, Board b);
