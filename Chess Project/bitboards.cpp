@@ -430,6 +430,78 @@ void convert(coord position)
     cout<<position.y + 1;
 }
 
+coord convert(string s)
+{
+    // Value to return
+    coord c;
+
+    // COnvert x to integer
+    switch(s[0])
+    {
+    case 'a':
+        c.x=0;
+        break;
+    case 'b':
+        c.x=1;
+        break;
+    case 'c':
+        c.x=2;
+        break;
+    case 'd':
+        c.x=3;
+        break;
+    case 'e':
+        c.x=4;
+        break;
+    case 'f':
+        c.x=5;
+        break;
+    case 'g':
+        c.x=6;
+        break;
+    case 'h':
+        c.x=7;
+        break;
+    default:
+        c.x=-1;
+        break;
+    }
+
+    // Convert y to integer
+    switch(s[1])
+    {
+    case '1':
+        c.y=0;
+        break;
+    case '2':
+        c.y=1;
+        break;
+    case '3':
+        c.y=2;
+        break;
+    case '4':
+        c.y=3;
+        break;
+    case '5':
+        c.y=4;
+        break;
+    case '6':
+        c.y=5;
+        break;
+    case '7':
+        c.y=6;
+        break;
+    case '8':
+        c.y=7;
+        break;
+    default:
+        c.y=-1;
+        break;
+    }
+
+    return c;
+}
+
 void Piece::testing()
 {
     // Output information
