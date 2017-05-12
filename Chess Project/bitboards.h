@@ -6,7 +6,6 @@
 enum chess_piece {king, queen, bishop, knight, rook, pawn, blank};
 enum colour {white, black, none};
 
-
 // Coordinate system
 struct coord
 {
@@ -130,6 +129,10 @@ public:
 
     // Test a piece on the board
     void testing(int x, int y);
+
+    void breadth_search(colour start_side, int ply, int current_ply, vector <vector<coord> >& listMoves, Board current_state);
+
+    void calculate(colour side);
 };
 
 void convert(coord position);

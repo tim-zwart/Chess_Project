@@ -3,27 +3,6 @@
 #include "movegen.h"
 #include "bitboards.h"
 
-typedef vector<attacked> avec;
-/*
-generate_move(Board Board, colour which_colour)
-{
-
-    avec attack_loc[8][8];
-    for(int i = 0; i < 8; i++)
-    {
-        for(int j = 0; j < 8; j++)
-        {
-            if(Board.board[i][j].attack_option.attack_coord.size() != 0)
-            {
-                for(int t = 0; t < Board.board[i][j].attack_option.attack_coord.size(); t++)
-                    attack_loc[i][j].attack_option.attack_coord;
-            }
-
-        }
-    }
-
-}
-*/
 void Board::calcMoves(colour side)
 {
     // Check all squares
@@ -43,9 +22,46 @@ void Board::calcMoves(colour side)
     }
 }
 
-void breadth_search(colour start_side, int ply)
+void Board::breadth_search(colour start_side, int ply, int current_ply, vector <vector <coord> >& listMoves, Board current_state)
 {
+    if(current_ply == ply)
+        return;
+    Board buff_board;
+    buff_board = current_state;
+    colour next_side;
+    for(int i = 0; i < 8; i++)
+    {
+        for(int t = 0; t < 8; t++)
+        {
+            if(buff_board.board[i][t].side == start_side)
+            {
+                for(unsigned int q = 0; q < buff_board.board[i][t].attack_option.attack_coord.size(); q++)
+                {
+                    buff_board = current_state;
+                    buff_board.do_move(toCoord(i, t), buff_board.board[i][t].attack_option.attack_coord[q]);
+                    buff_board.calculate(start_side);
 
+                    if(start_side == white)
+                        next_side = black;
+                    else
+                        next_side = white;
+                    breadth_search(next_side, ply,current_ply+1,listMoves, buff_board);
+                }
+                for(unsigned int q = 0; q < buff_board.board[i][t].movement.size(); q++)
+                {
+                    buff_board = current_state;
+                    buff_board.do_move(toCoord(i, t),buff_board.board[i][t].movement[q]);
+                    buff_board.calculate(start_side);
+
+                    if(start_side == white)
+                        next_side = black;
+                    else
+                        next_side = white;
+                    breadth_search(next_side, ply, current_ply+1, listMoves, buff_board);
+                }
+            }
+        }
+    }
 }
 
 void Board::do_move(coord start_loc, coord end_loc)

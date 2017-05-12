@@ -15,10 +15,17 @@ int main()
     // Declare chessboard
     Board b;
 
-    // Calculate moves for white and group onto a board
-    b.calcMoves(white);
-    b.calcBoard(white);
+    b.calculate(white);
+    b.calculate(black);
+    b.do_move(convert("e5"), convert("e4"));
+    b.calculate(white);
+    b.calculate(black);
+    b.do_move(convert("d7"), convert("d5"));
+    b.calculate(black);
+    b.calculate(white);
+    cout<<b<<endl;
 
+<<<<<<< HEAD
     // Calculate moves for black and group onto a board
     b.calcMoves(black);
     b.calcBoard(black);
@@ -69,4 +76,6 @@ int main()
     cout << "x: " << c.x << "  y: " << c.y << endl;
 
     return 0;
+=======
+>>>>>>> refs/remotes/origin/master
 }
