@@ -85,10 +85,25 @@ private:
     int whiteControl[8][8];
     int blackControl[8][8];
 
+    // Count of pieces
+    int wK;
+    int wQ;
+    int wR;
+    int wB;
+    int wN;
+    int wP;
+    int bK;
+    int bQ;
+    int bR;
+    int bB;
+    int bN;
+    int bP;
+
 public:
     //List of Coord that are being attacked
     vector <coord> white_attack;
     vector <coord> black_attack;
+
     // Initialize the board
     Board();
 
@@ -108,6 +123,11 @@ public:
     void calcMoves(colour side);
 
     void do_move(coord start_loc, coord end_loc);
+
+    // Evaluate board
+    void evalBoard();
+    int score;
+
     // Test a piece on the board
     void testing(int x, int y);
 };

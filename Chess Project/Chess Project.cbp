@@ -34,6 +34,10 @@
 		</Compiler>
 		<Unit filename="bitboards.cpp" />
 		<Unit filename="bitboards.h" />
+		<Unit filename="boardeval.cpp" />
+		<Unit filename="boardeval.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="libraries.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="movegen.cpp" />

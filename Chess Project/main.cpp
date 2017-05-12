@@ -54,8 +54,12 @@ int main()
     b.generate_move(white);
     b.generate_move(black);
 
+    b.evalBoard();
+
     // Output board
     cout << b << endl;
+
+    cout << "Score: " << b.score << endl;
 
     cout<<"White Attacking "<<b.white_attack;
     cout<<"Black Attacking "<<b.black_attack;

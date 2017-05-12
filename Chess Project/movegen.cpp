@@ -63,3 +63,10 @@ void Board::do_move(coord start_loc, coord end_loc)
     // Clear the old square
     board[start_loc.x][start_loc.y].piece_clear();
 }
+
+node* create(Board b)
+{
+    node *n = new node;
+    n->container=b;
+    return n;
+}
