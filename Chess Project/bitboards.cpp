@@ -718,3 +718,8 @@ void Board::generate_move(colour side)
     if(side == white)
         white_attack = move_option;
 }
+void Board::calculate(colour side)
+{
+    calcMoves(side);
+    calcBoard(side);
+}
