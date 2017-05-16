@@ -14,6 +14,19 @@ ostream & operator<<(ostream & stream, vector<coord> cvec)
     return stream;
 }
 
+ostream & operator<<(ostream & stream, vector<coordPair> cvec)
+{
+    cout<<endl;
+    for(unsigned int i = 0; i < cvec.size(); i++)
+    {
+        convert(cvec[i].startLoc);
+        cout<<"x";
+        convert(cvec[i].endLoc);
+    }
+    cout<<endl;
+    return stream;
+}
+
 // Output Board class
 ostream & operator<<(ostream & stream, Board b)
 {
@@ -698,7 +711,8 @@ void Piece::piece_clear()
 
 void Board::generate_move(colour side)
 {
-    vector <coord> move_option;
+    vector <coordPair> move_option;
+    coordPair buff;
     Piece buff_board[8][8];
 
     for(int i = 0; i < 8; i++)
@@ -708,8 +722,12 @@ void Board::generate_move(colour side)
             buff_board[i][j] = board[i][j];
             if(board[i][j].side == side)
             {
-                for(unsigned int t = 0; t < board[i][j].movement.size(); t++)
-                    move_option.push_back(board[i][j].movement[t]);
+                for(unsigned int t = 0; t < board[i][j].attack_option.attack_coord.size(); t++)
+                {
+                    buff.startLoc = toCoord(i, j);
+                    buff.endLoc = board[i][j].attack_option.attack_coord[t];
+                    move_option.push_back(buff);
+                }
             }
         }
     }

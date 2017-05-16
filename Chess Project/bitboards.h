@@ -20,6 +20,12 @@ struct attacked
     vector <chess_piece> which_piece;
 };
 
+struct coordPair
+{
+    coord startLoc;
+    coord endLoc;
+};
+
 // Convert an x and a y value to a coordinate
 coord toCoord(int x, int y);
 
@@ -86,8 +92,8 @@ private:
 
 public:
     //List of Coord that are being attacked
-    vector <coord> white_attack;
-    vector <coord> black_attack;
+    vector <coordPair> white_attack;
+    vector <coordPair> black_attack;
     // Initialize the board
     Board();
 
@@ -112,6 +118,8 @@ public:
 
     void breadth_search(colour start_side, int ply, int current_ply, vector <vector<coord> >& listMoves, Board current_state);
 
+    void depth_search(int ply, int current_ply, colour side);
+
     void calculate(colour side);
 };
 
@@ -121,5 +129,6 @@ coord convert(string s);
 // Output board
 ostream & operator<<(ostream & stream, Board b);
 ostream & operator<<(ostream & stream, vector<coord>);
+ostream & operator<<(ostream & stream, vector<coordPair> cvec);
 
 #endif // BITBOARDS_H_INCLUDED

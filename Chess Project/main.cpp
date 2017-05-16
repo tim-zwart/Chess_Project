@@ -17,12 +17,15 @@ int main()
 
     b.calculate(white);
     b.calculate(black);
-    b.do_move(convert("e5"), convert("e4"));
+    b.do_move(convert("e2"), convert("e4"));
     b.calculate(white);
     b.calculate(black);
     b.do_move(convert("d7"), convert("d5"));
     b.calculate(black);
     b.calculate(white);
+
+    b.generate_move(white);
+    cout<<b.white_attack<<endl;
     cout<<b<<endl;
 
 }
