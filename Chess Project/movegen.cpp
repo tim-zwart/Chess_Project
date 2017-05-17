@@ -69,16 +69,7 @@ void breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colou
         if(b.score != 0)
         cout << b << endl;
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> refs/remotes/origin/master
     // Analyze and return
-    */
-
-
-
-
 }
 
 void Board::depth_search(int ply, int current_ply, colour side)
@@ -102,54 +93,7 @@ void Board::do_move(move_store m)
         w[board[m.end_loc.x][m.end_loc.y].what_piece]--;
     else if(board[m.end_loc.x][m.end_loc.y].side==black)
         b[board[m.end_loc.x][m.end_loc.y].what_piece]--;
-        /*switch(board[m.end_loc.x][m.end_loc.y].what_piece)
-        {
 
-        case king:
-            wK--;
-            break;
-        case queen:
-            wQ--;
-            break;
-        case rook:
-            wR--;
-            break;
-        case bishop:
-            wB--;
-            break;
-        case knight:
-            wN--;
-            break;
-        case pawn:
-            wP--;
-            break;
-        default:
-            break;
-        }
-    else if(board[m.end_loc.x][m.end_loc.y].side==black)
-        switch(board[m.end_loc.x][m.end_loc.y].what_piece)
-        {
-        case king:
-            bK--;
-            break;
-        case queen:
-            bQ--;
-            break;
-        case rook:
-            bR--;
-            break;
-        case bishop:
-            bB--;
-            break;
-        case knight:
-            bN--;
-            break;
-        case pawn:
-            bP--;
-            break;
-        default:
-            break;
-        }*/
     // Set new square to piece
     board[m.end_loc.x][m.end_loc.y] = board[m.start_loc.x][m.start_loc.y];
 
