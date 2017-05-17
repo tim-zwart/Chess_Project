@@ -69,15 +69,27 @@ void breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colou
         if(b.score != 0)
         cout << b << endl;
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> refs/remotes/origin/master
     // Analyze and return
+    */
 
 
 
 
+}
 
+void Board::depth_search(int ply, int current_ply, colour side)
+{
+    move_store current_it;
+    vector <move_store> current_var;
+    for(int i = 0; i < moves.size(); i++)
+    {
+        current_it = moves[i];
 
-
+    }
 }
 
 void Board::do_move(move_store m)

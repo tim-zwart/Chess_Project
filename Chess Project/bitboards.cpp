@@ -729,30 +729,36 @@ void Piece::piece_clear()
     what_piece = blank;
 }
 
-void Board::generate_move(colour side)
-{
-    vector <coord> move_option;
-    Piece buff_board[8][8];
-
-    for(int i = 0; i < 8; i++)
-    {
-        for(int j = 0; j < 8; j++)
-        {
-            buff_board[i][j] = board[i][j];
-            if(board[i][j].side == side)
-            {
-                for(unsigned int t = 0; t < board[i][j].movement.size(); t++)
-                    move_option.push_back(board[i][j].movement[t]);
-            }
-        }
-    }
-    if(side == black)
-        black_attack = move_option;
-    if(side == white)
-        white_attack = move_option;
-}
 void Board::calculate(colour side)
 {
-    calcMoves(side);
-    calcBoard(side);
+    if(side == black)
+    {
+        calcMoves(black);
+        calcBoard(black);
+        calcMoves(white);
+        calcBoard(white);
+    }
+    else
+    {
+        calcMoves(white);
+        calcBoard(white);
+        calcMoves(black);
+        calcBoard(black);
+    }
+
+}
+
+void Board::operator =(const Board& startLoc)
+{
+    for(int x = 0; x < 8; x++)
+    {
+        for(int y = 0; y < 8; y++)
+        {
+            board[x][y] = startLoc.board[x][y];
+            whiteControl[x][y] = startLoc.whiteControl[x][y];
+            blackControl[x][y] = startLoc.blackControl[x][y];
+        }
+    }
+    black_attack = startLoc.black_attack;
+    white_attack = startLoc.white_attack;
 }
