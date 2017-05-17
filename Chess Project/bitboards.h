@@ -3,7 +3,7 @@
 
 #include "libraries.h"
 
-enum chess_piece {king, queen, bishop, knight, rook, pawn, blank};
+enum chess_piece {king = 0, queen = 1, rook = 2, bishop = 3, knight = 4, pawn = 5, blank};
 enum colour {white, black, none};
 
 // Coordinate system
@@ -92,18 +92,8 @@ private:
     int blackControl[8][8];
 
     // Count of pieces
-    int wK;
-    int wQ;
-    int wR;
-    int wB;
-    int wN;
-    int wP;
-    int bK;
-    int bQ;
-    int bR;
-    int bB;
-    int bN;
-    int bP;
+    int w[6];
+    int b[6];
 
 public:
     //List of Coord that are being attacked
