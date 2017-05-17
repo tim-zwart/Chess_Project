@@ -26,12 +26,6 @@ struct attacked
     vector <chess_piece> which_piece;
 };
 
-struct coordPair
-{
-    coord startLoc;
-    coord endLoc;
-};
-
 // Convert an x and a y value to a coordinate
 coord toCoord(int x, int y);
 
@@ -113,14 +107,10 @@ private:
 
 public:
     //List of Coord that are being attacked
-<<<<<<< HEAD
-    vector <coordPair> white_attack;
-    vector <coordPair> black_attack;
-=======
+
     vector <coord> white_attack;
     vector <coord> black_attack;
 
->>>>>>> refs/remotes/origin/master
     // Initialize the board
     Board();
 
@@ -167,10 +157,5 @@ move_store convert(coord start, coord finish);
 // Output board
 ostream & operator<<(ostream & stream, Board b);
 ostream & operator<<(ostream & stream, vector<coord>);
-<<<<<<< HEAD
-ostream & operator<<(ostream & stream, vector<coordPair> cvec);
-=======
 bool operator==(coord first, coord second);
->>>>>>> refs/remotes/origin/master
-
 #endif // BITBOARDS_H_INCLUDED
