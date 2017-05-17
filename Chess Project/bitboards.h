@@ -121,6 +121,8 @@ public:
     void depth_search(int ply, int current_ply, colour side);
 
     void calculate(colour side);
+
+    void operator =(const Board& startLoc);
 };
 
 void convert(coord position);

@@ -25,7 +25,7 @@ int main()
     b.calculate(white);
 
     b.generate_move(white);
-    cout<<b.white_attack<<endl;
+
     cout<<b<<endl;
 
 }
