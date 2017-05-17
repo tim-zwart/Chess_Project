@@ -107,6 +107,7 @@ private:
 
 public:
     //List of Coord that are being attacked
+
     vector <coord> white_attack;
     vector <coord> black_attack;
 
@@ -142,7 +143,11 @@ public:
 
     void breadth_search(colour start_side, int ply, int current_ply, vector <vector<coord> >& listMoves, Board current_state);
 
+    void depth_search(int ply, int current_ply, colour side);
+
     void calculate(colour side);
+
+    void operator =(const Board& startLoc);
 };
 
 void convert(coord position);
@@ -153,5 +158,4 @@ move_store convert(coord start, coord finish);
 ostream & operator<<(ostream & stream, Board b);
 ostream & operator<<(ostream & stream, vector<coord>);
 bool operator==(coord first, coord second);
-
 #endif // BITBOARDS_H_INCLUDED
