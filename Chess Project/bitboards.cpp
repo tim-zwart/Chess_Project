@@ -705,19 +705,19 @@ void Board::reset()
             board[x][y]=emptySquare;
 
     // Set piece counts to normal
-    wK=1;
-    wQ=1;
-    wR=2;
-    wB=2;
-    wN=2;
-    wP=8;
+    w[king]=1;
+    w[queen]=1;
+    w[rook]=2;
+    w[bishop]=2;
+    w[knight]=2;
+    w[pawn]=8;
 
-    bK=1;
-    bQ=1;
-    bR=2;
-    bB=2;
-    bN=2;
-    bP=8;
+    b[king]=1;
+    b[queen]=1;
+    b[rook]=2;
+    b[bishop]=2;
+    b[knight]=2;
+    b[pawn]=8;
 }
 
 void Piece::piece_clear()
