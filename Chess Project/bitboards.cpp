@@ -61,6 +61,11 @@ ostream & operator<<(ostream & stream, Board b)
     return stream;
 }
 
+bool operator==(coord first, coord second)
+{
+    return (first.x == second.x && first.y == second.y);
+}
+
 coord toCoord(int x, int y)
 {
     coord c;
@@ -500,6 +505,14 @@ coord convert(string s)
     }
 
     return c;
+}
+
+move_store convert(coord start, coord finish)
+{
+    move_store m;
+    m.start_loc = start;
+    m.end_loc = finish;
+    return m;
 }
 
 void Piece::testing()

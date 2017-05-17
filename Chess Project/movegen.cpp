@@ -5,84 +5,154 @@
 
 void Board::calcMoves(colour side)
 {
+    // Clear previous moves
+    moves.clear();
+
     // Check all squares
-    for (int i=0; i<8; i++)
+    for (int x=0; x<8; x++)
     {
-        for (int j=0; j<8; j++)
+        for (int y=0; y<8; y++)
         {
             // If the piece is the right colour, calculate moves for piece
-            if(board[i][j].side==side)
+            if(board[x][y].side==side)
             {
-                if(side==white)
-                    board[i][j].moves(*this);
-                else
-                    board[i][j].moves(*this);
+                board[x][y].moves(*this);
+                move_store m;
+                m.start_loc=board[x][y].location;
+                for(int i=0; i<(int) board[x][y].movement.size(); i++)
+                {
+                    m.end_loc=board[x][y].movement[i];
+                    moves.push_back(m);
+                }
+                //board[x][y].testing();
+                for(int i=0; i<(int)board[x][y].attack_option.attack_coord.size(); i++)
+                {
+                    m.end_loc=board[x][y].attack_option.attack_coord[i];
+                    moves.push_back(m);
+                }
             }
         }
     }
 }
 
-void Board::breadth_search(colour start_side, int ply, int current_ply, vector <vector <coord> >& listMoves, Board current_state)
+void breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour calcSide, node *parent)
 {
-    if(current_ply == ply)
-        return;
-    Board buff_board;
-    buff_board = current_state;
-    colour next_side;
-    for(int i = 0; i < 8; i++)
+    // Find other colour
+    colour other;
+    if(calcSide==white)
+        other=black;
+    else if (calcSide==black)
+        other=white;
+
+    // Do move
+    b.do_move(thisMove);
+    b.calcBoard(other);
+    node *n;
+    //n->container = &b;
+    //n->trunk = parent;
+    //parent->branches.push_back(n);
+
+
+    b.calcMoves(calcSide);
+    b.evalBoard();
+    // Calculate and do next move
+    if(maxPly != currPly)
     {
-        for(int t = 0; t < 8; t++)
+        for(int i=0; i<(int)b.moves.size(); i++)
         {
-            if(buff_board.board[i][t].side == start_side)
-            {
-                for(unsigned int q = 0; q < buff_board.board[i][t].attack_option.attack_coord.size(); q++)
-                {
-                    buff_board = current_state;
-                    buff_board.do_move(toCoord(i, t), buff_board.board[i][t].attack_option.attack_coord[q]);
-                    buff_board.calculate(start_side);
-
-                    if(start_side == white)
-                        next_side = black;
-                    else
-                        next_side = white;
-                    breadth_search(next_side, ply,current_ply+1,listMoves, buff_board);
-                }
-                for(unsigned int q = 0; q < buff_board.board[i][t].movement.size(); q++)
-                {
-                    buff_board = current_state;
-                    buff_board.do_move(toCoord(i, t),buff_board.board[i][t].movement[q]);
-                    buff_board.calculate(start_side);
-
-                    if(start_side == white)
-                        next_side = black;
-                    else
-                        next_side = white;
-                    breadth_search(next_side, ply, current_ply+1, listMoves, buff_board);
-                }
-            }
+            breadth_search(b, maxPly, currPly+1, b.moves[i], other, n);
         }
     }
+    /*
+    else
+    {
+        if(b.score != 0)
+        cout << b << endl;
+    }
+    */
+    // Analyze and return
+
+
+
+
+
+
+
 }
 
-void Board::do_move(coord start_loc, coord end_loc)
+void Board::do_move(move_store m)
 {
+    if(m.start_loc == m.end_loc)
+        return;
+    // If a piece is being taken, subtract it from the piece count
+    if(board[m.end_loc.x][m.end_loc.y].side==white)
+        switch(board[m.end_loc.x][m.end_loc.y].what_piece)
+        {
+        case king:
+            wK--;
+            break;
+        case queen:
+            wQ--;
+            break;
+        case rook:
+            wR--;
+            break;
+        case bishop:
+            wB--;
+            break;
+        case knight:
+            wN--;
+            break;
+        case pawn:
+            wP--;
+            break;
+        default:
+            break;
+        }
+    else if(board[m.end_loc.x][m.end_loc.y].side==black)
+        switch(board[m.end_loc.x][m.end_loc.y].what_piece)
+        {
+        case king:
+            bK--;
+            break;
+        case queen:
+            bQ--;
+            break;
+        case rook:
+            bR--;
+            break;
+        case bishop:
+            bB--;
+            break;
+        case knight:
+            bN--;
+            break;
+        case pawn:
+            bP--;
+            break;
+        default:
+            break;
+        }
     // Set new square to piece
-    board[end_loc.x][end_loc.y] = board[start_loc.x][start_loc.y];
+    board[m.end_loc.x][m.end_loc.y] = board[m.start_loc.x][m.start_loc.y];
 
     // Update piece location
-    board[end_loc.x][end_loc.y].location = end_loc;
+    board[m.end_loc.x][m.end_loc.y].location = m.end_loc;
+
+    if(board[m.end_loc.x][m.end_loc.y].castle)
+        board[m.end_loc.x][m.end_loc.y].castle=false;
 
     // If the piece could castle before, make it so that it can't any more
-    if(board[end_loc.x][end_loc.y].castle)
-        board[end_loc.x][end_loc.y].castle=false;
+    if(board[m.end_loc.x][m.end_loc.y].castle)
+        board[m.end_loc.x][m.end_loc.y].castle=false;
 
     // Clear the old square
-    board[start_loc.x][start_loc.y].piece_clear();
+    board[m.start_loc.x][m.start_loc.y].piece_clear();
 }
 
 node* create(Board b)
 {
     node *n = new node;
-    n->container=b;
+    n->container=&b;
     return n;
 }

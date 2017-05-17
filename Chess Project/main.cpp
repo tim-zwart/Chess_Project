@@ -14,18 +14,19 @@ int main()
 {
     // Declare chessboard
     Board b;
-
+    node *head = create(b);
+    breadth_search(b, 4, 0, noMove, white, head);
+    /*
+    b.do_move(convert(convert("e2"), convert("e4")));
     b.calculate(white);
     b.calculate(black);
-    b.do_move(convert("e5"), convert("e4"));
-    b.calculate(white);
-    b.calculate(black);
-    b.do_move(convert("d7"), convert("d5"));
+    b.do_move(convert(convert("d7"), convert("d5")));
     b.calculate(black);
     b.calculate(white);
+    b.do_move(convert(convert("e4"), convert("d5")));
     cout<<b<<endl;
-
-<<<<<<< HEAD
+    b.evalBoard();
+    cout << "Score:" << b.score << endl << endl;
     // Calculate moves for black and group onto a board
     b.calcMoves(black);
     b.calcBoard(black);
@@ -42,7 +43,7 @@ int main()
     // Output board
     cout << b << endl;
 
-    b.do_move(toCoord(6, 1), toCoord(6, 3));
+    //b.do_move(toCoord(6, 1), toCoord(6, 3));
 
     // Calculate moves for white and group onto a board
     b.calcMoves(white);
@@ -66,16 +67,8 @@ int main()
     // Output board
     cout << b << endl;
 
-    cout << "Score: " << b.score << endl;
-
     cout<<"White Attacking "<<b.white_attack;
-    cout<<"Black Attacking "<<b.black_attack;
-
-    string loc = "d2";
-    coord c = convert(loc);
-    cout << "x: " << c.x << "  y: " << c.y << endl;
+    cout<<"Black Attacking "<<b.black_attack;*/
 
     return 0;
-=======
->>>>>>> refs/remotes/origin/master
 }
