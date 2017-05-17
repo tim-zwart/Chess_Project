@@ -66,12 +66,8 @@ void Board::breadth_search(colour start_side, int ply, int current_ply, vector <
 
 void Board::depth_search(int ply, int current_ply, colour side)
 {
-    vector <coordPair> current_coord;
-    generate_move(side);
-    if(side == black)
-        current_coord = black_attack;
-    else
-        current_coord = white_attack;
+    vector <
+    for(int i = possib)
 }
 
 void Board::do_move(coord start_loc, coord end_loc)

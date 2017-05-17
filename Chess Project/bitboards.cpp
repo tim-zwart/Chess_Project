@@ -741,3 +741,18 @@ void Board::calculate(colour side)
     calcMoves(side);
     calcBoard(side);
 }
+
+void Board::operator =(const Board& startLoc)
+{
+    for(int x = 0; x < 8; x++)
+    {
+        for(int y = 0; y < 8; y++)
+        {
+            board[x][y] = startLoc.board[x][y];
+            whiteControl[x][y] = startLoc.whiteControl[x][y];
+            blackControl[x][y] = startLoc.blackControl[x][y];
+        }
+    }
+    black_attack = startLoc.black_attack;
+    white_attack = startLoc.white_attack;
+}
