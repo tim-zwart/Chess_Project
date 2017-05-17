@@ -13,6 +13,12 @@ struct coord
     int y;
 };
 
+struct move_store
+{
+    coord start_loc;
+    coord end_loc;
+};
+
 // Pieces that are attacked, used in Piece class
 struct attacked
 {
@@ -75,6 +81,7 @@ class Board
     // Friends
     friend ostream & operator<<(ostream & stream, Board b);
     friend class Piece;
+    friend void breadth_search(Board b, int maxPly, int currPly, coord start_loc, coord end_loc);
 
 private:
     // Board of pieces
@@ -84,10 +91,25 @@ private:
     int whiteControl[8][8];
     int blackControl[8][8];
 
+    // Count of pieces
+    int wK;
+    int wQ;
+    int wR;
+    int wB;
+    int wN;
+    int wP;
+    int bK;
+    int bQ;
+    int bR;
+    int bB;
+    int bN;
+    int bP;
+
 public:
     //List of Coord that are being attacked
     vector <coord> white_attack;
     vector <coord> black_attack;
+
     // Initialize the board
     Board();
 
@@ -103,10 +125,18 @@ public:
     //
     void generate_move(colour side);
 
+    // Store all moves
+    vector<move_store> moves;
+
     // Calculate all possible moves from a position
     void calcMoves(colour side);
 
-    void do_move(coord start_loc, coord end_loc);
+    void do_move(move_store thisMove);
+
+    // Evaluate board
+    void evalBoard();
+    int score;
+
     // Test a piece on the board
     void testing(int x, int y);
 
@@ -117,9 +147,11 @@ public:
 
 void convert(coord position);
 coord convert(string s);
+move_store convert(coord start, coord finish);
 
 // Output board
 ostream & operator<<(ostream & stream, Board b);
 ostream & operator<<(ostream & stream, vector<coord>);
+bool operator==(coord first, coord second);
 
 #endif // BITBOARDS_H_INCLUDED

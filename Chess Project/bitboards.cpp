@@ -61,6 +61,11 @@ ostream & operator<<(ostream & stream, Board b)
     return stream;
 }
 
+bool operator==(coord first, coord second)
+{
+    return (first.x == second.x && first.y == second.y);
+}
+
 coord toCoord(int x, int y)
 {
     coord c;
@@ -435,7 +440,7 @@ coord convert(string s)
     // Value to return
     coord c;
 
-    // COnvert x to integer
+    // Convert x to integer
     switch(s[0])
     {
     case 'a':
@@ -500,6 +505,14 @@ coord convert(string s)
     }
 
     return c;
+}
+
+move_store convert(coord start, coord finish)
+{
+    move_store m;
+    m.start_loc = start;
+    m.end_loc = finish;
+    return m;
 }
 
 void Piece::testing()
@@ -685,6 +698,26 @@ void Board::reset()
     // Place queens on board
     board[3][0]=whiteQueen;
     board[3][7]=blackQueen;
+
+    Piece emptySquare;
+    for (int x=0;x<8;x++)
+        for(int y=2;y<6;y++)
+            board[x][y]=emptySquare;
+
+    // Set piece counts to normal
+    wK=1;
+    wQ=1;
+    wR=2;
+    wB=2;
+    wN=2;
+    wP=8;
+
+    bK=1;
+    bQ=1;
+    bR=2;
+    bB=2;
+    bN=2;
+    bP=8;
 }
 
 void Piece::piece_clear()
