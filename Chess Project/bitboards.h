@@ -6,6 +6,8 @@
 enum chess_piece {king = 0, queen = 1, rook = 2, bishop = 3, knight = 4, pawn = 5, blank};
 enum colour {white, black, none};
 
+struct node;
+
 // Coordinate system
 struct coord
 {
@@ -81,7 +83,7 @@ class Board
     // Friends
     friend ostream & operator<<(ostream & stream, Board b);
     friend class Piece;
-    friend void breadth_search(Board b, int maxPly, int currPly, coord start_loc, coord end_loc);
+    friend void breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, colour calcSide);
 
 private:
     // Board of pieces
