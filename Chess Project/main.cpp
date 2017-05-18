@@ -13,9 +13,8 @@ using namespace std;
 int main()
 {
     // Declare chessboard
-    Board b;
-    node *head = create(b);
-    breadth_search(b, 3, 0, noMove, white, head);
+    node *head = create();
+    breadth_search(head, 2, 0, noMove, white);
 
     return 0;
 }

@@ -10,12 +10,12 @@ struct node
 {
     node* trunk;
     vector<node*> branches;
-    Board *container;
+    Board container;
 };
 
-node* create(Board b);
+node* create();
 
-void breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour calcSide, node *parent);
+void breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, colour calcSide);
 
 typedef vector<attacked> avec;
 typedef vector<coord> cvec;

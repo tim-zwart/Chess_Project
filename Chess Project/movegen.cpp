@@ -35,8 +35,15 @@ void Board::calcMoves(colour side)
     }
 }
 
-void breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour calcSide, node *parent)
+void breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, colour calcSide)
 {
+    node *n = new node;
+    parent->branches.push_back(n);
+    n->container = parent->container;
+    n->trunk = parent;
+
+    Board *b = &(n->container);
+
     // Find other colour
     colour other;
     if(calcSide==white)
@@ -44,30 +51,28 @@ void breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colou
     else if (calcSide==black)
         other=white;
 
-    // Do move
-    b.do_move(thisMove);
-    b.calcBoard(other);
-    node *n;
-    //n->container = &b;
-    //n->trunk = parent;
-    //parent->branches.push_back(n);
+    // Do move and then calculate control for the other side
+    b->do_move(thisMove);
 
+    // Calculate possible moves and score
+    b->evalBoard();
 
-    b.calcMoves(calcSide);
-    b.evalBoard();
     // Calculate and do next move
     if(maxPly != currPly)
     {
-        for(int i=0; i<(int)b.moves.size(); i++)
-        {
-            breadth_search(b, maxPly, currPly+1, b.moves[i], other, n);
-        }
+        // Calculate other sides control board and all possible moves
+        b->calcBoard(other);
+        b->calcMoves(calcSide);
+
+        // Check all possible moves
+        for(int i=0; i<(int)b->moves.size(); i++)
+            breadth_search(n, maxPly, currPly+1, b->moves[i], other);
     }
 
     else
     {
-        if(b.score != 0)
-        cout << b << endl;
+        //if(b->score != 0)
+        //cout << *b << endl;
     }
     // Analyze and return
 }
@@ -76,7 +81,7 @@ void Board::depth_search(int ply, int current_ply, colour side)
 {
     move_store current_it;
     vector <move_store> current_var;
-    for(int i = 0; i < moves.size(); i++)
+    for(int i = 0; i < (int)moves.size(); i++)
     {
         current_it = moves[i];
 
@@ -111,9 +116,8 @@ void Board::do_move(move_store m)
     board[m.start_loc.x][m.start_loc.y].piece_clear();
 }
 
-node* create(Board b)
+node* create()
 {
     node *n = new node;
-    n->container=&b;
     return n;
 }
