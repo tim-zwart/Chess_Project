@@ -63,18 +63,13 @@ void breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colou
             breadth_search(b, maxPly, currPly+1, b.moves[i], other, n);
         }
     }
-    /*
+
     else
     {
         if(b.score != 0)
         cout << b << endl;
     }
     // Analyze and return
-    */
-
-
-
-
 }
 
 void Board::depth_search(int ply, int current_ply, colour side)
@@ -92,55 +87,13 @@ void Board::do_move(move_store m)
 {
     if(m.start_loc == m.end_loc)
         return;
+
     // If a piece is being taken, subtract it from the piece count
     if(board[m.end_loc.x][m.end_loc.y].side==white)
-        switch(board[m.end_loc.x][m.end_loc.y].what_piece)
-        {
-        case king:
-            wK--;
-            break;
-        case queen:
-            wQ--;
-            break;
-        case rook:
-            wR--;
-            break;
-        case bishop:
-            wB--;
-            break;
-        case knight:
-            wN--;
-            break;
-        case pawn:
-            wP--;
-            break;
-        default:
-            break;
-        }
+        w[board[m.end_loc.x][m.end_loc.y].what_piece]--;
     else if(board[m.end_loc.x][m.end_loc.y].side==black)
-        switch(board[m.end_loc.x][m.end_loc.y].what_piece)
-        {
-        case king:
-            bK--;
-            break;
-        case queen:
-            bQ--;
-            break;
-        case rook:
-            bR--;
-            break;
-        case bishop:
-            bB--;
-            break;
-        case knight:
-            bN--;
-            break;
-        case pawn:
-            bP--;
-            break;
-        default:
-            break;
-        }
+        b[board[m.end_loc.x][m.end_loc.y].what_piece]--;
+
     // Set new square to piece
     board[m.end_loc.x][m.end_loc.y] = board[m.start_loc.x][m.start_loc.y];
 

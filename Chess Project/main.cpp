@@ -15,7 +15,7 @@ int main()
     // Declare chessboard
     Board b;
     node *head = create(b);
-    breadth_search(b, 4, 0, noMove, white, head);
+    breadth_search(b, 3, 0, noMove, white, head);
 
     return 0;
 }
