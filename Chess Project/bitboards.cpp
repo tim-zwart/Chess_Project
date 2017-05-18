@@ -748,6 +748,20 @@ void Board::calculate(colour side)
 
 }
 
+void Piece::operator =(const Piece& startLoc)
+{
+    movement = startLoc.movement;
+    control = startLoc.control;
+    attack_option = startLoc.attack_option;
+    location = startLoc.location;
+    what_piece = startLoc.what_piece;
+    side = startLoc.side;
+    dir = startLoc.dir;
+    castle = startLoc.castle;
+    enpassant = startLoc.enpassant;
+}
+
+
 void Board::operator =(const Board& startLoc)
 {
     for(int x = 0; x < 8; x++)
@@ -762,3 +776,4 @@ void Board::operator =(const Board& startLoc)
     black_attack = startLoc.black_attack;
     white_attack = startLoc.white_attack;
 }
+

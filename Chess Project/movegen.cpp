@@ -63,7 +63,6 @@ void breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colou
             breadth_search(b, maxPly, currPly+1, b.moves[i], other, n);
         }
     }
-
     else
     {
         if(b.score != 0)
@@ -79,6 +78,7 @@ void Board::depth_search(int ply, int current_ply, colour side)
     for(int i = 0; i < moves.size(); i++)
     {
         current_it = moves[i];
+
 
     }
 }
