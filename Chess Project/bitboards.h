@@ -73,6 +73,8 @@ public:
     // Testing functions
     void testing();
     void piece_clear();
+
+    void operator =(const Piece& startLoc);
 };
 
 // 8x8 board of pieces
