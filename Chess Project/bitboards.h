@@ -4,7 +4,7 @@
 #include "libraries.h"
 
 enum chess_piece {king = 0, queen = 1, rook = 2, bishop = 3, knight = 4, pawn = 5, blank};
-enum colour {white, black, none};
+enum colour {white = 0, black = 1, none};
 
 struct node;
 
@@ -83,9 +83,11 @@ class Board
     // Friends
     friend ostream & operator<<(ostream & stream, Board b);
     friend class Piece;
-    friend void breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, colour calcSide);
+    friend int breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, colour calcSide);
 
 private:
+
+
     // Board of pieces
     Piece board[8][8];
 
@@ -121,6 +123,9 @@ public:
     // Store all moves
     vector<move_store> moves;
 
+    // Store what the AI considers to be the best move
+    int bestMove;
+
     // Calculate all possible moves from a position
     void calcMoves(colour side);
 
@@ -133,14 +138,23 @@ public:
     // Test a piece on the board
     void testing(int x, int y);
 
-    void breadth_search(colour start_side, int ply, int current_ply, vector <vector<coord> >& listMoves, Board current_state);
-
     void depth_search(int ply, int current_ply, colour side);
 
     void calculate(colour side);
 
     void operator =(const Board& startLoc);
+
+    // Computer moves
+    //void compMove(colour side, node *n);
 };
+
+struct node
+{
+    node* trunk;
+    vector<node*> branches;
+    Board container;
+};
+
 
 void convert(coord position);
 coord convert(string s);
@@ -150,4 +164,5 @@ move_store convert(coord start, coord finish);
 ostream & operator<<(ostream & stream, Board b);
 ostream & operator<<(ostream & stream, vector<coord>);
 bool operator==(coord first, coord second);
+bool operator==(move_store first, move_store second);
 #endif // BITBOARDS_H_INCLUDED
