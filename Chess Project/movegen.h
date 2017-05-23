@@ -6,16 +6,17 @@
 
 const move_store noMove=convert(convert("a1"), convert("a1"));
 
-struct node
-{
-    node* trunk;
-    vector<node*> branches;
-    Board *container;
-};
+void compMove(colour side, node *&n);
 
-node* create(Board b);
+// Get input for move
+void getMove(colour side, node *&n);
 
+<<<<<<< HEAD
 void breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour calcSide, node *parent);
+void depth_search(Board& input_board, int ply, int current_ply, colour side, Board& start_board);
+=======
+int breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, colour calcSide);
+>>>>>>> origin/master
 
 typedef vector<attacked> avec;
 typedef vector<coord> cvec;

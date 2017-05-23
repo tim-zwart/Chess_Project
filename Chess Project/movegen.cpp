@@ -1,7 +1,6 @@
 // Contains functions that deal with move generation
 
 #include "movegen.h"
-#include "bitboards.h"
 
 void Board::calcMoves(colour side)
 {
@@ -35,8 +34,21 @@ void Board::calcMoves(colour side)
     }
 }
 
-void breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour calcSide, node *parent)
+int breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, colour calcSide, bool first)
 {
+    node *n;
+    if(!first)
+    {
+        n = new node;
+        parent->branches.push_back(n);
+        n->container = parent->container;
+        n->trunk = parent;
+    }
+    else
+        n = parent;
+
+    Board *b = &(n->container);
+
     // Find other colour
     colour other;
     if(calcSide==white)
@@ -44,43 +56,163 @@ void breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colou
     else if (calcSide==black)
         other=white;
 
-    // Do move
-    b.do_move(thisMove);
-    b.calcBoard(other);
-    node *n;
-    //n->container = &b;
-    //n->trunk = parent;
-    //parent->branches.push_back(n);
+    // Do move and then calculate control for the other side
+    b->do_move(thisMove);
 
-
-    b.calcMoves(calcSide);
-    b.evalBoard();
     // Calculate and do next move
     if(maxPly != currPly)
     {
-        for(int i=0; i<(int)b.moves.size(); i++)
+        // Calculate other sides control board and all possible moves
+        b->calcBoard(other);
+        b->calcMoves(calcSide);
+
+        int bestScore = bool(calcSide)*5000-2500;
+
+        n->branches.clear();
+
+        // Check all possible moves
+        for(int i=0; i<(int)b->moves.size(); i++)
         {
-            breadth_search(b, maxPly, currPly+1, b.moves[i], other, n);
+            int moveScore = breadth_search(n, maxPly, currPly+1, b->moves[i], colour(bool(other) || first), false);
+
+            if(abs(moveScore)>500)
+                continue;
+
+            if(!(bool)calcSide)
+            {
+                if(moveScore >= bestScore)
+                {
+                    b->bestMove = i;
+                    bestScore = moveScore;
+                }
+            }
+            else if(moveScore <= bestScore)
+            {
+                b->bestMove = i;
+                bestScore = moveScore;
+            }
         }
+        return bestScore;
     }
     else
     {
-        if(b.score != 0)
-        cout << b << endl;
+        b->evalBoard();
+        return b->score;
+        //if(b->score != 0)
+        //cout << *b << endl;
     }
     // Analyze and return
+
 }
 
-void Board::depth_search(int ply, int current_ply, colour side)
+void compMove(colour side, node *&n)
 {
-    move_store current_it;
-    vector <move_store> current_var;
-    for(int i = 0; i < moves.size(); i++)
+    /*calculate(side);
+    int this_move = rand() % moves.size();
+    do_move(moves[this_move]);*/
+    breadth_search(n, 2, 0, noMove, side, true);
+
+    n = n->branches[n->container.bestMove];
+}
+
+void getMove(colour side, node *&n)
+{
+    // Declare variables
+    coord end_coord;
+    coord start_coord;
+
+    // Go through until a valid move is found
+    while(true)
     {
+        string start_loc;
+        string end_loc;
+
+        // Ask for input
+        cout << "Enter the starting location of the piece" << endl;
+
+        // Get input
+        while(true)
+        {
+            cin >> start_loc;
+            start_coord = convert(start_loc);
+            if(start_coord.x + start_coord.y < 0)
+                cout << "Invalid input Try again" << endl;
+            else break;
+        }
+
+        // Ask for input
+        cout << "Enter the ending location of the piece" << endl;
+
+        // Get input
+        while(true)
+        {
+            cin >> end_loc;
+            end_coord = convert(end_loc);
+            if(end_coord.x + end_coord.y < 0)
+                cout << "Invalid input Try again" << endl;
+            else break;
+        }
+
+        // Calculate opponents control board
+        if(side == white)
+            n->container.calcBoard(black);
+        else if(side == black)
+            n->container.calcBoard(white);
+
+        // Calculate moves
+        n->container.calcMoves(side);
+
+        // Ensure user inputted move is valid
+        for(int i=0; i<(int)n->container.moves.size(); i++)
+        {
+            if((move_store)n->container.moves[i]==convert(start_coord, end_coord))
+            {
+                breadth_search(n, 1, 0, noMove, side, true);
+                n = n->branches[i];
+                return;
+            }
+        }
+
+        // Error statement if move is not valid
+        cout << "Invalid move Try again" << endl;
+    }
+}
+
+void depth_search(Board& input_board, int ply, int current_ply, colour side, Board& start_board)
+{
+    if(current_ply == ply)
+        return;
+    move_store current_it;
+<<<<<<< HEAD
+    vector<move_store> good_moves;
+    int highest_score = -100000;
+    for(int i = 0; i < input_board.moves.size(); i++)
+=======
+    vector <move_store> current_var;
+    for(int i = 0; i < (int)moves.size(); i++)
+>>>>>>> origin/master
+    {
+<<<<<<< HEAD
         current_it = moves[i];
 
 
+=======
+        input_board.do_move(input_board.moves[i]);
+        input_board.calculate(side);
+        input_board.evalBoard();
+        if((input_board.score > highest_score) || (highest_score = - 100000))
+        {
+            current_it = input_board.moves[i];
+            current_it.eval = input_board.score;
+            highest_score = input_board.score;
+        }
     }
+    for(int i = 0; i < good_moves.size(); i++)
+    {
+        depth_search(input_board, ply, current_ply + 1, !(bool)side, start_board);
+>>>>>>> refs/remotes/origin/master
+    }
+
 }
 
 void Board::do_move(move_store m)
@@ -109,11 +241,4 @@ void Board::do_move(move_store m)
 
     // Clear the old square
     board[m.start_loc.x][m.start_loc.y].piece_clear();
-}
-
-node* create(Board b)
-{
-    node *n = new node;
-    n->container=&b;
-    return n;
 }

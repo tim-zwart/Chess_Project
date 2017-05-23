@@ -66,6 +66,11 @@ bool operator==(coord first, coord second)
     return (first.x == second.x && first.y == second.y);
 }
 
+bool operator==(move_store first, move_store second)
+{
+    return (first.start_loc == second.start_loc && first.end_loc == second.end_loc);
+}
+
 coord toCoord(int x, int y)
 {
     coord c;
@@ -152,7 +157,7 @@ void Piece::moves(Board &board)
 
             // Queenside castle
             if(board.board[0][y].castle && b[1][y] + b[2][y] + b[3][y] + b[4][y]==0 && board.board[1][y].what_piece==blank
-                && board.board[2][y].what_piece==blank && board.board[3][y].what_piece==blank)
+                    && board.board[2][y].what_piece==blank && board.board[3][y].what_piece==blank)
                 movement.push_back(toCoord(2, dir));
 
             // Kingside castle
@@ -700,8 +705,8 @@ void Board::reset()
     board[3][7]=blackQueen;
 
     Piece emptySquare;
-    for (int x=0;x<8;x++)
-        for(int y=2;y<6;y++)
+    for (int x=0; x<8; x++)
+        for(int y=2; y<6; y++)
             board[x][y]=emptySquare;
 
     // Set piece counts to normal
@@ -731,19 +736,17 @@ void Piece::piece_clear()
 
 void Board::calculate(colour side)
 {
-    if(side == black)
+    if(side == white)
     {
         calcMoves(black);
         calcBoard(black);
         calcMoves(white);
-        calcBoard(white);
     }
     else
     {
         calcMoves(white);
         calcBoard(white);
         calcMoves(black);
-        calcBoard(black);
     }
 
 }
@@ -773,7 +776,5 @@ void Board::operator =(const Board& startLoc)
             blackControl[x][y] = startLoc.blackControl[x][y];
         }
     }
-    black_attack = startLoc.black_attack;
-    white_attack = startLoc.white_attack;
 }
 
