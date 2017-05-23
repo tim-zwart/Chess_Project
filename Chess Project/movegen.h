@@ -16,6 +16,7 @@ struct node
 node* create(Board b);
 
 void breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour calcSide, node *parent);
+void depth_search(Board& input_board, int ply, int current_ply, colour side, Board& start_board);
 
 typedef vector<attacked> avec;
 typedef vector<coord> cvec;

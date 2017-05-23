@@ -17,6 +17,7 @@ struct move_store
 {
     coord start_loc;
     coord end_loc;
+    int eval;
 };
 
 // Pieces that are attacked, used in Piece class

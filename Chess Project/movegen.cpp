@@ -72,15 +72,30 @@ void breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colou
     // Analyze and return
 }
 
-void Board::depth_search(int ply, int current_ply, colour side)
+void depth_search(Board& input_board, int ply, int current_ply, colour side, Board& start_board)
 {
+    if(current_ply == ply)
+        return;
     move_store current_it;
-    vector <move_store> current_var;
-    for(int i = 0; i < moves.size(); i++)
+    vector<move_store> good_moves;
+    int highest_score = -100000;
+    for(int i = 0; i < input_board.moves.size(); i++)
     {
-        current_it = moves[i];
-
+        input_board.do_move(input_board.moves[i]);
+        input_board.calculate(side);
+        input_board.evalBoard();
+        if((input_board.score > highest_score) || (highest_score = - 100000))
+        {
+            current_it = input_board.moves[i];
+            current_it.eval = input_board.score;
+            highest_score = input_board.score;
+        }
     }
+    for(int i = 0; i < good_moves.size(); i++)
+    {
+        depth_search(input_board, ply, current_ply + 1, !(bool)side, start_board);
+    }
+
 }
 
 void Board::do_move(move_store m)
