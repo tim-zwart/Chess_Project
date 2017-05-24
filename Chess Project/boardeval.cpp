@@ -9,7 +9,7 @@ const int positionalWeight=1;
 // Weight of pieces
 const int pieceWeight[] =
 {
-1000, // King
+5000, // King
 9,    // Queen
 5,    // Rook
 3,    // Bishop

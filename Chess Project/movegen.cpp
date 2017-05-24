@@ -70,6 +70,9 @@ int breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, c
     // Do move and then calculate control for the other side
     b->do_move(thisMove);
 
+    if(b->w[king] + b->b[king]<2)
+        return takeKing;
+
     // Calculate and do next move
     if(maxPly != currPly)
     {
@@ -77,34 +80,59 @@ int breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, c
         b->calcBoard(other);
         b->calcMoves(calcSide);
 
-        int bestScore = bool(calcSide)*5000-2500;
+        int bestScore = bool(calcSide)*50000-25000;
 
         for(int i=0; i<(int)n->branches.size(); i++)
             destroy(n->branches[i]);
 
         n->branches.clear();
 
+        bool possibleToMove = false;
+
         // Check all possible moves
         for(int i=0; i<(int)b->moves.size(); i++)
         {
-            int moveScore = breadth_search(n, maxPly, currPly+1, b->moves[i], colour(bool(other) || first), false);
-            //destroy(n->branches[i]);
-            if(abs(moveScore)>500)
-                continue;
-
-            if(!(bool)calcSide)
+            int moveScore = breadth_search(n, maxPly, currPly+!(bool)first, b->moves[i], colour(bool(other) || first), false);
+            if(moveScore == takeKing)
+                return illegal;
+            if(moveScore != (int)illegal)
             {
-                if(moveScore >= bestScore)
+
+                if(!possibleToMove)
+                    possibleToMove = true;
+
+                if(!(bool)calcSide)
+                {
+                    if(moveScore >= bestScore)
+                    {
+                        b->bestMove = i;
+                        bestScore = moveScore;
+                    }
+                }
+                else if(moveScore <= bestScore)
                 {
                     b->bestMove = i;
                     bestScore = moveScore;
                 }
             }
-            else if(moveScore <= bestScore)
-            {
-                b->bestMove = i;
-                bestScore = moveScore;
-            }
+        }
+
+        if(!possibleToMove)
+        {
+            for(int y=0; y<8; y++)
+                for(int x=0; x<8; x++)
+                    if(b->board[x][y].what_piece == king)
+                    {
+                        if(calcSide == white)
+                        {
+                            if(b->blackControl[x][y]>0)
+                                return checkmate;
+                        }
+                        else if(b->whiteControl[x][y]>0)
+                            return checkmate;
+
+                        return 0;
+                    }
         }
         return bestScore;
     }
@@ -113,8 +141,6 @@ int breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, c
     {
         b->evalBoard();
         return b->score;
-        //if(b->score != 0)
-        //cout << *b << endl;
     }
     // Analyze and return
 
@@ -142,7 +168,7 @@ void compMove(colour side, node *& n)
     n->trunk->branches.push_back(n);
 
 
-    for(int i=0;i<(int)n->branches.size();i++)
+    for(int i=0; i<(int)n->branches.size(); i++)
         destroy(n->branches[i]);
 
     n->branches.clear();

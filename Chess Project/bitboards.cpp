@@ -131,7 +131,7 @@ void Piece::moves(Board &board)
     attack_option.which_piece.clear();
 
     // The depth for rooks and bishops to move
-    int distance = 7;
+    int distance = 8;
 
     // The 4 diagonal directions for pieces
     bool tr=true; // Top right
@@ -261,7 +261,7 @@ void Piece::moves(Board &board)
                 control.push_back(toCoord(location.x, location.y-i));
             if(d && (location.y-i<0 || board.board[location.x][location.y-i].side == side))
                 d=false;
-            else if(d && board.board[location.x][location.y-i].what_piece != blank && board.board[location.x][location.y-i].side != side)
+            else if(d && board.board[location.x][location.y-i].what_piece != blank)
             {
                 attack_option.attack_coord.push_back(toCoord(location.x, location.y-i));
                 attack_option.which_piece.push_back(board.board[location.x][location.y-i].what_piece);
@@ -632,6 +632,8 @@ void Board::calcBoard(colour side)
 
 void Board::reset()
 {
+    #define start 0
+    #if start
     for (int i=0; i<8; i++)
     {
         // Set up white pawns
@@ -725,6 +727,49 @@ void Board::reset()
     b[bishop]=2;
     b[knight]=2;
     b[pawn]=8;
+
+    #endif // start
+
+    #if !start
+
+    // Create kings
+    Piece whiteKing(toCoord(4, 0), king, white);
+    Piece blackKing(toCoord(4, 7), king, black);
+
+    // Place kings on board
+    board[4][0]=whiteKing;
+    //board[4][7]=blackKing;
+
+    // Create queens
+    Piece whiteQueen(toCoord(3, 0), queen, white);
+    Piece blackQueen(toCoord(3, 7), queen, black);
+
+    // Place queens on board
+    //board[3][0]=whiteQueen;
+    board[3][7]=blackQueen;
+    // Create white rooks
+    /*Piece whiteRook(toCoord(0, 0), rook, white);
+    Piece whiteRook2(toCoord(7, 0), rook, white);
+
+    // Place white rooks on board
+    board[0][0]=whiteRook;
+    board[7][0]=whiteRook2;*/
+
+    w[king]=1;
+    w[queen]=1;
+    w[rook]=0;
+    w[bishop]=0;
+    w[knight]=0;
+    w[pawn]=0;
+
+    b[king]=1;
+    b[queen]=1;
+    b[rook]=0;
+    b[bishop]=0;
+    b[knight]=0;
+    b[pawn]=0;
+
+    #endif // !start
 }
 
 void Piece::piece_clear()
