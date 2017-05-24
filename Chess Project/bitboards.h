@@ -5,6 +5,7 @@
 
 enum chess_piece {king = 0, queen = 1, rook = 2, bishop = 3, knight = 4, pawn = 5, blank};
 enum colour {white = 0, black = 1, none};
+enum moveStates {stalemate = 1, checkmate = 2, illegal = 3};
 
 struct node;
 
@@ -155,6 +156,8 @@ struct node
     Board container;
 };
 
+// Destroy a section of a tree, starting with a node and deleting everything after it
+void destroy(node *& n);
 
 void convert(coord position);
 coord convert(string s);

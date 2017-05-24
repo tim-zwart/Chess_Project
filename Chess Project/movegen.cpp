@@ -36,13 +36,24 @@ void Board::calcMoves(colour side)
 
 int breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, colour calcSide, bool first)
 {
+    // Create new node
     node *n;
     if(!first)
     {
-        n = new node;
-        parent->branches.push_back(n);
-        n->container = parent->container;
-        n->trunk = parent;
+        // Ensure that there is enough memory for a node
+        n = new (nothrow) node;
+        if(n == NULL)
+        {
+            cout << "ERROR Could not allocate memory" << endl;
+        }
+        else
+        {
+            // Set up node
+            parent->branches.push_back(n);
+            n->container = parent->container;
+            n->trunk = parent;
+
+        }
     }
     else
         n = parent;
@@ -68,13 +79,16 @@ int breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, c
 
         int bestScore = bool(calcSide)*5000-2500;
 
+        for(int i=0; i<(int)n->branches.size(); i++)
+            destroy(n->branches[i]);
+
         n->branches.clear();
 
         // Check all possible moves
         for(int i=0; i<(int)b->moves.size(); i++)
         {
             int moveScore = breadth_search(n, maxPly, currPly+1, b->moves[i], colour(bool(other) || first), false);
-
+            //destroy(n->branches[i]);
             if(abs(moveScore)>500)
                 continue;
 
@@ -106,17 +120,35 @@ int breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, c
 
 }
 
-void compMove(colour side, node *&n)
+void compMove(colour side, node *& n)
 {
     /*calculate(side);
     int this_move = rand() % moves.size();
     do_move(moves[this_move]);*/
-    breadth_search(n, 2, 0, noMove, side, true);
 
+    // Search through all possibilities a certain number of moves deep
+    breadth_search(n, 3, 0, noMove, side, true);
+
+    // Delete unused nodes
+    for(int i=0; i<(int)n->branches.size(); i++)
+        if(i != n->container.bestMove)
+            destroy(n->branches[i]);
+
+    // Do move
     n = n->branches[n->container.bestMove];
+
+    // Simplify on trunk
+    n->trunk->branches.clear();
+    n->trunk->branches.push_back(n);
+
+
+    for(int i=0;i<(int)n->branches.size();i++)
+        destroy(n->branches[i]);
+
+    n->branches.clear();
 }
 
-void getMove(colour side, node *&n)
+void getMove(colour side, node *& n)
 {
     // Declare variables
     coord end_coord;
@@ -168,9 +200,44 @@ void getMove(colour side, node *&n)
         {
             if((move_store)n->container.moves[i]==convert(start_coord, end_coord))
             {
-                breadth_search(n, 1, 0, noMove, side, true);
-                n = n->branches[i];
+                // Create and set up new node
+                node *newNode = new node;
+                newNode->container = n->container;
+
+                // Store pointer to node
+                n->branches.push_back(newNode);
+
+                // Do move in new node
+                newNode->container.do_move(n->container.moves[i]);
+
+                // Update the current board
+                n = n->branches[0];
+
                 return;
+            }
+
+            // Delete unused nodes
+            /*for(int i=0; i<(int)n->trunk->branches.size(); i++)
+                if(i != n->trunk->container.bestMove)
+                    destroy(n->trunk->branches[i]);
+
+            // Simplify on trunk
+            n->trunk->branches.clear();
+            n->trunk->branches.push_back(n);*/
+            //////////////////////////////////////////
+            {
+                /*breadth_search(n, 1, 0, noMove, side, true);
+                n = n->branches[i];
+
+                // Delete unused nodes
+                for(int i=0; i<(int)n->trunk->branches.size(); i++)
+                    if(i != n->trunk->container.bestMove)
+                        destroy(n->trunk->branches[i]);
+
+                // Simplify on trunk
+                n->trunk->branches.clear();
+                n->trunk->branches.push_back(n);
+                return;*/
             }
         }
 

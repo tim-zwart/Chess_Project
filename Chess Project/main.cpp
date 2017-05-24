@@ -17,12 +17,13 @@ int main()
 
     cout << "Which side should the computer play as? 0 for white, 1 for black" << endl;
     colour side;
+
     do
     {
-        int n;
-        cin >> n;
+        int num;
+        cin >> num;
 
-        if(cin.fail() || (n != 0 && n != 1))
+        if(cin.fail() || (num != 0 && num != 1))
         {
             cout << "Invalid input Try again" << endl;
             cin.clear();
@@ -30,12 +31,13 @@ int main()
         }
         else
         {
-            side = (colour)n;
+            side = (colour)num;
             break;
         }
     } while(true);
 
     colour turn = white;
+    cout << endl;
     while(true)
     {
         // Output board

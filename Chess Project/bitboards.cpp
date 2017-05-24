@@ -398,13 +398,15 @@ void Piece::moves(Board &board)
                 attack_option.attack_coord.push_back(toCoord(location.x+1, location.y+dir));
                 attack_option.which_piece.push_back(board.board[location.x + 1][location.y+dir].what_piece);
             }
+
+            // Taking via en passant to the right
+            if(location.y==3.5+0.5*dir && board.board[location.x+1][location.y].enpassant)
+            {
+                attack_option.attack_coord.push_back(toCoord(location.x+1, location.y+dir));
+                attack_option.which_piece.push_back(board.board[location.x + 1][location.y].what_piece);
+            }
         }
-        // Taking via en passant to the right
-        else if(location.y==3.5+0.5*dir && board.board[location.x+1][location.y].enpassant)
-        {
-            attack_option.attack_coord.push_back(toCoord(location.x+1, location.y+dir));
-            attack_option.which_piece.push_back(board.board[location.x + 1][location.y].what_piece);
-        }
+
         // Take to the left
         if(location.x>0)
         {
@@ -414,15 +416,15 @@ void Piece::moves(Board &board)
                 attack_option.attack_coord.push_back(toCoord(location.x-1, location.y+dir));
                 attack_option.which_piece.push_back(board.board[location.x - 1][location.y + dir].what_piece);
             }
-        }
 
-        // Taking via en passant to the left
-        else if(location.y==3.5+0.5*dir && board.board[location.x-1][location.y].enpassant)
-        {
-            attack_option.attack_coord.push_back(toCoord(location.x-1, location.y+dir));
-            attack_option.which_piece.push_back(board.board[location.x - 1][location.y].what_piece);
-        }
 
+            // Taking via en passant to the left
+            if(location.y==3.5+0.5*dir && board.board[location.x-1][location.y].enpassant)
+            {
+                attack_option.attack_coord.push_back(toCoord(location.x-1, location.y+dir));
+                attack_option.which_piece.push_back(board.board[location.x - 1][location.y].what_piece);
+            }
+        }
         break;
 
     default:
@@ -762,4 +764,12 @@ void Board::operator =(const Board& startLoc)
             blackControl[x][y] = startLoc.blackControl[x][y];
         }
     }
+}
+
+void destroy(node *& n)
+{
+    for(int i=0; i<(int)n->branches.size(); i++)
+        destroy(n->branches[i]);
+
+    delete n;
 }

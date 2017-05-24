@@ -29,4 +29,7 @@ void Board::evalBoard()
 
     // Add material scores to the total score
     score += materialScore*materialWeight;
+
+    // Increase score by a factor of 10 to accommodate possible states, such as checkmate or stalemate
+    score *= 10;
 }
