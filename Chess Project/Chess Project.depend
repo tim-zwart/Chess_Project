@@ -95,10 +95,10 @@
 
 1495072133 c:\users\matilda\documents\github\chess_project\chess project\boardeval.h
 
-1495578710 c:\users\matilda\documents\github\chess_project\chess project\movegen.h
+1495593508 c:\users\matilda\documents\github\chess_project\chess project\movegen.h
 	"libraries.h"
 	"bitboards.h"
 
-1495578752 source:c:\users\matilda\documents\github\chess_project\chess project\movegen.cpp
+1495594182 source:c:\users\matilda\documents\github\chess_project\chess project\movegen.cpp
 	"movegen.h"
 
