@@ -78,6 +78,7 @@ public:
     void piece_clear();
 
     void operator =(const Piece& startLoc);
+    void operator =(const Piece* &startLoc);
 };
 
 // 8x8 board of pieces
@@ -85,6 +86,7 @@ class Board
 {
     // Friends
     friend ostream & operator<<(ostream & stream, Board b);
+    friend ostream & operator<<(ostream & stream, Board* b);
     friend class Piece;
     friend int breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, colour calcSide);
 
@@ -146,6 +148,7 @@ public:
     void calculate(colour side);
 
     void operator =(const Board& startLoc);
+    void operator =(const Board* &startLoc);
 
     // Computer moves
     //void compMove(colour side, node *n);
@@ -165,6 +168,7 @@ move_store convert(coord start, coord finish);
 
 // Output board
 ostream & operator<<(ostream & stream, Board b);
+ostream & operator<<(ostream & stream, Board* b);
 ostream & operator<<(ostream & stream, vector<coord>);
 bool operator==(coord first, coord second);
 bool operator==(move_store first, move_store second);

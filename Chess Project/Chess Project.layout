@@ -2,31 +2,29 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
+	<File name="movegen.cpp" open="1" top="1" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="8541" topLine="291" />
+		</Cursor>
+	</File>
+	<File name="bitboards.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3581" topLine="155" />
+		</Cursor>
+	</File>
 	<File name="bitboards.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="24302" topLine="742" />
+			<Cursor1 position="25791" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="main.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
+			<Cursor1 position="730" topLine="0" />
 		</Cursor>
 	</File>
+	<File name="movegen.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-		</Cursor>
-	</File>
-		<Cursor>
-		</Cursor>
-	</File>
-		<Cursor>
-		</Cursor>
-	</File>
-		<Cursor>
-		</Cursor>
-	</File>
-		<Cursor>
-		</Cursor>
-	</File>
-		<Cursor>
+			<Cursor1 position="26" topLine="6" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>
