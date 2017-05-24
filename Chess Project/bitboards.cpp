@@ -632,7 +632,7 @@ void Board::calcBoard(colour side)
 
 void Board::reset()
 {
-    #define start 0
+    #define start 1
     #if start
     for (int i=0; i<8; i++)
     {
