@@ -11,10 +11,13 @@ void compMove(colour side, node *&n);
 // Get input for move
 void getMove(colour side, node *&n);
 
+int breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, colour calcSide, bool first);
+
 void breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour calcSide, node *parent);
 void depth_search(Board& input_board, int ply, int current_ply, colour side, Board& start_board);
 
 int breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, colour calcSide);
+
 
 typedef vector<attacked> avec;
 typedef vector<coord> cvec;

@@ -5,6 +5,7 @@
 
 enum chess_piece {king = 0, queen = 1, rook = 2, bishop = 3, knight = 4, pawn = 5, blank};
 enum colour {white = 0, black = 1, none};
+enum moveStates {checkmate = 1, illegal = 2, takeKing = 3};
 
 struct node;
 
@@ -84,7 +85,7 @@ class Board
     // Friends
     friend ostream & operator<<(ostream & stream, Board b);
     friend class Piece;
-    friend int breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, colour calcSide);
+    friend int breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, colour calcSide, bool first);
 
 private:
 
@@ -156,6 +157,8 @@ struct node
     Board container;
 };
 
+// Destroy a section of a tree, starting with a node and deleting everything after it
+void destroy(node *& n);
 
 void convert(coord position);
 coord convert(string s);

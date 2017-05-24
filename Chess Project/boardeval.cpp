@@ -9,7 +9,7 @@ const int positionalWeight=1;
 // Weight of pieces
 const int pieceWeight[] =
 {
-1000, // King
+5000, // King
 9,    // Queen
 5,    // Rook
 3,    // Bishop
@@ -29,4 +29,7 @@ void Board::evalBoard()
 
     // Add material scores to the total score
     score += materialScore*materialWeight;
+
+    // Increase score by a factor of 10 to accommodate possible states, such as checkmate or stalemate
+    score *= 10;
 }
