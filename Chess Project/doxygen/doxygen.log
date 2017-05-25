@@ -1,0 +1,3 @@
+C:/Users/huckkim/Documents/GitHub/Chess_Project/Chess Project/movegen.cpp:10: warning: argument 'Side' of command @param is not found in the argument list of Board::calcMoves(colour side)
+C:/Users/huckkim/Documents/GitHub/Chess_Project/Chess Project/bitboards.h:136: warning: The following parameters of Board::calcMoves(colour side) are not documented:
+  parameter 'side'
