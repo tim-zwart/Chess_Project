@@ -117,7 +117,7 @@ void compMove(colour side, node *&n)
     do_move(moves[this_move]);*/
     //breadth_search(n, 2, 0, noMove, side, true);
     vector<move_store> moves;
-    depth_search(n, 11, 0, side, 0, 0, true, moves);
+    depth_search(n, 13, 0, side, 0, 0, true, moves);
     convert(moves[0].start_loc);
     cout<<" to ";
     convert(moves[0].end_loc);
@@ -289,9 +289,9 @@ void depth_search(node *parent, int ply, int current_ply, colour side, int white
 
 
     // If it finds a better move it calculates that move instead.
-    score_check = order_of_move[order_of_move.size()-1].score;
+    score_check = order_of_move[order_of_move.size() / 4].score;
 
-    for(int i = order_of_move.size() - 1; i >= order_of_move.size() - 4; i--)
+    for(unsigned int i = order_of_move.size() - 1; i >= order_of_move.size() / 4; i--)
     {
         n->container.do_move(order_of_move[i].curr_move);
         moves.push_back(order_of_move[i].curr_move);
