@@ -115,10 +115,15 @@ void compMove(colour side, node *&n)
     /*calculate(side);
     int this_move = rand() % moves.size();
     do_move(moves[this_move]);*/
-    breadth_search(n, 2, 0, noMove, side, true);
-    int* move_variaiton = NULL;
-    depth_search(n, 6, 0, side, 0, true, move_variaiton);
-    n = n->branches[n->container.bestMove];
+    //breadth_search(n, 2, 0, noMove, side, true);
+    vector<move_store> moves;
+    depth_search(n, 11, 0, side, 0, 0, true, moves);
+    convert(moves[0].start_loc);
+    cout<<" to ";
+    convert(moves[0].end_loc);
+    cout<<endl;
+    n->container.do_move(moves[0]);
+    //n = n->branches[n->container.bestMove];
 }
 
 void getMove(colour side, node *&n)
@@ -184,55 +189,52 @@ void getMove(colour side, node *&n)
     }
 }
 
-void depth_search(node *parent, int ply, int current_ply, colour side, int highest, bool first, int* move_variation)
+void depth_search(node *parent, int ply, int current_ply, colour side, int white_score, int black_score, bool first, vector<move_store> &moves)
 {
     Board original = parent->container;
     // declares a node
     node *n;
     colour next_colour;
+    int score_check;
 
     // determines the next colour being used
     if(side == white)
+    {
         next_colour = black;
+        score_check = white_score;
+    }
     else
+    {
         next_colour = white;
+        score_check = black_score;
+    }
 
     vector <eval_pair> order_of_move;
     eval_pair buff_pair;
-    int current_highest = highest;
 
     if(!first)
     {
         //creates new node
         n = new node;
-
+        /*
         // If it's not the first then it creates a new node and adds it to the parent nodes branches.
         parent->branches.push_back(n);
 
         // updates the board being used
         n->container = parent->container;
         n->trunk = parent;
+        */
     }
     else
     {
         // sets the first node to the parent
         n = parent;
-
-        // Creates a new array which is the combination of moves that the search calculates
-        move_variation = new int[ply];
-        // resets elements
-        //for(int i = 0; i < ply; i++)
-            //move_variation[i] = noMove;
     }
 
     // If it reaches the max depth stop
     if(ply == current_ply)
-    {
-        n->container.bestMove = move_variation[0];
         return;
-    }
-    n->container.calcBoard(side);
-    n->container.calcMoves(next_colour);
+    n->container.calcMoves(side);
 
     // creates a buff board where moves can be done
     Board *buff_board = &(n->container);
@@ -250,53 +252,56 @@ void depth_search(node *parent, int ply, int current_ply, colour side, int highe
     {
         // does moves, calculates and evaluates.
         buff_board->do_move(buff_board->moves[i]);
-        buff_board->calcBoard((colour)(!(bool)side));
-        buff_board->calcMoves(side);
-        //cout<<buff_board;
+        //cout<<buff_board<<endl;
         buff_board->evalBoard();
-        cout<<"Score = "<<buff_board->score<<endl;
+        //cout<<"Score = "<<buff_board->score<<endl;
 
         // Saves each move done with it's eval score into a vector
         buff_pair.curr_move = buff_board->moves[i];
         buff_pair.score = buff_board->score;
         order_of_move.push_back(buff_pair);
+
+        //Resets the board
         *buff_board = original;
-        buff_board->calcBoard((colour)(!(bool)side));
-        buff_board->calcMoves(side);
+        //cout<<buff_board<<endl;
     }
 
     // sorts it from lowest to highest score
     std::sort(order_of_move.begin(), order_of_move.end(), compareByScore);
 
-    cout<<"size of order_of_move = "<<order_of_move.size()<<endl;
+    //cout<<"size of order_of_move = "<<order_of_move.size()<<endl;
 
-    for(unsigned int i = 0; i < order_of_move.size(); i++)
+    /*for(unsigned int i = 0; i < order_of_move.size(); i++)
     {
         convert(order_of_move[i].curr_move.start_loc);
         cout<<" to ";
         convert(order_of_move[i].curr_move.end_loc);
         cout<<endl;
         cout<<"Score = "<<order_of_move[i].score<<endl;
-    }
+    }*/
 
     // if the highest score is smaller than the max score found, then goes back
-    if(order_of_move[order_of_move.size() - 1].score < current_highest)
+    if((order_of_move[order_of_move.size()-1].score < score_check  && side == white) || (order_of_move[order_of_move.size()-1].score > score_check  && side == black) )
+    {
+        moves.pop_back();
         return;
+    }
+
 
     // If it finds a better move it calculates that move instead.
-    else if(first)
+    score_check = order_of_move[order_of_move.size()-1].score;
+
+    for(int i = order_of_move.size() - 1; i >= order_of_move.size() - 4; i--)
     {
-        for(unsigned int i = 0; i < buff_board->moves.size(); i ++)
-        {
-            if(buff_board->moves[i] == order_of_move[order_of_move.size()-1].curr_move)
-                move_variation[0] = i;
-        }
+        n->container.do_move(order_of_move[i].curr_move);
+        moves.push_back(order_of_move[i].curr_move);
+        if(side == white)
+            depth_search(n, ply, current_ply + 1, next_colour, score_check, black_score, false, moves);
+        else
+            depth_search(n, ply, current_ply + 1, next_colour, white_score, score_check, false, moves);
+        //cout<<n->container;
+        n->container = original;
     }
-    else
-        current_highest = order_of_move[order_of_move.size()-1].score;
-    n->container.do_move(order_of_move[order_of_move.size()-1].curr_move);
-    cout<<n->container<<endl;
-    depth_search(n, ply + 1, current_ply, next_colour, current_highest, false, move_variation);
 }
 
 void Board::do_move(move_store m)
