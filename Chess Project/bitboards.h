@@ -5,7 +5,8 @@
 
 enum chess_piece {king = 0, queen = 1, rook = 2, bishop = 3, knight = 4, pawn = 5, blank};
 enum colour {white = 0, black = 1, none};
-enum moveStates {checkmate = 1, illegal = 2, takeKing = 3};
+enum moveStates {stalemate = 1, checkmate = 2, illegal = 3, takeKing = 4};
+enum gameState {whiteWins = 0, blackWins = 1, draw = 2, continuing = 3};
 
 struct node;
 
