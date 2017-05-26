@@ -6,10 +6,10 @@
 
 const move_store noMove=convert(convert("a1"), convert("a1"));
 
-void compMove(colour side, node *&n);
+gameState compMove(colour side, node *&n);
 
 // Get input for move
-void getMove(colour side, node *&n);
+gameState getMove(colour side, node *&n);
 
 int breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, colour calcSide, bool first);
 
