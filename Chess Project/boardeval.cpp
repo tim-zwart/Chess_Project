@@ -29,4 +29,29 @@ void Board::evalBoard()
 
     // Add material scores to the total score
     score += materialScore*materialWeight;
+
+    //outputBoard(white);
+
+    for(int x = 3; x < 5; x++)
+    {
+        for(int y = 3; y < 5; y++)
+        {
+            if(board[x][y].side == white)
+                score += 3;
+            else if(board[x][y].side == black)
+                score -= 3;
+            if(whiteControl[x][y] != 0)
+                score += 2 * whiteControl[x][y];
+            else if(blackControl[x][y] != 0)
+                score -= 2 * blackControl[x][y];
+        }
+    }
+
+    for(int i = 0; i < 8; i++)
+    {
+        if((board[0][i].what_piece != bishop || board[0][i].what_piece != knight) && board[7][i].side == white)
+            score += 1;
+        if ((board[7][i].what_piece != bishop || board[7][i].what_piece != knight) && board[7][i].side == black)
+            score -= 1;
+    }
 }

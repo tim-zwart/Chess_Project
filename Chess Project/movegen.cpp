@@ -123,6 +123,8 @@ void compMove(colour side, node *&n)
     convert(moves[0].end_loc);
     cout<<endl;
     n->container.do_move(moves[0]);
+    n->container.evalBoard();
+    cout<<"Score is = "<<n->container.score<<endl;
     //n = n->branches[n->container.bestMove];
 }
 
@@ -238,6 +240,7 @@ void depth_search(node *parent, int ply, int current_ply, colour side, int white
 
     // creates a buff board where moves can be done
     Board *buff_board = &(n->container);
+    Board action_board = original;
 
     /*for(int i = 0; i < n->container.moves.size(); i++)
     {
@@ -251,18 +254,20 @@ void depth_search(node *parent, int ply, int current_ply, colour side, int white
     for(unsigned int i = 0; i < buff_board->moves.size(); i++)
     {
         // does moves, calculates and evaluates.
-        buff_board->do_move(buff_board->moves[i]);
+        action_board.do_move(buff_board->moves[i]);
         //cout<<buff_board<<endl;
-        buff_board->evalBoard();
+        action_board.calcMoves(side);
+        action_board.calcBoard(side);
+        action_board.evalBoard();
         //cout<<"Score = "<<buff_board->score<<endl;
 
         // Saves each move done with it's eval score into a vector
         buff_pair.curr_move = buff_board->moves[i];
-        buff_pair.score = buff_board->score;
+        buff_pair.score = action_board.score;
         order_of_move.push_back(buff_pair);
 
         //Resets the board
-        *buff_board = original;
+        action_board = original;
         //cout<<buff_board<<endl;
     }
 
