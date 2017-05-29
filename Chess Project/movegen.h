@@ -4,6 +4,12 @@
 #include "libraries.h"
 #include "bitboards.h"
 
+struct eval_pair
+{
+    move_store curr_move;
+    int score;
+};
+
 const move_store noMove=convert(convert("a1"), convert("a1"));
 
 gameState compMove(colour side, node *&n);
@@ -12,12 +18,7 @@ gameState compMove(colour side, node *&n);
 gameState getMove(colour side, node *&n);
 
 int breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, colour calcSide, bool first);
-
-void breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour calcSide, node *parent);
-void depth_search(Board& input_board, int ply, int current_ply, colour side, Board& start_board);
-
-int breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, colour calcSide);
-
+void depth_search(node *parent, int ply, int current_ply, colour side, int white_score, int black_score, bool first, vector <move_store> &moves);
 
 typedef vector<attacked> avec;
 typedef vector<coord> cvec;
