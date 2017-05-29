@@ -30,7 +30,6 @@ void Board::evalBoard()
     // Add material scores to the total score
     score += materialScore*materialWeight;
 
-<<<<<<< HEAD
     //outputBoard(white);
 
     for(int x = 3; x < 5; x++)
@@ -55,8 +54,6 @@ void Board::evalBoard()
         if ((board[7][i].what_piece != bishop || board[7][i].what_piece != knight) && board[7][i].side == black)
             score -= 1;
     }
-=======
     // Increase score by a factor of 10 to accommodate possible states, such as checkmate or stalemate
     score *= 10;
->>>>>>> refs/remotes/origin/master
 }
