@@ -61,6 +61,52 @@ ostream & operator<<(ostream & stream, Board b)
     return stream;
 }
 
+ostream & operator<<(ostream & stream, Board* b)
+{
+    // Go throught the entire board
+    for (int i=7; i>=0; i--)
+    {
+        for (int j=0; j<8; j++)
+        {
+            // Convert to a representation as a character
+            char c;
+            switch(b->board[j][i].what_piece)
+            {
+            case king:
+                c='K';
+                break;
+            case queen:
+                c='Q';
+                break;
+            case bishop:
+                c='B';
+                break;
+            case knight:
+                c='N';
+                break;
+            case rook:
+                c='R';
+                break;
+            case pawn:
+                c='P';
+                break;
+            default:
+                c='*';
+                break;
+            }
+            // If the piece is black, make the representation lower case
+            if(b->board[j][i].side==black)
+                c += 32;
+
+            // Output character onto space on board
+            stream << c << " ";
+        }
+        // New line on board
+        stream << endl;
+    }
+    return stream;
+}
+
 bool operator==(coord first, coord second)
 {
     return (first.x == second.x && first.y == second.y);
@@ -797,6 +843,19 @@ void Board::calculate(colour side)
         calcMoves(black);
     }
 
+}
+
+void Piece::operator =(const Piece& startLoc)
+{
+    movement = startLoc.movement;
+    control = startLoc.control;
+    attack_option = startLoc.attack_option;
+    location = startLoc.location;
+    what_piece = startLoc.what_piece;
+    side = startLoc.side;
+    dir = startLoc.dir;
+    castle = startLoc.castle;
+    enpassant = startLoc.enpassant;
 }
 
 void Board::operator =(const Board& startLoc)
