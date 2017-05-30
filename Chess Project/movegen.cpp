@@ -359,6 +359,28 @@ void Board::do_move(move_store m)
     // Clear the old square
     board[m.start_loc.x][m.start_loc.y].piece_clear();
 
+    // If the king is castling...
+    if(board[m.end_loc.x][m.end_loc.y].what_piece == king && abs(m.start_loc.x - m.end_loc.x) == 2)
+    {
+        if(m.end_loc.x == 6)
+        {
+            board[5][m.end_loc.y] = board[7][m.end_loc.y];
+            board[5][m.end_loc.y].location == toCoord(5, m.end_loc.y);
+
+            // Clear the old square
+            board[7][m.end_loc.y].piece_clear();
+        }
+        else
+        {
+            board[2][m.end_loc.y] = board[0][m.end_loc.y];
+            board[2][m.end_loc.y].location == toCoord(2, m.end_loc.y);
+
+            // Clear the old square
+            board[2][m.end_loc.y].piece_clear();
+
+        }
+    }
+
     // Recalculate moves and control boards
     calcMoves(board[m.end_loc.x][m.end_loc.y].side);
     calcBoard(board[m.end_loc.x][m.end_loc.y].side);

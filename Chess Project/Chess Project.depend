@@ -2,7 +2,7 @@
 1495826176 source:c:\users\tim\documents\github\chess_project\chess project\bitboards.cpp
 	"bitboards.h"
 
-1495806681 c:\users\tim\documents\github\chess_project\chess project\bitboards.h
+1496067419 c:\users\tim\documents\github\chess_project\chess project\bitboards.h
 	"libraries.h"
 
 1495204101 c:\users\tim\documents\github\chess_project\chess project\libraries.h
@@ -10,7 +10,7 @@
 	<vector>
 	<algorithm>
 
-1495808807 source:c:\users\tim\documents\github\chess_project\chess project\main.cpp
+1495826536 source:c:\users\tim\documents\github\chess_project\chess project\main.cpp
 	<iostream>
 	"bitboards.h"
 	"movegen.h"
@@ -64,11 +64,11 @@
 	"libraries.h"
 	"bitboards.h"
 
-1495808807 c:\users\tim\documents\github\chess_project\chess project\movegen.h
+1495826536 c:\users\tim\documents\github\chess_project\chess project\movegen.h
 	"libraries.h"
 	"bitboards.h"
 
-1495826128 source:c:\users\tim\documents\github\chess_project\chess project\movegen.cpp
+1496149818 source:c:\users\tim\documents\github\chess_project\chess project\movegen.cpp
 	"movegen.h"
 
 1495718418 source:c:\users\tim\documents\github\chess_project\chess project\boardeval.cpp
