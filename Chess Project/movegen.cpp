@@ -167,7 +167,9 @@ gameState compMove(colour side, node *& n)
     int this_move = rand() % moves.size();
     do_move(moves[this_move]);*/
 
-    #if 0
+    #define breadth 1
+
+    #if !breadth
     vector<move_store> moves;
     depth_search(n, 13, 0, side, 0, 0, true, moves);
     convert(moves[0].start_loc);
@@ -180,7 +182,7 @@ gameState compMove(colour side, node *& n)
 
     #endif
 
-    #if 1
+    #if breadth
     // Search through all possibilities a certain number of moves deep
     int state = breadth_search(n, 3, 0, noMove, side, true);
 
@@ -376,7 +378,7 @@ void depth_search(node *parent, int ply, int current_ply, colour side, int white
     Board action_board = original;
     vector <move_store> current_var;
 
-    for(int i = 0; i < n->container.moves.size(); i++)
+    for(unsigned int i = 0; i < n->container.moves.size(); i++)
     {
         convert(n->container.moves[i].start_loc);
         cout<<" to ";
@@ -402,7 +404,7 @@ void depth_search(node *parent, int ply, int current_ply, colour side, int white
 
         //Resets the board
         action_board = original;
-        //cout<<buff_board<<endl;
+        //cout<<*buff_board<<endl;
     }
 
     // sorts it from lowest to highest score
