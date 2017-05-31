@@ -655,9 +655,9 @@ void Board::calcBoard(colour side)
             b[i]=(int*)this->blackControl[i];
 
     // Set everything to 0
-    for (int i=0; i<8; i++)
-        for (int j=0; j<8; j++)
-            b[i][j] = 0;
+    for (int x=0; x<8; x++)
+        for (int y=0; y<8; y++)
+            b[x][y] = 0;
 
     // Add all of the attacks and movements
     for (int x=0; x<8; x++)
@@ -678,8 +678,8 @@ void Board::calcBoard(colour side)
 
 void Board::reset()
 {
-    #define start 1
-    #if start
+#define start 1
+#if start
     for (int i=0; i<8; i++)
     {
         // Set up white pawns
@@ -774,28 +774,29 @@ void Board::reset()
     b[knight]=2;
     b[pawn]=8;
 
-    #endif // start
+#endif // start
 
-    #if !start
+#if !start
 
     // Create kings
-    Piece whiteKing(toCoord(4, 0), king, white);
+    Piece whiteKing(toCoord(5, 0), king, white);
     Piece blackKing(toCoord(4, 7), king, black);
 
     // Place kings on board
-    board[4][0]=whiteKing;
+    board[5][0]=whiteKing;
     //board[4][7]=blackKing;
 
     // Create queens
     Piece whiteQueen(toCoord(3, 0), queen, white);
-    Piece blackQueen(toCoord(3, 7), queen, black);
+    Piece blackQueen(toCoord(3, 1), queen, black);
 
     // Place queens on board
     //board[3][0]=whiteQueen;
-    board[3][7]=blackQueen;
+    board[3][1]=blackQueen;
     // Create white rooks
-    /*Piece whiteRook(toCoord(0, 0), rook, white);
-    Piece whiteRook2(toCoord(7, 0), rook, white);
+    Piece blackRook(toCoord(0, 7), rook, black);
+    board[0][7] = blackRook;
+    /*Piece whiteRook2(toCoord(7, 0), rook, white);
 
     // Place white rooks on board
     board[0][0]=whiteRook;
@@ -810,12 +811,12 @@ void Board::reset()
 
     b[king]=1;
     b[queen]=1;
-    b[rook]=0;
+    b[rook]=1;
     b[bishop]=0;
     b[knight]=0;
     b[pawn]=0;
 
-    #endif // !start
+#endif // !start
 }
 
 void Piece::piece_clear()

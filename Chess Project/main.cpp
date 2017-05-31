@@ -48,13 +48,30 @@ int main()
         // Output board
         cout << n->container << endl;
 
+        gameState currState;
+
         // If it is the computer's turn, make it move
         if(turn == side)
-            compMove(turn, n);
+            currState = compMove(turn, n);
 
         // If it is the user's turn, let them move
         else
-            getMove(turn, n);
+            currState = getMove(turn, n);
+
+        switch (currState)
+        {
+        case whiteWins:
+            cout << "Checkmate! White wins!" << endl;
+            return 0;
+        case blackWins:
+            cout << "Checkmate! Black wins!" << endl;
+            return 0;
+        case draw:
+            cout << "It's a draw!" << endl;
+            return 0;
+        default:
+            break;
+        }
 
         // Change who's turn it is to move
         turn = colour(!bool(turn));

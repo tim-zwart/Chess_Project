@@ -3,9 +3,20 @@
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
 <<<<<<< HEAD
+<<<<<<< HEAD
 	<File name="bitboards.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="3581" topLine="153" />
+=======
+	<File name="movegen.cpp" open="1" top="1" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="6432" topLine="207" />
+>>>>>>> refs/remotes/origin/master
+=======
+<<<<<<< HEAD
+	<File name="movegen.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="596" topLine="0" />
 =======
 	<File name="movegen.cpp" open="1" top="1" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
@@ -15,6 +26,29 @@
 	</File>
 	<File name="bitboards.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
+<<<<<<< HEAD
+			<Cursor1 position="1304" topLine="23" />
+		</Cursor>
+	</File>
+	<File name="movegen.cpp" open="1" top="1" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2817" topLine="82" />
+=======
+	<File name="bitboards.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3581" topLine="153" />
+>>>>>>> origin/huck_branch
+		</Cursor>
+	</File>
+	<File name="main.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="730" topLine="10" />
+>>>>>>> origin/huck_branch
+		</Cursor>
+	</File>
+	<File name="bitboards.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+<<<<<<< HEAD
 <<<<<<< HEAD
 			<Cursor1 position="730" topLine="10" />
 		</Cursor>
@@ -33,6 +67,9 @@
 		<Cursor>
 			<Cursor1 position="26" topLine="0" />
 =======
+			<Cursor1 position="25250" topLine="350" />
+>>>>>>> origin/huck_branch
+=======
 			<Cursor1 position="1621" topLine="81" />
 		</Cursor>
 	</File>
@@ -49,10 +86,36 @@
 	<File name="boardeval.cpp" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="386" topLine="0" />
+>>>>>>> refs/remotes/origin/master
 		</Cursor>
 	</File>
-	<File name="movegen.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+<<<<<<< HEAD
+	<File name="bitboards.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
+			<Cursor1 position="3581" topLine="96" />
+=======
+	<File name="movegen.cpp" open="1" top="1" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+<<<<<<< HEAD
+			<Cursor1 position="8050" topLine="286" />
+>>>>>>> origin/huck_branch
+		</Cursor>
+	</File>
+	<File name="boardeval.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+<<<<<<< HEAD
+=======
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="boardeval.cpp" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+<<<<<<< HEAD
+			<Cursor1 position="250" topLine="0" />
+=======
+			<Cursor1 position="26" topLine="0" />
+>>>>>>> origin/huck_branch
+=======
 			<Cursor1 position="303" topLine="0" />
 		</Cursor>
 	</File>
@@ -63,6 +126,7 @@
 	</File>
 	<File name="libraries.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
+>>>>>>> origin/huck_branch
 			<Cursor1 position="146" topLine="0" />
 >>>>>>> refs/remotes/origin/master
 		</Cursor>

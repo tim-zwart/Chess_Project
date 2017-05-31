@@ -6,7 +6,11 @@ var NAVTREE =
       [ "Class Index", "classes.html", null ],
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", null ],
+<<<<<<< HEAD
         [ "Functions", "functions_func.html", null ]
+=======
+        [ "Related Functions", "functions_rela.html", null ]
+>>>>>>> origin/huck_branch
       ] ]
     ] ],
     [ "Files", null, [
