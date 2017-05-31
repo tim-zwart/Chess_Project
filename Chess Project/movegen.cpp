@@ -173,7 +173,9 @@ gameState compMove(colour side, node *& n)
 <<<<<<< HEAD
 =======
 
-    #if 0
+    #define breadth 1
+
+    #if !breadth
     vector<move_store> moves;
     depth_search(n, 13, 0, side, 0, 0, true, moves);
     convert(moves[0].start_loc);
@@ -186,8 +188,12 @@ gameState compMove(colour side, node *& n)
 
     #endif
 
+<<<<<<< HEAD
     #if 1
 >>>>>>> origin/huck_branch
+=======
+    #if breadth
+>>>>>>> refs/remotes/origin/master
     // Search through all possibilities a certain number of moves deep
     int state = breadth_search(n, 3, 0, noMove, side, true);
 
@@ -394,10 +400,14 @@ void depth_search(node *parent, int ply, int current_ply, colour side, int white
     vector <move_store> current_var;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     /*for(int i = 0; i < n->container.moves.size(); i++)
 =======
     for(int i = 0; i < n->container.moves.size(); i++)
 >>>>>>> origin/huck_branch
+=======
+    for(unsigned int i = 0; i < n->container.moves.size(); i++)
+>>>>>>> refs/remotes/origin/master
     {
         convert(n->container.moves[i].start_loc);
         cout<<" to ";
@@ -423,7 +433,7 @@ void depth_search(node *parent, int ply, int current_ply, colour side, int white
 
         //Resets the board
         action_board = original;
-        //cout<<buff_board<<endl;
+        //cout<<*buff_board<<endl;
     }
 
     // sorts it from lowest to highest score
@@ -489,6 +499,28 @@ void Board::do_move(move_store m)
 
     // Clear the old square
     board[m.start_loc.x][m.start_loc.y].piece_clear();
+
+    // If the king is castling...
+    if(board[m.end_loc.x][m.end_loc.y].what_piece == king && abs(m.start_loc.x - m.end_loc.x) == 2)
+    {
+        if(m.end_loc.x == 6)
+        {
+            board[5][m.end_loc.y] = board[7][m.end_loc.y];
+            board[5][m.end_loc.y].location == toCoord(5, m.end_loc.y);
+
+            // Clear the old square
+            board[7][m.end_loc.y].piece_clear();
+        }
+        else
+        {
+            board[2][m.end_loc.y] = board[0][m.end_loc.y];
+            board[2][m.end_loc.y].location == toCoord(2, m.end_loc.y);
+
+            // Clear the old square
+            board[2][m.end_loc.y].piece_clear();
+
+        }
+    }
 
     // Recalculate moves and control boards
     calcMoves(board[m.end_loc.x][m.end_loc.y].side);

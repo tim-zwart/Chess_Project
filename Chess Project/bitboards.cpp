@@ -61,52 +61,6 @@ ostream & operator<<(ostream & stream, Board b)
     return stream;
 }
 
-ostream & operator<<(ostream & stream, Board* b)
-{
-    // Go throught the entire board
-    for (int i=7; i>=0; i--)
-    {
-        for (int j=0; j<8; j++)
-        {
-            // Convert to a representation as a character
-            char c;
-            switch(b->board[j][i].what_piece)
-            {
-            case king:
-                c='K';
-                break;
-            case queen:
-                c='Q';
-                break;
-            case bishop:
-                c='B';
-                break;
-            case knight:
-                c='N';
-                break;
-            case rook:
-                c='R';
-                break;
-            case pawn:
-                c='P';
-                break;
-            default:
-                c='*';
-                break;
-            }
-            // If the piece is black, make the representation lower case
-            if(b->board[j][i].side==black)
-                c += 32;
-
-            // Output character onto space on board
-            stream << c << " ";
-        }
-        // New line on board
-        stream << endl;
-    }
-    return stream;
-}
-
 bool operator==(coord first, coord second)
 {
     return (first.x == second.x && first.y == second.y);
@@ -164,11 +118,11 @@ void Piece::moves(Board &board)
     if(side==white)
     {
         for (int i=0; i<8; i++)
-            b[i]=(int*)board.whiteControl[i];
+            b[i]=(int*)board.blackControl[i];
     }
     else if(side==black)
         for (int i=0; i<8; i++)
-            b[i]=(int*)board.blackControl[i];
+            b[i]=(int*)board.whiteControl[i];
 
     // Reset vectors
     movement.clear();
@@ -204,12 +158,12 @@ void Piece::moves(Board &board)
             // Queenside castle
             if(board.board[0][y].castle && b[1][y] + b[2][y] + b[3][y] + b[4][y]==0 && board.board[1][y].what_piece==blank
                     && board.board[2][y].what_piece==blank && board.board[3][y].what_piece==blank)
-                movement.push_back(toCoord(2, dir));
+                movement.push_back(toCoord(2, y));
 
             // Kingside castle
             if(board.board[7][y].castle && b[6][y] + b[5][y] + b[4][y]==0 && board.board[6][y].what_piece==blank
                     && board.board[5][y].what_piece==blank)
-                movement.push_back(toCoord(6, dir));
+                movement.push_back(toCoord(6, y));
         }
 
     case queen:
