@@ -31,7 +31,7 @@ void Board::evalBoard()
     score += materialScore*materialWeight;
 
     //outputBoard(white);
-    int positionalScore;
+    int positionalScore = 0;
 
     for(int x = 3; x < 5; x++)
     {
