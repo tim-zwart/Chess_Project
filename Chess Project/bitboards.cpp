@@ -15,11 +15,12 @@ ostream & operator<<(ostream & stream, vector<coord> cvec)
 }
 
 // Output Board class
-ostream & operator<<(ostream & stream, Board b)
+ostream & operator<<(ostream & stream, Board &b)
 {
     // Go throught the entire board
     for (int i=7; i>=0; i--)
     {
+        stream << i+1 << "   ";
         for (int j=0; j<8; j++)
         {
             // Convert to a representation as a character
@@ -58,6 +59,7 @@ ostream & operator<<(ostream & stream, Board b)
         // New line on board
         stream << endl;
     }
+    stream << endl << "    a b c d e f g h" << endl;
     return stream;
 }
 
@@ -128,7 +130,10 @@ void Piece::moves(Board &board)
     movement.clear();
     control.clear();
     attack_option.attack_coord.clear();
-    attack_option.which_piece.clear();
+    /*movement.reserve(30);
+    control.reserve(30);
+    attack_option.attack_coord.reserve(10);*/
+    //attack_option.which_piece.clear();
 
     // The depth for rooks and bishops to move
     int distance = 8;
@@ -181,7 +186,7 @@ void Piece::moves(Board &board)
             else if(tr && board.board[location.x+i][location.y+i].side != side && board.board[location.x+i][location.y+i].side != none)
             {
                 attack_option.attack_coord.push_back(toCoord(location.x+i, location.y+i));
-                attack_option.which_piece.push_back(board.board[location.x+i][location.y+i].what_piece);
+                //attack_option.which_piece.push_back(board.board[location.x+i][location.y+i].what_piece);
                 tr=false;
             }
             else if(tr)
@@ -196,7 +201,7 @@ void Piece::moves(Board &board)
             else if(tl && board.board[location.x-i][location.y+i].side != side && board.board[location.x-i][location.y+i].side != none)
             {
                 attack_option.attack_coord.push_back(toCoord(location.x-i, location.y+i));
-                attack_option.which_piece.push_back(board.board[location.x-i][location.y+i].what_piece);
+                //attack_option.which_piece.push_back(board.board[location.x-i][location.y+i].what_piece);
                 tl=false;
             }
             else if(tl)
@@ -211,7 +216,7 @@ void Piece::moves(Board &board)
             else if(br && board.board[location.x+i][location.y-i].side != side && board.board[location.x+i][location.y-i].side != none)
             {
                 attack_option.attack_coord.push_back(toCoord(location.x+i, location.y-i));
-                attack_option.which_piece.push_back(board.board[location.x+i][location.y-i].what_piece);
+                //attack_option.which_piece.push_back(board.board[location.x+i][location.y-i].what_piece);
                 br=false;
             }
             else if(br)
@@ -226,7 +231,7 @@ void Piece::moves(Board &board)
             else if(bl && board.board[location.x-i][location.y-i].side != side && board.board[location.x-i][location.y-i].side != none)
             {
                 attack_option.attack_coord.push_back(toCoord(location.x-i, location.y-i));
-                attack_option.which_piece.push_back(board.board[location.x-i][location.y-i].what_piece);
+                //attack_option.which_piece.push_back(board.board[location.x-i][location.y-i].what_piece);
                 bl=false;
             }
             else if(bl)
@@ -250,7 +255,7 @@ void Piece::moves(Board &board)
             else if(u && board.board[location.x][location.y+i].what_piece != blank && board.board[location.x][location.y+i].side != side)
             {
                 attack_option.attack_coord.push_back(toCoord(location.x, location.y+i));
-                attack_option.which_piece.push_back(board.board[location.x][location.y+i].what_piece);
+                //attack_option.which_piece.push_back(board.board[location.x][location.y+i].what_piece);
                 u=false;
             }
             else if (u)
@@ -264,7 +269,7 @@ void Piece::moves(Board &board)
             else if(d && board.board[location.x][location.y-i].what_piece != blank)
             {
                 attack_option.attack_coord.push_back(toCoord(location.x, location.y-i));
-                attack_option.which_piece.push_back(board.board[location.x][location.y-i].what_piece);
+                //attack_option.which_piece.push_back(board.board[location.x][location.y-i].what_piece);
                 d=false;
             }
             else if (d)
@@ -278,7 +283,7 @@ void Piece::moves(Board &board)
             else if(r && board.board[location.x+i][location.y].what_piece != blank && board.board[location.x+i][location.y].side != side)
             {
                 attack_option.attack_coord.push_back(toCoord(location.x+i, location.y));
-                attack_option.which_piece.push_back(board.board[location.x+i][location.y].what_piece);
+                //attack_option.which_piece.push_back(board.board[location.x+i][location.y].what_piece);
                 r=false;
             }
             else if (r)
@@ -292,7 +297,7 @@ void Piece::moves(Board &board)
             else if(l && board.board[location.x-i][location.y].what_piece != blank && board.board[location.x-i][location.y].side != side)
             {
                 attack_option.attack_coord.push_back(toCoord(location.x-i, location.y));
-                attack_option.which_piece.push_back(board.board[location.x-i][location.y].what_piece);
+                //attack_option.which_piece.push_back(board.board[location.x-i][location.y].what_piece);
 
                 l=false;
             }
@@ -316,7 +321,7 @@ void Piece::moves(Board &board)
                     if(board.board[location.x + i][location.y + 1].what_piece != blank)
                     {
                         attack_option.attack_coord.push_back(toCoord(location.x + i, location.y + 1));
-                        attack_option.which_piece.push_back(board.board[location.x + i][location.y + 1].what_piece);
+                        //attack_option.which_piece.push_back(board.board[location.x + i][location.y + 1].what_piece);
                     }
                     // If there isn't a piece adds it to movement
                     else
@@ -334,7 +339,7 @@ void Piece::moves(Board &board)
                     if(board.board[location.x + i][location.y - 1].what_piece != blank)
                     {
                         attack_option.attack_coord.push_back(toCoord(location.x + i, location.y - 1));
-                        attack_option.which_piece.push_back(board.board[location.x + i][location.y - 1].what_piece);
+                        //attack_option.which_piece.push_back(board.board[location.x + i][location.y - 1].what_piece);
                     }
                     // If there isn't a piece adds it to movement
                     else
@@ -350,7 +355,7 @@ void Piece::moves(Board &board)
                     if(board.board[location.x + 1][location.y + i].what_piece != blank)
                     {
                         attack_option.attack_coord.push_back(toCoord(location.x + 1, location.y + i));
-                        attack_option.which_piece.push_back(board.board[location.x + 1][location.y + i].what_piece);
+                        //attack_option.which_piece.push_back(board.board[location.x + 1][location.y + i].what_piece);
                     }
                     // If there isn't a piece adds it to movement
                     else
@@ -366,7 +371,7 @@ void Piece::moves(Board &board)
                     if(board.board[location.x - 1][location.y + i].what_piece != blank)
                     {
                         attack_option.attack_coord.push_back(toCoord(location.x - 1, location.y + i));
-                        attack_option.which_piece.push_back(board.board[location.x - 1][location.y + i].what_piece);
+                        //attack_option.which_piece.push_back(board.board[location.x - 1][location.y + i].what_piece);
                     }
                     // If there isn't a piece adds it to movement
                     else
@@ -396,14 +401,14 @@ void Piece::moves(Board &board)
             if(board.board[location.x+1][location.y+dir].side!=side && board.board[location.x+1][location.y+dir].what_piece!=blank)
             {
                 attack_option.attack_coord.push_back(toCoord(location.x+1, location.y+dir));
-                attack_option.which_piece.push_back(board.board[location.x + 1][location.y+dir].what_piece);
+                //attack_option.which_piece.push_back(board.board[location.x + 1][location.y+dir].what_piece);
             }
 
             // Taking via en passant to the right
             if(location.y==3.5+0.5*dir && board.board[location.x+1][location.y].enpassant)
             {
                 attack_option.attack_coord.push_back(toCoord(location.x+1, location.y+dir));
-                attack_option.which_piece.push_back(board.board[location.x + 1][location.y].what_piece);
+                //attack_option.which_piece.push_back(board.board[location.x + 1][location.y].what_piece);
             }
         }
 
@@ -414,7 +419,7 @@ void Piece::moves(Board &board)
             if(board.board[location.x-1][location.y+dir].what_piece!=blank && board.board[location.x-1][location.y+dir].side!=side)
             {
                 attack_option.attack_coord.push_back(toCoord(location.x-1, location.y+dir));
-                attack_option.which_piece.push_back(board.board[location.x - 1][location.y + dir].what_piece);
+                //attack_option.which_piece.push_back(board.board[location.x - 1][location.y + dir].what_piece);
             }
 
 
@@ -422,7 +427,7 @@ void Piece::moves(Board &board)
             if(location.y==3.5+0.5*dir && board.board[location.x-1][location.y].enpassant)
             {
                 attack_option.attack_coord.push_back(toCoord(location.x-1, location.y+dir));
-                attack_option.which_piece.push_back(board.board[location.x - 1][location.y].what_piece);
+                //attack_option.which_piece.push_back(board.board[location.x - 1][location.y].what_piece);
             }
         }
         break;
@@ -555,20 +560,6 @@ void Piece::testing()
 void Board::testing(int x, int y)
 {
     board[x][y].testing();
-}
-
-Board::Board()
-{
-    // Reset pieces on board
-    reset();
-
-    // Set all squares on control to 0
-    for (int i=0; i<8; i++)
-        for (int j=0; j<8; j++)
-        {
-            whiteControl[i][j]=0;
-            blackControl[i][j]=0;
-        }
 }
 
 void Board::outputBoard(colour side)
@@ -823,6 +814,9 @@ void Board::operator =(const Board& startLoc)
             blackControl[x][y] = startLoc.blackControl[x][y];
         }
     }
+    for(int i=0;i<6;i++){
+    w[i] = startLoc.w[i];
+    b[i] = startLoc.b[i];}
 }
 
 void destroy(node *& n)

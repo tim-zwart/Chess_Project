@@ -18,6 +18,7 @@ gameState compMove(colour side, node *&n);
 gameState getMove(colour side, node *&n);
 
 int breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, colour calcSide, bool first);
+int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour calcSide, move_store* first);
 void depth_search(node *parent, int ply, int current_ply, colour side, int white_score, int black_score, bool first, vector <move_store> &moves);
 
 typedef vector<attacked> avec;
