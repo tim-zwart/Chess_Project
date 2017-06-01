@@ -138,6 +138,8 @@ public:
     void evalBoard();
     int score;
 
+    bool calc_Bishop(int x ,int y);
+
     // Test a piece on the board
     void testing(int x, int y);
 
