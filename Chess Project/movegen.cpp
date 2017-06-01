@@ -50,8 +50,13 @@ void Board::calcMoves(colour side)
  * \return int  Return the score of the current position
  *
  */
+ extern int countSearches;
+
+ /*
 int breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, colour calcSide, bool first)
-{
+{countSearches++;
+if(countSearches % 1000 == 0)
+    cout << "countSearches: " << countSearches << endl;
     // Create new node
     node *n;
     if(!first)
@@ -160,7 +165,100 @@ int breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, c
     // Analyze and return
 
 }
+*/
 
+int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour calcSide, move_store* pickedMove)
+{
+    // Do move and then calculate control for the other side
+    b.do_move(thisMove);
+
+    // Find other colour
+    colour other = (colour)!(bool)calcSide;
+
+    if(pickedMove != 0)
+    {
+        // this means we're on the first level, and they care about the move we return
+        // Calculate moves and control boards
+        b.calcMoves(other);
+        b.calcBoard(other);
+        b.calcMoves(calcSide);
+    }
+
+    if(b.w[king] + b.b[king]<2)
+        return takeKing;
+
+    // Calculate and do next move
+    if(maxPly != currPly)
+    {
+        int bestScore = bool(calcSide)*50000-25000;
+
+        bool possibleToMove = false;
+
+        // Check all possible moves
+        for(int i=0; i<(int)b.moves.size(); i++)
+        {
+            int moveScore = breadth_search(b, maxPly, currPly+1, b.moves[i], other, 0);
+            if(moveScore == takeKing)
+                return illegal;
+            if(moveScore != (int)illegal)
+            {
+                if(moveScore == checkmate)
+                    moveScore = -2000 * (calcSide - 0.5);
+
+                if(moveScore == stalemate)
+                    moveScore = 0;
+
+                if(!possibleToMove)
+                    possibleToMove = true;
+
+                if(!(bool)calcSide)
+                {
+                    if(moveScore >= bestScore)
+                    {
+                        b.bestMove = i;
+                        bestScore = moveScore;
+                    }
+                }
+                else if(moveScore <= bestScore)
+                {
+                    b.bestMove = i;
+                    bestScore = moveScore;
+                }
+            }
+        }
+
+        if(!possibleToMove)
+        {
+            for(int y=0; y<8; y++)
+                for(int x=0; x<8; x++)
+                    if(b.board[x][y].what_piece == king)
+                    {
+                        if(calcSide == white)
+                        {
+                            if(b.blackControl[x][y]>0)
+                                return checkmate;
+                        }
+                        else if(b.whiteControl[x][y]>0)
+                            return checkmate;
+
+                        return stalemate;
+                    }
+        }
+
+        if(pickedMove) {
+            // we're on the first layer, and the caller cares about what we decided
+            *pickedMove = b.moves[b.bestMove];
+        }
+        return bestScore;
+    }
+    else
+    {
+        b.evalBoard();
+        return b.score;
+    }
+    // Analyze and return
+
+}
 gameState compMove(colour side, node *& n)
 {
     /*calculate(side);
@@ -184,7 +282,8 @@ gameState compMove(colour side, node *& n)
 
     #if breadth
     // Search through all possibilities a certain number of moves deep
-    int state = breadth_search(n, 3, 0, noMove, side, true);
+    move_store chosenMove;
+    int state = breadth_search(n->container, 4, 0, noMove, side, &chosenMove);
 
     // If the postition is stalemate, the game is a draw
     if(state == stalemate)
@@ -199,6 +298,13 @@ gameState compMove(colour side, node *& n)
             return whiteWins;
     }
 
+    node *newNode = new node;
+    newNode->trunk = n;
+    newNode->container = n->container;
+    newNode->container.do_move(chosenMove);
+    n->branches.push_back(newNode);
+    n = newNode;
+/*
     // Delete unused nodes
     for(int i=0; i<(int)n->branches.size(); i++)
         if(i != n->container.bestMove)
@@ -216,23 +322,25 @@ gameState compMove(colour side, node *& n)
         destroy(n->branches[i]);
 
     n->branches.clear();
-
+*/
     return continuing;
     #endif // 0
 }
 
 gameState getMove(colour side, node *& n)
 {
+    move_store nothing;
     // Search through all possibilities a certain number of moves deep
-    int state = breadth_search(n, 2, 0, noMove, side, true);
-
+    //int state = breadth_search(n, 2, 0, noMove, side, true);
+    int state = breadth_search(n->container, 2, 0, noMove, side, /* we don't want a move*/ &nothing);
+/*
     // Clear the nodes that were just created
     for(unsigned int i=0; i<n->branches.size(); i++)
         destroy(n->branches[i]);
 
     // Clear the branches because they are currently pointing to a nonexistent node
     n->branches.clear();
-
+*/
     // If the postition is stalemate, the game is a draw
     if(state == stalemate)
         return draw;
@@ -264,7 +372,9 @@ gameState getMove(colour side, node *& n)
             cin >> start_loc;
             start_coord = convert(start_loc);
             if(start_coord.x + start_coord.y < 0)
-                cout << "Invalid input Try again" << endl;
+                cout << "Invalid input" << endl;
+            else if(n->container.board[start_coord.x][start_coord.y].side != side)
+                cout << "There is no piece at that location" << endl;
             else break;
         }
 
@@ -277,7 +387,7 @@ gameState getMove(colour side, node *& n)
             cin >> end_loc;
             end_coord = convert(end_loc);
             if(end_coord.x + end_coord.y < 0)
-                cout << "Invalid input Try again" << endl;
+                cout << "Invalid input" << endl;
             else break;
         }
 
@@ -302,15 +412,15 @@ gameState getMove(colour side, node *& n)
                 newNode->container.do_move(convert(start_coord, end_coord));
 
                 // Search through all possibilities a certain number of moves deep to ensure that the move is legal
-                state = breadth_search(newNode, 2, 0, noMove, (colour)!(bool)side, true);
-
+                state = breadth_search(newNode->container, 2, 0, noMove, (colour)!(bool)side, 0);
+/*
                 // Clear the nodes that were just created
                 for(unsigned int i=0; i<newNode->branches.size(); i++)
                     destroy(newNode->branches[i]);
 
                 // Clear the branches because they are currently pointing to a nonexistent node
                 newNode->branches.clear();
-
+*/
                 if(state != 3)
                 {
                     n->branches.push_back(newNode);
@@ -321,11 +431,11 @@ gameState getMove(colour side, node *& n)
         }
 
         // Error statement if move is not valid
-        cout << "Invalid move Try again" << endl;
+        cout << "That is not a valid move" << endl;
     }
 }
 
-void depth_search(node *parent, int ply, int current_ply, colour side, int white_score, int black_score, bool first, vector<move_store> &moves)
+void depth_search(node *parent, int ply, int current_ply, colour side, int white_score, int black_score, bool first, vector<move_store> &moves, move_store thisMove)
 {
     Board original = parent->container;
     // declares a node
@@ -367,11 +477,19 @@ void depth_search(node *parent, int ply, int current_ply, colour side, int white
         n = parent;
     }
 
+    n->container.do_move(thisMove);
+
     // If it reaches the max depth stop
     if(ply == current_ply)
         return;
 
-    n->container.calcMoves(side);
+    if(first)
+    {
+        // Calculate moves and control boards
+        n->container.calcMoves(next_colour);
+        n->container.calcBoard(next_colour);
+        n->container.calcMoves(side);
+    }
 
     // creates a buff board where moves can be done
     Board *buff_board = &(n->container);
@@ -389,12 +507,15 @@ void depth_search(node *parent, int ply, int current_ply, colour side, int white
     // Go through all the moves and calculate which has the best score.
     for(unsigned int i = 0; i < buff_board->moves.size(); i++)
     {
+        node *newNode = new node;
+        newNode->container = action_board;
         // does moves, calculates and evaluates.
         action_board.do_move(buff_board->moves[i]);
         //cout<<buff_board<<endl;
         action_board.calcMoves(side);
         action_board.calcBoard(side);
-        action_board.evalBoard();
+
+        //action_board.score = breadth_search();
         //cout<<"Score = "<<buff_board->score<<endl;
 
         // Saves each move done with it's eval score into a vector
@@ -435,11 +556,11 @@ void depth_search(node *parent, int ply, int current_ply, colour side, int white
     {
         n->container.do_move(order_of_move[i].curr_move);
         moves.push_back(order_of_move[i].curr_move);
-        if(side == white)
-            depth_search(n, ply, current_ply + 1, next_colour, score_check, black_score, false, moves);
+        /*if(side == white)
+            depth_search(n, ply, current_ply + 1, next_colour, score_check, black_score, false, moves, );
         else
             depth_search(n, ply, current_ply + 1, next_colour, white_score, score_check, false, moves);
-        //cout<<n->container;
+        //cout<<n->container;*/
         n->container = original;
     }
 }
@@ -454,8 +575,6 @@ void Board::do_move(move_store m)
         w[board[m.end_loc.x][m.end_loc.y].what_piece]--;
     else if(board[m.end_loc.x][m.end_loc.y].side==black)
         b[board[m.end_loc.x][m.end_loc.y].what_piece]--;
-
-    //if(board[m.end_loc.x][m.end_loc.y])
 
     // Set new square to piece
     board[m.end_loc.x][m.end_loc.y] = board[m.start_loc.x][m.start_loc.y];
@@ -474,7 +593,7 @@ void Board::do_move(move_store m)
     board[m.start_loc.x][m.start_loc.y].piece_clear();
 
     // If the king is castling...
-    if(board[m.end_loc.x][m.end_loc.y].what_piece == king && abs(m.start_loc.x - m.end_loc.x) == 2)
+    if(board[m.end_loc.x][m.end_loc.y].what_piece == king && abs(m.start_loc.x - m.end_loc.x) >= 2)
     {
         if(m.end_loc.x == 6)
         {
@@ -486,14 +605,20 @@ void Board::do_move(move_store m)
         }
         else
         {
-            board[2][m.end_loc.y] = board[0][m.end_loc.y];
-            board[2][m.end_loc.y].location == toCoord(2, m.end_loc.y);
+            board[3][m.end_loc.y] = board[0][m.end_loc.y];
+            board[3][m.end_loc.y].location = toCoord(3, m.end_loc.y);
 
             // Clear the old square
-            board[2][m.end_loc.y].piece_clear();
+            board[0][m.end_loc.y].piece_clear();
 
         }
     }
+
+    if(m.start_loc.x == 0 && m.start_loc.y == 0 && m.end_loc.x == 1 && m.end_loc.y == 0 && board[m.end_loc.x][m.end_loc.y].side == none)
+    {
+        cout << 12341234;
+    }
+
     // Recalculate moves and control boards
     calcMoves(board[m.end_loc.x][m.end_loc.y].side);
     calcBoard(board[m.end_loc.x][m.end_loc.y].side);

@@ -42,21 +42,19 @@
 1495028984 source:c:\users\huckkim\documents\github\chess_project\chess project\bitboards.cpp
 	"bitboards.h"
 
-1496273475 source:c:\users\matilda\documents\github\chess_project\chess project\bitboards.cpp
+1493253952 source:c:\users\matilda\documents\github\chess_project\chess project\bitboards.cpp
 	"bitboards.h"
 
-1496273469 c:\users\matilda\documents\github\chess_project\chess project\bitboards.h
+1493242253 c:\users\matilda\documents\github\chess_project\chess project\bitboards.h
 	"libraries.h"
 
-1495072133 c:\users\matilda\documents\github\chess_project\chess project\libraries.h
+1493242253 c:\users\matilda\documents\github\chess_project\chess project\libraries.h
 	<iostream>
 	<vector>
-	<algorithm>
 
-1496093152 source:c:\users\matilda\documents\github\chess_project\chess project\main.cpp
+1493253685 source:c:\users\matilda\documents\github\chess_project\chess project\main.cpp
 	<iostream>
 	"bitboards.h"
-	"movegen.h"
 
 1495029142 source:c:\users\huckkim\documents\github\chess_project\chess project\movegen.cpp
 	"movegen.h"
@@ -86,18 +84,4 @@
 	"movegen.h"
 
 1495028209 c:\users\huckkim\documents\github\chess_project\chess project\boardeval.h
-
-1496093152 c:\users\matilda\documents\github\chess_project\chess project\movegen.h
-	"libraries.h"
-	"bitboards.h"
-
-1496273490 source:c:\users\matilda\documents\github\chess_project\chess project\boardeval.cpp
-	"boardeval.h"
-	"bitboards.h"
-	"movegen.h"
-
-1495072133 c:\users\matilda\documents\github\chess_project\chess project\boardeval.h
-
-1496265213 source:c:\users\matilda\documents\github\chess_project\chess project\movegen.cpp
-	"movegen.h"
 

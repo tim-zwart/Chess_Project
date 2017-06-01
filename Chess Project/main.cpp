@@ -9,11 +9,12 @@
 #include "movegen.h"
 
 using namespace std;
-
+int countSearches = 0;
 int main()
 {
     // Declare chessboard
     node *n = new node;
+    n->container.reset();
 /*
     n->container.do_move(convert(convert("d2"), convert("d4")));
     n->container.do_move(convert(convert("e7"), convert("e5")));
@@ -24,7 +25,7 @@ int main()
     colour side;
 
     do
-    {
+    {countSearches = 0;
         int num;
         cin >> num;
 
