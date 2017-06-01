@@ -110,6 +110,9 @@ public:
     vector <coord> white_attack;
     vector <coord> black_attack;
 
+    // location of pawn that can be taken en passant
+    coord enpassant;
+
     // Initialize the board
     Board();
 
@@ -139,6 +142,7 @@ public:
     // Evaluate board
     void evalBoard();
     int score;
+    bool calc_Bishop(int x ,int y);
 
     // Test a piece on the board
     void testing(int x, int y);

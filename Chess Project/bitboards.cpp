@@ -382,11 +382,21 @@ void Piece::moves(Board &board)
         // Moving forward
         if(board.board[location.x][location.y+dir].what_piece==blank)
         {
+            //if(location.y+dir == 7 && board.board[location.x][location.y+dir].what_piece == white)
+
             movement.push_back(toCoord(location.x, location.y+dir));
 
             // Moving forward 2 from the seventh rank
             if(location.y==(3.5-2.5*dir) && board.board[location.x][location.y+2*dir].what_piece==blank)
+            {
                 movement.push_back(toCoord(location.x, location.y+2*dir));
+
+                // Sets it so the pawn can be taken en passant
+                //enpassant_loc.x = location.x;
+                //enpassant_loc.y = location.y;
+                //board.enpassant.push_back(enpassant_loc);
+            }
+
         }
 
         // Take to the right

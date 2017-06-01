@@ -455,6 +455,8 @@ void Board::do_move(move_store m)
     else if(board[m.end_loc.x][m.end_loc.y].side==black)
         b[board[m.end_loc.x][m.end_loc.y].what_piece]--;
 
+    //if(board[m.end_loc.x][m.end_loc.y])
+
     // Set new square to piece
     board[m.end_loc.x][m.end_loc.y] = board[m.start_loc.x][m.start_loc.y];
 
@@ -492,7 +494,6 @@ void Board::do_move(move_store m)
 
         }
     }
-
     // Recalculate moves and control boards
     calcMoves(board[m.end_loc.x][m.end_loc.y].side);
     calcBoard(board[m.end_loc.x][m.end_loc.y].side);
