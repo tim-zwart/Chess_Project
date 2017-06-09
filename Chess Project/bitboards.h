@@ -6,7 +6,7 @@
 enum chess_piece {king = 0, queen = 1, rook = 2, bishop = 3, knight = 4, pawn = 5, blank};
 enum colour {white = 0, black = 1, none};
 enum moveStates {stalemate = 1, checkmate = 2, illegal = 3, takeKing = 4};
-enum gameState {whiteWins = 0, blackWins = 1, draw = 2, continuing = 3};
+enum gameState {whiteWins = 0, blackWins = 1, draw = 2, continuing = 3, end_game = 4};
 
 struct node;
 
@@ -57,15 +57,6 @@ public:
     // Find possible moves
     void moves(Board &board);
 
-    // Saves the movement
-    vector <coord> movement;
-
-    // Saves the squares that the piece can control
-    vector <coord> control;
-
-    // Saves what pieces it can attack
-    attacked attack_option;
-
     // Whic colour the piece is
     colour side;
 
@@ -88,8 +79,7 @@ class Board
     // Friends
     friend ostream & operator<<(ostream & stream, Board &b);
     friend class Piece;
-    friend int breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, colour calcSide, bool first);
-    friend int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour calcSide, move_store* chosenMove);
+    friend int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour calcSide, move_store* chosenMove, bool depth, bool searchDeeper);
     friend gameState getMove(colour side, node *& n);
 private:
 
@@ -108,8 +98,8 @@ private:
 public:
     //List of Coord that are being attacked
 
-    vector <coord> white_attack;
-    vector <coord> black_attack;
+    //vector <coord> white_attack;
+    //vector <coord> black_attack;
 
     // Output control board
     void outputBoard(colour side);
