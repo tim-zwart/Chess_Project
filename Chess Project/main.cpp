@@ -51,8 +51,8 @@ int main()
 */
 
     cout << "Which side should the computer play as? 0 for white, 1 for black" << endl;
-    colour side=white;
-/*
+    colour side;
+
     do
     {
         int num;
@@ -71,7 +71,7 @@ int main()
         }
     }
     while(true);
-*/
+
     colour turn = white;
     cout << endl;
     while(true)
@@ -88,7 +88,7 @@ int main()
         // If it is the user's turn, let them move
         else
             currState = getMove(turn, n);
-return 0;
+
         switch (currState)
         {
         case whiteWins:

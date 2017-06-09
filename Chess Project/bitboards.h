@@ -83,6 +83,8 @@ class Board
     friend gameState getMove(colour side, node *& n);
 private:
 
+    // Coordinate for pawn that can enpassant
+    coord enpassant;
 
     // Board of pieces
     Piece board[8][8];
@@ -94,6 +96,11 @@ private:
     // Count of pieces
     int w[6];
     int b[6];
+
+    // If the king or rook has moved set to false, if not true
+    bool kingCastle[2];
+    bool rookCastle[2];
+    bool rookCastle2[2];
 
 public:
     //List of Coord that are being attacked

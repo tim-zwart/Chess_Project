@@ -11,6 +11,10 @@ bool lowestFirst(const buff_pair &a, const buff_pair &b)
     return a.score < b.score;
 }
 
+/** \brief Calculates the move for the state of the board
+ *
+ * \param Side that you want to calculate
+ */
 void Board::calcMoves(colour side)
 {
     // Clear previous moves
@@ -23,22 +27,7 @@ void Board::calcMoves(colour side)
         {
             // If the piece is the right colour, calculate moves for piece
             if(board[x][y].side==side)
-            {
-                board[x][y].moves(*this);/*
-                move_store m;
-                m.start_loc=board[x][y].location;
-                for(int i=0; i<(int) board[x][y].movement.size(); i++)
-                {
-                    m.end_loc=board[x][y].movement[i];
-                    moves.push_back(m);
-                }
-                //board[x][y].testing();
-                for(int i=0; i<(int)board[x][y].attack_option.attack_coord.size(); i++)
-                {
-                    m.end_loc=board[x][y].attack_option.attack_coord[i];
-                    moves.push_back(m);
-                }*/
-            }
+                board[x][y].moves(*this);
         }
     }
 }
@@ -54,6 +43,7 @@ void Board::calcMoves(colour side)
  * \return int  Return the score of the current position
  *
  */
+extern int countSearches;
 
 void assert(bool f)
 {
@@ -194,6 +184,10 @@ int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour
 }
 gameState compMove(colour side, node *& n)
 {
+    /*calculate(side);
+    int this_move = rand() % moves.size();
+    do_move(moves[this_move]);*/
+
     // Search through all possibilities a certain number of moves deep
     move_store chosenMove;
     int state = breadth_search(n->container, 3, 0, noMove, side, &chosenMove, true, false);
@@ -210,13 +204,18 @@ gameState compMove(colour side, node *& n)
         else
             return whiteWins;
     }
-
+/*
+    vector<move_store> moves;
+    depth_search(n, 13, 0, side, 0, 0, true, moves);
+    n->container.do_move(moves[0]);
+*/
     node *newNode = new node;
     newNode->trunk = n;
     newNode->container = n->container;
     newNode->container.do_move(chosenMove);
     n->branches.push_back(newNode);
     n = newNode;
+
 
     return continuing;
 }
@@ -382,7 +381,6 @@ int depth_search(Board b, int ply, int current_ply, colour side, int white_score
         sort(pairs.begin(), pairs.end(), highestFirst);
     else
         sort(pairs.begin(), pairs.end(), lowestFirst);
-
 
     /*
         Board action_board = b;
