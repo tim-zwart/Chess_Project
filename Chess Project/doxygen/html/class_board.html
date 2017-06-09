@@ -103,8 +103,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>calcBoard</b> (colour
 <tr class="memitem:aa60d215a70d27c6cc61f4f861365bcbb"><td class="memItemLeft" align="right" valign="top"><a id="aa60d215a70d27c6cc61f4f861365bcbb"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>generate_move</b> (colour side)</td></tr>
 <tr class="separator:aa60d215a70d27c6cc61f4f861365bcbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<<<<<<< HEAD
+<tr class="memitem:adc75d5dffb7225c60615407e6904bf01"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_board.html#adc75d5dffb7225c60615407e6904bf01">calcMoves</a> (colour side)</td></tr>
+<tr class="memdesc:adc75d5dffb7225c60615407e6904bf01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the move for the state of the board.  <a href="#adc75d5dffb7225c60615407e6904bf01">More...</a><br /></td></tr>
+=======
 <tr class="memitem:adc75d5dffb7225c60615407e6904bf01"><td class="memItemLeft" align="right" valign="top"><a id="adc75d5dffb7225c60615407e6904bf01"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>calcMoves</b> (colour side)</td></tr>
+>>>>>>> origin/huck_branch
 <tr class="separator:adc75d5dffb7225c60615407e6904bf01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a065f7b0995b7bc2602bba2df26dc5979"><td class="memItemLeft" align="right" valign="top"><a id="a065f7b0995b7bc2602bba2df26dc5979"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>do_move</b> (<a class="el" href="structmove__store.html">move_store</a> thisMove)</td></tr>
@@ -124,6 +129,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>calculate</b> (colour
 <tr class="memitem:ae0718b56acb75c01f179922cb2cc3e30"><td class="memItemLeft" align="right" valign="top"><a id="ae0718b56acb75c01f179922cb2cc3e30"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="class_board.html">Board</a> &amp;startLoc)</td></tr>
 <tr class="separator:ae0718b56acb75c01f179922cb2cc3e30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<<<<<<< HEAD
+<tr class="memitem:a749fa9c8709fc69d56b4fd79e45df6dc"><td class="memItemLeft" align="right" valign="top"><a id="a749fa9c8709fc69d56b4fd79e45df6dc"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="class_board.html">Board</a> *&amp;startLoc)</td></tr>
+<tr class="separator:a749fa9c8709fc69d56b4fd79e45df6dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+=======
+>>>>>>> origin/huck_branch
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -151,6 +162,39 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Piece</b></td></tr>
 <tr class="memitem:adf26814f8f1a62e2e9714ae19d0db8c6"><td class="memItemLeft" align="right" valign="top"><a id="adf26814f8f1a62e2e9714ae19d0db8c6"></a>
 ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (ostream &amp;stream, <a class="el" href="class_board.html">Board</a> b)</td></tr>
 <tr class="separator:adf26814f8f1a62e2e9714ae19d0db8c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<<<<<<< HEAD
+<tr class="memitem:a34b2aabb0a1c5e98de6654c7c546c733"><td class="memItemLeft" align="right" valign="top"><a id="a34b2aabb0a1c5e98de6654c7c546c733"></a>
+ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (ostream &amp;stream, <a class="el" href="class_board.html">Board</a> *b)</td></tr>
+<tr class="separator:a34b2aabb0a1c5e98de6654c7c546c733"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab04934506437c991d3eeecd03527f1b8"><td class="memItemLeft" align="right" valign="top"><a id="ab04934506437c991d3eeecd03527f1b8"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>breadth_search</b> (<a class="el" href="structnode.html">node</a> *parent, int maxPly, int currPly, <a class="el" href="structmove__store.html">move_store</a> thisMove, colour calcSide, bool first)</td></tr>
+<tr class="separator:ab04934506437c991d3eeecd03527f1b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="adc75d5dffb7225c60615407e6904bf01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc75d5dffb7225c60615407e6904bf01">&#9670;&nbsp;</a></span>calcMoves()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Board::calcMoves </td>
+          <td>(</td>
+          <td class="paramtype">colour&#160;</td>
+          <td class="paramname"><em>side</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculates the move for the state of the board. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Side</td><td>that you want to calculate </td></tr>
+  </table>
+  </dd>
+</dl>
+=======
 <tr class="memitem:ab04934506437c991d3eeecd03527f1b8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_board.html#ab04934506437c991d3eeecd03527f1b8">breadth_search</a> (<a class="el" href="structnode.html">node</a> *parent, int maxPly, int currPly, <a class="el" href="structmove__store.html">move_store</a> thisMove, colour calcSide, bool first)</td></tr>
 <tr class="memdesc:ab04934506437c991d3eeecd03527f1b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function to find all possible moves to a certain depth.  <a href="#ab04934506437c991d3eeecd03527f1b8">More...</a><br /></td></tr>
 <tr class="separator:ab04934506437c991d3eeecd03527f1b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -227,13 +271,19 @@ ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>int Return the score of the current position </dd></dl>
+>>>>>>> origin/huck_branch
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="bitboards_8h_source.html">bitboards.h</a></li>
+<<<<<<< HEAD
+<li>bitboards.cpp</li>
+<li>movegen.cpp</li>
+=======
 <li>movegen.cpp</li>
 <li>bitboards.cpp</li>
+>>>>>>> origin/huck_branch
 <li>boardeval.cpp</li>
 </ul>
 </div><!-- contents -->
@@ -242,7 +292,11 @@ ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_board.html">Board</a></li>
+<<<<<<< HEAD
+    <li class="footer">Generated on Thu May 25 2017 08:58:30 for ChessProject by
+=======
     <li class="footer">Generated on Thu May 25 2017 09:14:12 for ChessProject by
+>>>>>>> origin/huck_branch
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>
