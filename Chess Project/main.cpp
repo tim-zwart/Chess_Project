@@ -9,23 +9,52 @@
 #include "movegen.h"
 
 using namespace std;
-int countSearches = 0;
+
 int main()
 {
+    /*Board b;
+    b.calcMoves(white);
+    return 0;*/
     // Declare chessboard
     node *n = new node;
     n->container.reset();
+    //n->container.evalBoard();
+    //cout << n->container.score << endl;
+    /*
+        n->container.do_move(convert(convert("d2"), convert("d4")));
+        n->container.do_move(convert(convert("e7"), convert("e5")));
+        n->container.do_move(convert(convert("d4"), convert("e5")));
+        n->container.do_move(convert(convert("b8"), convert("c6")));
+    */
 /*
-    n->container.do_move(convert(convert("d2"), convert("d4")));
-    n->container.do_move(convert(convert("e7"), convert("e5")));
-    n->container.do_move(convert(convert("d4"), convert("e5")));
-    n->container.do_move(convert(convert("b8"), convert("c6")));
-*/
-    cout << "Which side should the computer play as? 0 for white, 1 for black" << endl;
-    colour side;
+    n->container.calcMoves(black);
+    n->container.calcBoard(black);
+    n->container.calcMoves(white);
+    vector <buff_pair> pairs;
+    for(int i=0;i<n->container.moves.size();i++)
+    {
+        buff_pair temp;
+        temp.thisMove = n->container.moves[i];
+        temp.score = breadth_search(n->container, 2, 0, n->container.moves[i], black, 0, false, false);
+        pairs.push_back(temp);
+    }
 
+    sort(pairs.begin(), pairs.end(), compareByScore);
+
+    for(int i=0; i<pairs.size(); i++)
+    {
+        convert(pairs[i].thisMove.start_loc);
+        cout<<" to ";
+        convert(pairs[i].thisMove.end_loc);
+        cout<<endl;
+    }
+*/
+
+    cout << "Which side should the computer play as? 0 for white, 1 for black" << endl;
+    colour side=white;
+/*
     do
-    {countSearches = 0;
+    {
         int num;
         cin >> num;
 
@@ -40,8 +69,9 @@ int main()
             side = (colour)num;
             break;
         }
-    } while(true);
-
+    }
+    while(true);
+*/
     colour turn = white;
     cout << endl;
     while(true)
@@ -58,7 +88,7 @@ int main()
         // If it is the user's turn, let them move
         else
             currState = getMove(turn, n);
-
+return 0;
         switch (currState)
         {
         case whiteWins:
@@ -69,6 +99,9 @@ int main()
             return 0;
         case draw:
             cout << "It's a draw!" << endl;
+            return 0;
+        case end_game:
+            cout << "Aborting" << endl;
             return 0;
         default:
             break;

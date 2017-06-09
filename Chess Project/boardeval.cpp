@@ -19,12 +19,12 @@ const int pieceWeight[] =
 
 int calc_develop()
 {
-
+	return 0;
 }
 
 int calc_saftey()
 {
-
+	return 0;
 }
 
 bool Board::calc_Bishop(int x ,int y)
@@ -65,6 +65,7 @@ bool Board::calc_Bishop(int x ,int y)
         else
             currentY1 = 0;
     }
+	return true;
 }
 
 void Board::evalBoard()
@@ -91,21 +92,23 @@ void Board::evalBoard()
                 positionalScore += 3;
             else if(board[x][y].side == black)
                 positionalScore -= 3;
+			/*
             if(whiteControl[x][y] != 0)
                 positionalScore += 2 * whiteControl[x][y];
             else if(blackControl[x][y] != 0)
                 positionalScore -= 2 * blackControl[x][y];
+			*/
         }
     }
-
+	/*
     for(int i = 0; i < 8; i++)
     {
         if((board[0][i].what_piece != bishop || board[0][i].what_piece != knight) && board[7][i].side == white)
             positionalScore += 2;
         if ((board[7][i].what_piece != bishop || board[7][i].what_piece != knight) && board[7][i].side == black)
             positionalScore -= 2;
-    }
-
+    }*/
+/*
     for(int y = 0; y < 8; y++)
     {
         for(int x = 0; x < 8; x++)
@@ -125,7 +128,7 @@ void Board::evalBoard()
                     positionalScore -= 2;
             }
         }
-    }
+    }*/
 
     // Add positional score to the overall score
     score += positionalScore * positionalWeight;
