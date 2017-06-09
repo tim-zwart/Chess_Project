@@ -7,5 +7,6 @@ using namespace std;
 #include <vector>
 #include <algorithm>
 #include <string>
+#include <fstream>
 
 #endif // LIBRARIES_H_INCLUDED
