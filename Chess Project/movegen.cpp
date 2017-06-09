@@ -15,7 +15,6 @@ bool lowestFirst(const buff_pair &a, const buff_pair &b)
  *
  * \param Side that you want to calculate
  */
-
 void Board::calcMoves(colour side)
 {
     // Clear previous moves
@@ -28,22 +27,7 @@ void Board::calcMoves(colour side)
         {
             // If the piece is the right colour, calculate moves for piece
             if(board[x][y].side==side)
-            {
-                board[x][y].moves(*this);/*
-                move_store m;
-                m.start_loc=board[x][y].location;
-                for(int i=0; i<(int) board[x][y].movement.size(); i++)
-                {
-                    m.end_loc=board[x][y].movement[i];
-                    moves.push_back(m);
-                }
-                //board[x][y].testing();
-                for(int i=0; i<(int)board[x][y].attack_option.attack_coord.size(); i++)
-                {
-                    m.end_loc=board[x][y].attack_option.attack_coord[i];
-                    moves.push_back(m);
-                }*/
-            }
+                board[x][y].moves(*this);
         }
     }
 }
@@ -59,44 +43,7 @@ void Board::calcMoves(colour side)
  * \return int  Return the score of the current position
  *
  */
-<<<<<<< HEAD
- extern int countSearches;
-
- /*
-int breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, colour calcSide, bool first)
-{countSearches++;
-if(countSearches % 1000 == 0)
-    cout << "countSearches: " << countSearches << endl;
-    // Create new node
-    node *n;
-    if(!first)
-    {
-        // Ensure that there is enough memory for a node
-        n = new (nothrow) node;
-        if(n == NULL)
-        {
-            cout << "ERROR Could not allocate memory" << endl;
-        }
-        else
-        {
-            // Set up node
-            parent->branches.push_back(n);
-            n->container = parent->container;
-            n->trunk = parent;
-        }
-    }
-    else
-        n = parent;
-
-    Board *b = &(n->container);
-
-    // Do move and then calculate control for the other side
-    b->do_move(thisMove);
-
-    // Find other colour
-    colour other = (colour)!(bool)calcSide;
-=======
->>>>>>> refs/remotes/origin/master
+extern int countSearches;
 
 void assert(bool f)
 {
@@ -237,36 +184,10 @@ int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour
 }
 gameState compMove(colour side, node *& n)
 {
-<<<<<<< HEAD
     /*calculate(side);
     int this_move = rand() % moves.size();
     do_move(moves[this_move]);*/
-<<<<<<< HEAD
-=======
 
-    #define breadth 1
-
-    #if !breadth
-    vector<move_store> moves;
-    depth_search(n, 13, 0, side, 0, 0, true, moves);
-    convert(moves[0].start_loc);
-    cout<<" to ";
-    convert(moves[0].end_loc);
-    cout<<endl;
-    n->container.do_move(moves[0]);
-    n->container.evalBoard();
-    cout<<"Score is = "<<n->container.score<<endl;
-
-    #endif
-
-<<<<<<< HEAD
-    #if 1
->>>>>>> origin/huck_branch
-=======
-    #if breadth
->>>>>>> refs/remotes/origin/master
-=======
->>>>>>> refs/remotes/origin/master
     // Search through all possibilities a certain number of moves deep
     move_store chosenMove;
     int state = breadth_search(n->container, 3, 0, noMove, side, &chosenMove, true, false);
@@ -283,53 +204,20 @@ gameState compMove(colour side, node *& n)
         else
             return whiteWins;
     }
-
-<<<<<<< HEAD
+/*
     vector<move_store> moves;
     depth_search(n, 13, 0, side, 0, 0, true, moves);
     n->container.do_move(moves[0]);
-
-=======
+*/
     node *newNode = new node;
     newNode->trunk = n;
     newNode->container = n->container;
     newNode->container.do_move(chosenMove);
     n->branches.push_back(newNode);
     n = newNode;
-<<<<<<< HEAD
-/*
->>>>>>> refs/remotes/origin/master
-    // Delete unused nodes
-    for(int i=0; i<(int)n->branches.size(); i++)
-        if(i != n->container.bestMove)
-            destroy(n->branches[i]);
 
-    // Do move
-    n = n->branches[n->container.bestMove];
-
-    // Simplify on trunk
-    n->trunk->branches.clear();
-    n->trunk->branches.push_back(n);
-
-
-    for(int i=0; i<(int)n->branches.size(); i++)
-        destroy(n->branches[i]);
-
-    n->branches.clear();
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
-=======
-*/
->>>>>>> refs/remotes/origin/master
-    return continuing;
-    #endif // 0
->>>>>>> origin/huck_branch
-=======
 
     return continuing;
->>>>>>> refs/remotes/origin/master
 }
 
 gameState getMove(colour side, node *& n)
@@ -480,26 +368,6 @@ int depth_search(Board b, int ply, int current_ply, colour side, int white_score
             if(temp.score == stalemate)
                 temp.score = 0;
 
-<<<<<<< HEAD
-    // If it reaches the max depth stop
-    if(ply == current_ply)
-        return;
-<<<<<<< HEAD
-=======
-
-<<<<<<< HEAD
->>>>>>> origin/huck_branch
-    n->container.calcMoves(side);
-=======
-    if(first)
-    {
-        // Calculate moves and control boards
-        n->container.calcMoves(next_colour);
-        n->container.calcBoard(next_colour);
-        n->container.calcMoves(side);
-    }
->>>>>>> refs/remotes/origin/master
-=======
             if(!possibleToMove)
                 possibleToMove = true;
 
@@ -508,31 +376,11 @@ int depth_search(Board b, int ply, int current_ply, colour side, int white_score
     }
     if(!possibleToMove)
         cout << "Can't move" << endl;
->>>>>>> refs/remotes/origin/master
 
     if(side == white)
         sort(pairs.begin(), pairs.end(), highestFirst);
     else
         sort(pairs.begin(), pairs.end(), lowestFirst);
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    /*for(int i = 0; i < n->container.moves.size(); i++)
-=======
-    for(int i = 0; i < n->container.moves.size(); i++)
->>>>>>> origin/huck_branch
-=======
-    for(unsigned int i = 0; i < n->container.moves.size(); i++)
->>>>>>> refs/remotes/origin/master
-    {
-        convert(n->container.moves[i].start_loc);
-        cout<<" to ";
-        convert(n->container.moves[i].end_loc);
-        cout<<endl;
-    }
-=======
->>>>>>> refs/remotes/origin/master
 
     /*
         Board action_board = b;
