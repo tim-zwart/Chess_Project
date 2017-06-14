@@ -104,6 +104,9 @@ int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour
                 cout << i << endl;
 
             int moveScore = breadth_search(b, maxPly, currPly+1, b.moves[i], other, 0, depth, searchDeeper);
+
+            /*if(b.kingCastle[calcSide])
+                cout<<"cool kids"<<endl;*/
             if (moveScore == takeKing)
             {
                 assert(illegal >= 0 && illegal <= 100000);
@@ -437,6 +440,42 @@ void Board::do_move(move_store m)
         }
     }
 
+    // If the king is castling...
+    if(board[m.end_loc.x][m.end_loc.y].what_piece == king && abs(m.start_loc.x - m.end_loc.x) >= 2 &&
+       kingCastle[board[m.end_loc.x][m.end_loc.y].side] == true)
+    {
+        if(m.end_loc.x == 6 && rookCastle[board[m.end_loc.x][m.end_loc.y].side])
+        {
+            board[5][m.end_loc.y] = board[7][m.end_loc.y];
+            board[5][m.end_loc.y].location = toCoord(5, m.end_loc.y);
+
+            // Clear the old square
+            board[7][m.end_loc.y].piece_clear();
+            castledKing[board[5][m.end_loc.y].side] = true;
+        }
+        else if(m.end_loc.x == 2 && rookCastle2[board[m.end_loc.x][m.end_loc.y].side])
+        {
+            board[3][m.end_loc.y] = board[0][m.end_loc.y];
+            board[3][m.end_loc.y].location = toCoord(3, m.end_loc.y);
+
+            // Clear the old square
+            board[0][m.end_loc.y].piece_clear();
+            castledKing[board[3][m.end_loc.y].side] = true;
+        }
+    }
+    else
+        kingCastle[board[m.end_loc.x][m.end_loc.y].side] = false;
+
+    if(board[m.end_loc.x][m.end_loc.y].what_piece == rook)
+    {
+        if(m.end_loc.x == 7)
+            rookCastle[board[m.end_loc.x][m.end_loc.y].side] = false;
+        else if(m.end_loc.x == 0)
+            rookCastle2[board[m.end_loc.x][m.end_loc.y].side] = false;
+    }
+
     // Recalculate moves
     calculate((colour)!(board[m.end_loc.x][m.end_loc.y].side));
+    enpassant.x = -32;
+    enpassant.y = -32;
 }

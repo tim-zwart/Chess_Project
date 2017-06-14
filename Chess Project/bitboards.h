@@ -45,10 +45,10 @@ private:
     int dir;
 
     // Can the piece castle (kings and rooks can't after moving)
-    bool castle;
+    //bool castle;
 
     // Can en passant be used on the piece
-    bool enpassant;
+    //bool enpassant;
 public:
     // Constructors
     Piece(coord, chess_piece, colour);
@@ -68,6 +68,7 @@ public:
 
     // Testing functions
     void testing();
+    // clears a piece
     void piece_clear();
 
     void operator =(const Piece& startLoc);
@@ -111,6 +112,7 @@ public:
     Board();
     //vector <coord> white_attack;
     //vector <coord> black_attack;
+    int score;
 
     // Output control board
     void outputBoard(colour side);
@@ -134,7 +136,6 @@ public:
 
     // Evaluate board
     void evalBoard();
-    int score;
 
     bool calc_Bishop(int x ,int y);
 
