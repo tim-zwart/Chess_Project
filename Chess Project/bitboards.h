@@ -55,7 +55,7 @@ public:
     Piece();
 
     // Find possible moves
-    void moves(Board &board);
+    void moves(Board &board, bool movePiece);
 
     // Whic colour the piece is
     colour side;
@@ -80,7 +80,8 @@ class Board
     friend ostream & operator<<(ostream & stream, Board &b);
     friend class Piece;
     friend int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour calcSide, move_store* chosenMove, bool depth, bool searchDeeper);
-    friend gameState getMove(colour side, node *& n);
+    friend int depth_search(Board b, int ply, int current_ply, colour side, move_store thisMove);
+    friend gameState getMove(colour side, Board &b);
 private:
 
     // Coordinate for pawn that can enpassant
@@ -97,6 +98,9 @@ private:
     int w[6];
     int b[6];
 
+    // Check
+    bool check[2];
+
     // If the king or rook has moved set to false, if not true
     bool kingCastle[2];
     bool rookCastle[2];
@@ -104,7 +108,7 @@ private:
 
 public:
     //List of Coord that are being attacked
-
+    Board();
     //vector <coord> white_attack;
     //vector <coord> black_attack;
 
@@ -113,9 +117,6 @@ public:
 
     // Reset the board to the starting configuration
     void reset();
-
-    // Calculate control board
-    void calcBoard(colour side);
 
     //
     void generate_move(colour side);
@@ -126,8 +127,8 @@ public:
     // Store what the AI considers to be the best move
     int bestMove;
 
-    // Calculate all possible moves from a position
-    void calcMoves(colour side);
+    // Calculate all possible moves from a position as well as
+    void calculate(colour side);
 
     void do_move(move_store thisMove);
 
@@ -142,12 +143,7 @@ public:
 
     void depth_search(int ply, int current_ply, colour side);
 
-    void calculate(colour side);
-
     void operator =(const Board& startLoc);
-
-    // Computer moves
-    //void compMove(colour side, node *n);
 };
 
 struct node
