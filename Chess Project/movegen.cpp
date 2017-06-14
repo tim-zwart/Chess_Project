@@ -70,7 +70,6 @@ int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour
         // this means we're on the first level, and they care about the move we return
         // Calculate moves and control boards
         b.calcMoves(other);
-        b.calcBoard(other);
         b.calcMoves(calcSide);
     }
 
@@ -96,9 +95,11 @@ int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour
                 cout << i << endl;
 
             int moveScore = breadth_search(b, maxPly, currPly+1, b.moves[i], other, 0, depth, searchDeeper);
+
+            /*if(b.kingCastle[calcSide])
+                cout<<"cool kids"<<endl;*/
             if (moveScore == takeKing)
             {
-
                 assert(illegal >= 0 && illegal <= 100000);
                 return illegal;
             }
@@ -190,7 +191,7 @@ gameState compMove(colour side, node *& n)
 
     // Search through all possibilities a certain number of moves deep
     move_store chosenMove;
-    int state = breadth_search(n->container, 3, 0, noMove, side, &chosenMove, true, false);
+    int state = breadth_search(n->container, 1, 0, noMove, side, &chosenMove, true, false);
 
     // If the postition is stalemate, the game is a draw
     if(state == stalemate)
@@ -279,12 +280,6 @@ gameState getMove(colour side, node *& n)
             else break;
         }
 
-        // Calculate opponents control board
-        if(side == white)
-            n->container.calcBoard(black);
-        else if(side == black)
-            n->container.calcBoard(white);
-
         // Calculate moves
         n->container.calcMoves(side);
 
@@ -340,7 +335,6 @@ int depth_search(Board b, int ply, int current_ply, colour side, int white_score
     if(first)
     {
         b.calcMoves(next_colour);
-        b.calcBoard(next_colour);
         b.calcMoves(side);
     }
     /*vector <eval_pair> order_of_move;
@@ -495,16 +489,18 @@ void Board::do_move(move_store m)
     // Update piece location
     board[m.end_loc.x][m.end_loc.y].location = m.end_loc;
 
+    /*
     if(board[m.end_loc.x][m.end_loc.y].castle)
         board[m.end_loc.x][m.end_loc.y].castle=false;
 
     // If the piece could castle before, make it so that it can't any more
     if(board[m.end_loc.x][m.end_loc.y].castle)
         board[m.end_loc.x][m.end_loc.y].castle=false;
+*/
 
     // Clear the old square
     board[m.start_loc.x][m.start_loc.y].piece_clear();
-
+/*
     // If the king is castling...
     if(board[m.end_loc.x][m.end_loc.y].what_piece == king && abs(m.start_loc.x - m.end_loc.x) >= 2)
     {
@@ -526,9 +522,45 @@ void Board::do_move(move_store m)
 
         }
     }
+*/
 
+    // If the king is castling...
+    if(board[m.end_loc.x][m.end_loc.y].what_piece == king && abs(m.start_loc.x - m.end_loc.x) >= 2 &&
+       kingCastle[board[m.end_loc.x][m.end_loc.y].side] == true)
+    {
+        if(m.end_loc.x == 6 && rookCastle[board[m.end_loc.x][m.end_loc.y].side])
+        {
+            board[5][m.end_loc.y] = board[7][m.end_loc.y];
+            board[5][m.end_loc.y].location = toCoord(5, m.end_loc.y);
+
+            // Clear the old square
+            board[7][m.end_loc.y].piece_clear();
+            castledKing[board[5][m.end_loc.y].side] = true;
+        }
+        else if(m.end_loc.x == 2 && rookCastle2[board[m.end_loc.x][m.end_loc.y].side])
+        {
+            board[3][m.end_loc.y] = board[0][m.end_loc.y];
+            board[3][m.end_loc.y].location = toCoord(3, m.end_loc.y);
+
+            // Clear the old square
+            board[0][m.end_loc.y].piece_clear();
+            castledKing[board[3][m.end_loc.y].side] = true;
+        }
+    }
+    else
+        kingCastle[board[m.end_loc.x][m.end_loc.y].side] = false;
+
+    if(board[m.end_loc.x][m.end_loc.y].what_piece == rook)
+    {
+        if(m.end_loc.x == 7)
+            rookCastle[board[m.end_loc.x][m.end_loc.y].side] = false;
+        else if(m.end_loc.x == 0)
+            rookCastle2[board[m.end_loc.x][m.end_loc.y].side] = false;
+    }
+
+    enpassant.x = -32;
+    enpassant.y = -32;
     // Recalculate moves and control boards
     calcMoves(board[m.end_loc.x][m.end_loc.y].side);
-    calcBoard(board[m.end_loc.x][m.end_loc.y].side);
     calcMoves((colour)(!(bool)board[m.end_loc.x][m.end_loc.y].side));
 }

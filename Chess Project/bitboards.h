@@ -45,10 +45,10 @@ private:
     int dir;
 
     // Can the piece castle (kings and rooks can't after moving)
-    bool castle;
+    //bool castle;
 
     // Can en passant be used on the piece
-    bool enpassant;
+    //bool enpassant;
 public:
     // Constructors
     Piece(coord, chess_piece, colour);
@@ -66,8 +66,7 @@ public:
     // The location of the piece
     coord location;
 
-    // Testing functions
-    void testing();
+    // clears a piece
     void piece_clear();
 
     void operator =(const Piece& startLoc);
@@ -101,24 +100,18 @@ private:
     bool kingCastle[2];
     bool rookCastle[2];
     bool rookCastle2[2];
+    bool castledKing[2];
 
 public:
-    //List of Coord that are being attacked
 
-    //vector <coord> white_attack;
-    //vector <coord> black_attack;
+    // Current score of the board
+    int score;
 
     // Output control board
     void outputBoard(colour side);
 
     // Reset the board to the starting configuration
     void reset();
-
-    // Calculate control board
-    void calcBoard(colour side);
-
-    //
-    void generate_move(colour side);
 
     // Store all moves
     vector<move_store> moves;
@@ -133,21 +126,12 @@ public:
 
     // Evaluate board
     void evalBoard();
-    int score;
 
     bool calc_Bishop(int x ,int y);
 
-    // Test a piece on the board
-    void testing(int x, int y);
-
     void depth_search(int ply, int current_ply, colour side);
 
-    void calculate(colour side);
-
     void operator =(const Board& startLoc);
-
-    // Computer moves
-    //void compMove(colour side, node *n);
 };
 
 struct node
