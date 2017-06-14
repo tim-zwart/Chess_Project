@@ -132,20 +132,20 @@ void Piece::moves(Board &board, bool movePiece)
             // Queenside castle
             if(board.rookCastle2[side] && board.board[1][y].what_piece==blank
                     && board.board[2][y].what_piece==blank && board.board[3][y].what_piece==blank)
-                        board.moves.push_back(convert(location, toCoord(2, y)));
-/*
-            // Kingside castle
-            if(board.rookCastle[side])
-                cout << "Rookcastle worked" << endl;
-            if(board.board[6][y].what_piece==blank)
-                cout << "Board[6][8] is blank" << endl;
-            if(board.board[5][y].what_piece==blank)
-                cout << "Board[5][8] is blank" << endl;
+                board.moves.push_back(convert(location, toCoord(2, y)));
+            /*
+                        // Kingside castle
+                        if(board.rookCastle[side])
+                            cout << "Rookcastle worked" << endl;
+                        if(board.board[6][y].what_piece==blank)
+                            cout << "Board[6][8] is blank" << endl;
+                        if(board.board[5][y].what_piece==blank)
+                            cout << "Board[5][8] is blank" << endl;
 
-            if(board.rookCastle[side] && board.board[6][y].what_piece==blank
-                    && board.board[5][y].what_piece==blank)
-                        board.moves.push_back(convert(location, toCoord(6, y)));
-*/
+                        if(board.rookCastle[side] && board.board[6][y].what_piece==blank
+                                && board.board[5][y].what_piece==blank)
+                                    board.moves.push_back(convert(location, toCoord(6, y)));
+            */
         }
     case queen:
     // Go through as if the queen was a bishop and a rook
@@ -502,16 +502,17 @@ void Piece::moves(Board &board, bool movePiece)
                 }
                 //attack_option.which_piece.push_back(board.board[location.x + 1][location.y+dir].what_piece);
             }
+            /*
+                        // Taking via en passant to the right
+                        if(movePiece && location.y==3.5+0.5*dir && board.board[location.x+1][location.y].enpassant)
+                        {
+                        if(board.board[location.x+1][location.y+dir].side!=side && board.board[location.x+1][location.y+dir].what_piece!=blank)
+                            board.moves.push_back(convert(location, toCoord(location.x+1, location.y+dir)));
 
-            // Taking via en passant to the right
-            if(movePiece && location.y==3.5+0.5*dir && board.board[location.x+1][location.y].enpassant)
-            {
-            if(board.board[location.x+1][location.y+dir].side!=side && board.board[location.x+1][location.y+dir].what_piece!=blank)
-                board.moves.push_back(convert(location, toCoord(location.x+1, location.y+dir)));
-
-            // Taking via en passant to the right
-            if(location.y==3.5+0.5*dir && board.enpassant.x == location.x+1 && board.enpassant.y == location.y)
-                board.moves.push_back(convert(location, toCoord(location.x+1, location.y+dir)));
+                        // Taking via en passant to the right
+                        if(location.y==3.5+0.5*dir && board.enpassant.x == location.x+1 && board.enpassant.y == location.y)
+                            board.moves.push_back(convert(location, toCoord(location.x+1, location.y+dir)));
+                            */
         }
 
         // Take to the left
@@ -530,16 +531,16 @@ void Piece::moves(Board &board, bool movePiece)
                 }
                 //attack_option.which_piece.push_back(board.board[location.x - 1][location.y + dir].what_piece);
             }
+            /*
 
+                        // Taking via en passant to the left
+                        if(movePiece && location.y==3.5+0.5*dir && board.board[location.x-1][location.y].enpassant)
+                        {
+                            board.moves.push_back(convert(location, toCoord(location.x-1, location.y+dir)));
 
-            // Taking via en passant to the left
-            if(movePiece && location.y==3.5+0.5*dir && board.board[location.x-1][location.y].enpassant)
-            {
-                board.moves.push_back(convert(location, toCoord(location.x-1, location.y+dir)));
+                        if(location.y==3.5+0.5*dir && board.enpassant.x == location.x-1 && board.enpassant.y == location.y)
 
-            if(location.y==3.5+0.5*dir && board.enpassant.x == location.x-1 && board.enpassant.y == location.y)
->>>>>>> refs/remotes/origin/master
-                board.moves.push_back(convert(location, toCoord(location.x-1, location.y+dir)));
+                            board.moves.push_back(convert(location, toCoord(location.x-1, location.y+dir)));*/
         }
 
         break;
@@ -705,19 +706,15 @@ void Board::outputBoard(colour side)
 
 void Board::reset()
 {
-#define start 0
-#if start == 1
-void Board::reset()
-{
 #define start 1
-#if start
+#if start == 1
 
     for(int i = 0; i < 2; i++)
     {
         kingCastle[i] = true;
         rookCastle[i] = true;
         rookCastle2[i] = true;
-        castledKing[i] = false;
+        //castledKing[i] = false;
     }
     for (int i=0; i<8; i++)
     {
@@ -878,7 +875,6 @@ void Board::operator =(const Board& startLoc)
     {
         for(int y = 0; y < 8; y++)
             board[x][y] = startLoc.board[x][y];
-        }
     }
     for(int i=0; i<6; i++)
     {
@@ -891,7 +887,7 @@ void Board::operator =(const Board& startLoc)
         kingCastle[i] = startLoc.kingCastle[i];
         rookCastle[i] = startLoc.rookCastle[i];
         rookCastle2[i] = startLoc.rookCastle2[i];
-        castledKing[i] = startLoc.castledKing[i];
+        //castledKing[i] = startLoc.castledKing[i];
     }
 }
 

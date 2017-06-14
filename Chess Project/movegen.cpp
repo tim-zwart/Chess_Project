@@ -407,14 +407,14 @@ void Board::do_move(move_store m)
 
     // Update piece location
     board[m.end_loc.x][m.end_loc.y].location = m.end_loc;
-
+/*
     if(board[m.end_loc.x][m.end_loc.y].castle)
         board[m.end_loc.x][m.end_loc.y].castle=false;
-
+*//*
     // If the piece could castle before, make it so that it can't any more
     if(board[m.end_loc.x][m.end_loc.y].castle)
         board[m.end_loc.x][m.end_loc.y].castle=false;
-
+*/
     // Clear the old square
     board[m.start_loc.x][m.start_loc.y].piece_clear();
 
@@ -451,7 +451,7 @@ void Board::do_move(move_store m)
 
             // Clear the old square
             board[7][m.end_loc.y].piece_clear();
-            castledKing[board[5][m.end_loc.y].side] = true;
+            //castledKing[board[5][m.end_loc.y].side] = true;
         }
         else if(m.end_loc.x == 2 && rookCastle2[board[m.end_loc.x][m.end_loc.y].side])
         {
@@ -460,7 +460,7 @@ void Board::do_move(move_store m)
 
             // Clear the old square
             board[0][m.end_loc.y].piece_clear();
-            castledKing[board[3][m.end_loc.y].side] = true;
+            //castledKing[board[3][m.end_loc.y].side] = true;
         }
     }
     else
