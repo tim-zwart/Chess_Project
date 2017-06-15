@@ -14,13 +14,13 @@ bool compareByScore(const buff_pair &a, const buff_pair &b);
 
 const move_store noMove=convert(convert("a1"), convert("a1"));
 
-gameState compMove(colour side, node *&n);
+gameState compMove(colour side, Board &b);
 
 // Get input for move
-gameState getMove(colour side, node *&n);
+gameState getMove(colour side, Board &b);
 
 int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour calcSide, move_store* chosenMove, bool depth, bool searchDeeper);
-int depth_search(Board b, int ply, int current_ply, colour side, int white_score, int black_score, bool first, move_store thisMove);
+int depth_search(Board b, int ply, int current_ply, colour side, move_store thisMove);
 
 typedef vector<attacked> avec;
 typedef vector<coord> cvec;
