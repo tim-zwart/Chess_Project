@@ -55,7 +55,7 @@ public:
     Piece();
 
     // Find possible moves
-    void moves(Board &board);
+    void moves(Board &board, bool movePiece);
 
     // Whic colour the piece is
     colour side;
@@ -66,6 +66,8 @@ public:
     // The location of the piece
     coord location;
 
+    // Testing functions
+    void testing();
     // clears a piece
     void piece_clear();
 
@@ -79,7 +81,8 @@ class Board
     friend ostream & operator<<(ostream & stream, Board &b);
     friend class Piece;
     friend int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour calcSide, move_store* chosenMove, bool depth, bool searchDeeper);
-    friend gameState getMove(colour side, node *& n);
+    friend int depth_search(Board b, int ply, int current_ply, colour side, move_store thisMove);
+    friend gameState getMove(colour side, Board &b);
 private:
 
     // Coordinate for pawn that can enpassant
@@ -96,15 +99,19 @@ private:
     int w[6];
     int b[6];
 
+    // Check
+    bool check[2];
+
     // If the king or rook has moved set to false, if not true
     bool kingCastle[2];
     bool rookCastle[2];
     bool rookCastle2[2];
-    bool castledKing[2];
 
 public:
-
-    // Current score of the board
+    //List of Coord that are being attacked
+    Board();
+    //vector <coord> white_attack;
+    //vector <coord> black_attack;
     int score;
 
     // Output control board
@@ -113,14 +120,17 @@ public:
     // Reset the board to the starting configuration
     void reset();
 
+    //
+    void generate_move(colour side);
+
     // Store all moves
     vector<move_store> moves;
 
     // Store what the AI considers to be the best move
     int bestMove;
 
-    // Calculate all possible moves from a position
-    void calcMoves(colour side);
+    // Calculate all possible moves from a position as well as
+    void calculate(colour side);
 
     void do_move(move_store thisMove);
 
@@ -128,6 +138,9 @@ public:
     void evalBoard();
 
     bool calc_Bishop(int x ,int y);
+
+    // Test a piece on the board
+    void testing(int x, int y);
 
     void depth_search(int ply, int current_ply, colour side);
 

@@ -12,43 +12,16 @@ using namespace std;
 
 int main()
 {
-    /*Board b;
-    b.calcMoves(white);
-    return 0;*/
     // Declare chessboard
-    node *n = new node;
-    n->container.reset();
-    //n->container.evalBoard();
-    //cout << n->container.score << endl;
+    Board b;
+    b.reset();
+
     /*
         n->container.do_move(convert(convert("d2"), convert("d4")));
         n->container.do_move(convert(convert("e7"), convert("e5")));
         n->container.do_move(convert(convert("d4"), convert("e5")));
         n->container.do_move(convert(convert("b8"), convert("c6")));
     */
-/*
-    n->container.calcMoves(black);
-    n->container.calcBoard(black);
-    n->container.calcMoves(white);
-    vector <buff_pair> pairs;
-    for(int i=0;i<n->container.moves.size();i++)
-    {
-        buff_pair temp;
-        temp.thisMove = n->container.moves[i];
-        temp.score = breadth_search(n->container, 2, 0, n->container.moves[i], black, 0, false, false);
-        pairs.push_back(temp);
-    }
-
-    sort(pairs.begin(), pairs.end(), compareByScore);
-
-    for(int i=0; i<pairs.size(); i++)
-    {
-        convert(pairs[i].thisMove.start_loc);
-        cout<<" to ";
-        convert(pairs[i].thisMove.end_loc);
-        cout<<endl;
-    }
-*/
 
     cout << "Which side should the computer play as? 0 for white, 1 for black" << endl;
     colour side;
@@ -77,17 +50,17 @@ int main()
     while(true)
     {
         // Output board
-        cout << n->container << endl;
+        cout << b << endl;
 
         gameState currState;
 
         // If it is the computer's turn, make it move
         if(turn == side)
-            currState = compMove(turn, n);
+            currState = compMove(turn, b);
 
         // If it is the user's turn, let them move
         else
-            currState = getMove(turn, n);
+            currState = getMove(turn, b);
 
         switch (currState)
         {
