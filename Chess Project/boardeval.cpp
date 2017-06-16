@@ -22,52 +22,6 @@ int calc_develop()
 	return 0;
 }
 
-int calc_saftey()
-{
-	return 0;
-}
-
-bool Board::calc_Bishop(int x ,int y)
-{
-    //board.board[x][y]
-
-    int mobility = 0;
-    int currentY1 = y;
-    int currentY2 = y;
-
-    for(int start = x; start > 0; start--)
-    {
-        currentY1 ++;
-        currentY1 --;
-        if(currentY1 >= 8 && currentY2 >= 8)
-            break;
-        if(board[start][currentY1].what_piece == blank)
-            mobility++;
-        else
-            currentY1 = 8;
-        if(board[start][currentY2].what_piece == blank)
-            mobility++;
-        else
-            currentY1 = 0;
-    }
-    for(int start = x; start < 8; start++)
-    {
-        currentY1 ++;
-        currentY1 --;
-        if(currentY1 >= 8 && currentY2 < 0)
-            break;
-        if(board[start][currentY1].what_piece == blank)
-            mobility++;
-        else
-            currentY1 = 8;
-        if(board[start][currentY2].what_piece == blank)
-            mobility++;
-        else
-            currentY1 = 0;
-    }
-	return true;
-}
-
 void Board::evalBoard()
 {
     // Reset score
@@ -92,46 +46,68 @@ void Board::evalBoard()
                 positionalScore += 3;
             else if(board[x][y].side == black)
                 positionalScore -= 3;
-			/*
-            if(whiteControl[x][y] != 0)
-                positionalScore += 2 * whiteControl[x][y];
-            else if(blackControl[x][y] != 0)
-                positionalScore -= 2 * blackControl[x][y];
-			*/
         }
     }
-	/*
+
     for(int i = 0; i < 8; i++)
     {
         if((board[0][i].what_piece != bishop || board[0][i].what_piece != knight) && board[7][i].side == white)
             positionalScore += 2;
         if ((board[7][i].what_piece != bishop || board[7][i].what_piece != knight) && board[7][i].side == black)
             positionalScore -= 2;
-    }*/
-/*
+    }
+    int bishopX = -2;
+    int bishopY = -2;
     for(int y = 0; y < 8; y++)
     {
         for(int x = 0; x < 8; x++)
         {
             if(board[x][y].what_piece == bishop)
             {
-                if(calc_Bishop(x, y))
-                    positionalScore += 2;
-                else
-                    positionalScore -= 2;
-            }
-            else if(board[x][y].what_piece == king)
-            {
-                if(calc_saftey())
-                    positionalScore += 2;
-                else
-                    positionalScore -= 2;
+                bishopX = x;
+                bishopY = y;
             }
         }
-    }*/
+    }
+    int mobility = 0;
+    int currentY1 = bishopY;
+    int currentY2 = bishopY;
+
+    for(int start = bishopX; start > 0; start--)
+    {
+        currentY1 ++;
+        currentY1 --;
+        if(currentY1 >= 8 && currentY2 >= 8)
+            break;
+        if(board[start][currentY1].what_piece == blank)
+            mobility++;
+        else
+            currentY1 = 8;
+        if(board[start][currentY2].what_piece == blank)
+            mobility++;
+        else
+            currentY1 = 0;
+    }
+    for(int start = bishopX; start < 8; start++)
+    {
+        currentY1 ++;
+        currentY1 --;
+        if(currentY1 >= 8 && currentY2 < 0)
+            break;
+        if(board[start][currentY1].what_piece == blank)
+            mobility++;
+        else
+            currentY1 = 8;
+        if(board[start][currentY2].what_piece == blank)
+            mobility++;
+        else
+            currentY1 = 0;
+    }
 
     // Add positional score to the overall score
     score += positionalScore * positionalWeight;
+
+    score += mobility;
 
     // Increase score by a factor of 10 to accommodate possible states, such as checkmate or stalemate
     score *= 10;

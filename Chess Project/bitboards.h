@@ -45,10 +45,10 @@ private:
     int dir;
 
     // Can the piece castle (kings and rooks can't after moving)
-    //bool castle;
+    bool castle;
 
     // Can en passant be used on the piece
-    //bool enpassant;
+    bool enpassant;
 public:
     // Constructors
     Piece(coord, chess_piece, colour);
@@ -66,18 +66,17 @@ public:
     // The location of the piece
     coord location;
 
-    // Testing functions
-    void testing();
-    // clears a piece
+    // Clears a piece
     void piece_clear();
 
+    // Assignment operator for pieces
     void operator =(const Piece& startLoc);
 };
 
 // 8x8 board of pieces
 class Board
 {
-    // Friends
+    // Friends of Board
     friend ostream & operator<<(ostream & stream, Board &b);
     friend class Piece;
     friend int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour calcSide, move_store* chosenMove, bool depth, bool searchDeeper);
@@ -106,22 +105,20 @@ private:
     bool kingCastle[2];
     bool rookCastle[2];
     bool rookCastle2[2];
+    bool castledKing[2];
 
 public:
-    //List of Coord that are being attacked
-    Board();
-    //vector <coord> white_attack;
-    //vector <coord> black_attack;
+
+    // Stores the current score of the board
     int score;
 
+    // Board constructor
+    Board();
     // Output control board
     void outputBoard(colour side);
 
     // Reset the board to the starting configuration
     void reset();
-
-    //
-    void generate_move(colour side);
 
     // Store all moves
     vector<move_store> moves;
@@ -132,18 +129,13 @@ public:
     // Calculate all possible moves from a position as well as
     void calculate(colour side);
 
+    // Applies given move to board
     void do_move(move_store thisMove);
 
     // Evaluate board
     void evalBoard();
 
-    bool calc_Bishop(int x ,int y);
-
-    // Test a piece on the board
-    void testing(int x, int y);
-
-    void depth_search(int ply, int current_ply, colour side);
-
+    // Assignment operator for the board
     void operator =(const Board& startLoc);
 };
 
@@ -157,13 +149,19 @@ struct node
 // Destroy a section of a tree, starting with a node and deleting everything after it
 void destroy(node *& n);
 
+/// Several convert functions
+// Output a coordinate to algebraic
 void convert(coord position);
+// Converts a string to a coordinate
 coord convert(string s);
+// Converts two coordinates to a move_store
 move_store convert(coord start, coord finish);
 
 // Output board
 ostream & operator<<(ostream & stream, Board &b);
 ostream & operator<<(ostream & stream, vector<coord>);
+
+// Assignment operators
 bool operator==(coord first, coord second);
 bool operator==(move_store first, move_store second);
 #endif // BITBOARDS_H_INCLUDED

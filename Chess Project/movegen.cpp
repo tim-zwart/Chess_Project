@@ -2,10 +2,13 @@
 
 #include "movegen.h"
 
+/// Functions for struct sorting
+// To sort from highest eval first
 bool highestFirst(const buff_pair &a, const buff_pair &b)
 {
     return a.score > b.score;
 }
+// To sort from lowest eval first
 bool lowestFirst(const buff_pair &a, const buff_pair &b)
 {
     return a.score < b.score;
@@ -48,17 +51,6 @@ void Board::calculate(colour side)
     storeKing.moves(*this, true);
 }
 
-/** \brief A function to find all possible moves to a certain depth
- *
- * \param parent node*  The node of the tree that leads into this function
- * \param maxPly int  The maximum depth to go to
- * \param currPly int  The current depth in the search
- * \param thisMove move_store  The move that the function represents
- * \param calcSide colour  The current side that moves are being calculated for
- * \param first bool  Whether this is the first call of the function
- * \return int  Return the score of the current position
- *
- */
 extern int countSearches;
 
 void assert(bool f)
@@ -70,6 +62,7 @@ void assert(bool f)
     }
 }
 
+// Breadth first search function, given a ply calculates all moves up untill that ply
 int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour calcSide, move_store* pickedMove, bool depth, bool searchDeeper)
 {
     if(!(thisMove == noMove) && depth && !searchDeeper && (b.board[thisMove.end_loc.x][thisMove.end_loc.y].what_piece != blank || b.check[white] || b.check[black]))
@@ -86,6 +79,12 @@ int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour
 
     if(b.check[other])
         return illegal;
+
+    if (b.w[king] + b.b[king] < 2)
+    {
+        assert(takeKing >= 0 && takeKing <= 100000);
+        return takeKing;
+    }
 
     // Calculate and do next move
     if(maxPly != currPly)
@@ -104,11 +103,9 @@ int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour
                 cout << i << endl;
 
             int moveScore = breadth_search(b, maxPly, currPly+1, b.moves[i], other, 0, depth, searchDeeper);
-
-            /*if(b.kingCastle[calcSide])
-                cout<<"cool kids"<<endl;*/
             if (moveScore == takeKing)
             {
+
                 assert(illegal >= 0 && illegal <= 100000);
                 return illegal;
             }
@@ -175,6 +172,8 @@ int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour
     // Analyze and return
     assert(false);
 }
+
+// Creates the move from the computer
 gameState compMove(colour side, Board &b)
 {
     /*calculate(side);
@@ -207,11 +206,12 @@ gameState compMove(colour side, Board &b)
     return continuing;
 }
 
+// Gets the moves from the search functions
 gameState getMove(colour side, Board &b)
 {
     move_store nothing;
+
     // Search through all possibilities a certain number of moves deep
-    //int state = breadth_search(n, 2, 0, noMove, side, true);
     int state = breadth_search(b, 2, 0, noMove, side, /* we don't want a move*/ &nothing, false, false);
 
     // If the postition is stalemate, the game is a draw
@@ -266,7 +266,7 @@ gameState getMove(colour side, Board &b)
             else break;
         }
 
-        // Calculate moves
+        // Calculate moves for the given side
         b.calculate(side);
 
         // Ensure user inputted move is valid
@@ -281,7 +281,6 @@ gameState getMove(colour side, Board &b)
                     b.do_move(convert(start_coord, end_coord));
                     return continuing;
                 }
-
             }
         }
 
@@ -290,6 +289,7 @@ gameState getMove(colour side, Board &b)
     }
 }
 
+// Depth first search function, given a maximum ply, finds moves using a heuristic up to that ply
 int depth_search(Board b, int ply, int current_ply, colour side, move_store thisMove)
 {
     // Find the colour that is moving next turn
@@ -298,6 +298,7 @@ int depth_search(Board b, int ply, int current_ply, colour side, move_store this
     // Do the move that it has been instructed to
     b.do_move(thisMove);
 
+    // If there is no move to start with, happens on first iteration
     if(thisMove == noMove)
         b.calculate(side);
 
@@ -391,6 +392,7 @@ int depth_search(Board b, int ply, int current_ply, colour side, move_store this
     return best;
 }
 
+// Given a move_store, applies it to the board
 void Board::do_move(move_store m)
 {
     if(m.start_loc == m.end_loc)
@@ -407,38 +409,8 @@ void Board::do_move(move_store m)
 
     // Update piece location
     board[m.end_loc.x][m.end_loc.y].location = m.end_loc;
-/*
-    if(board[m.end_loc.x][m.end_loc.y].castle)
-        board[m.end_loc.x][m.end_loc.y].castle=false;
-*//*
-    // If the piece could castle before, make it so that it can't any more
-    if(board[m.end_loc.x][m.end_loc.y].castle)
-        board[m.end_loc.x][m.end_loc.y].castle=false;
-*/
     // Clear the old square
     board[m.start_loc.x][m.start_loc.y].piece_clear();
-
-    // If the king is castling...
-    if(board[m.end_loc.x][m.end_loc.y].what_piece == king && abs(m.start_loc.x - m.end_loc.x) >= 2)
-    {
-        if(m.end_loc.x == 6)
-        {
-            board[5][m.end_loc.y] = board[7][m.end_loc.y];
-            board[5][m.end_loc.y].location == toCoord(5, m.end_loc.y);
-
-            // Clear the old square
-            board[7][m.end_loc.y].piece_clear();
-        }
-        else
-        {
-            board[3][m.end_loc.y] = board[0][m.end_loc.y];
-            board[3][m.end_loc.y].location = toCoord(3, m.end_loc.y);
-
-            // Clear the old square
-            board[0][m.end_loc.y].piece_clear();
-
-        }
-    }
 
     // If the king is castling...
     if(board[m.end_loc.x][m.end_loc.y].what_piece == king && abs(m.start_loc.x - m.end_loc.x) >= 2 &&
@@ -478,4 +450,5 @@ void Board::do_move(move_store m)
     calculate((colour)!(board[m.end_loc.x][m.end_loc.y].side));
     enpassant.x = -32;
     enpassant.y = -32;
+
 }
