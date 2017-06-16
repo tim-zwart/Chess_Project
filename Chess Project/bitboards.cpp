@@ -300,20 +300,20 @@ void Piece::moves(Board &board, bool movePiece)
             // Move Down
             if(d && (location.y-i<0 || board.board[location.x][location.y-i].side == side))
                 d=false;
-            else if(!movePiece)
-            {
-                if(!board.check[!side] && board.board[location.x][location.y-i].what_piece == king)
-                    board.check[!side] = true;
-            }
             else if(d && board.board[location.x][location.y-i].what_piece != blank)
             {
-                board.moves.push_back(convert(location, toCoord(location.x, location.y-i)));
+            if(!movePiece)
+            {
                 if(!board.check[!side] && board.board[location.x][location.y-i].what_piece == king)
                     board.check[!side] = true;
-                //attack_option.which_piece.push_back(board.board[location.x][location.y-i].what_piece);
+            }
+            else{
+                board.moves.push_back(convert(location, toCoord(location.x, location.y-i)));
+                if(!board.check[!side] && board.board[location.x][location.y-i].what_piece == king)
+                    board.check[!side] = true;}
                 d=false;
             }
-            else if (d)
+            else if (movePiece && d)
                 board.moves.push_back(convert(location, toCoord(location.x, location.y-i)));
 
             // Move Right
@@ -521,7 +521,7 @@ void Piece::moves(Board &board, bool movePiece)
             //control.push_back(toCoord(location.x-1, location.y+dir));
             if(board.board[location.x-1][location.y+dir].side!=side)
             {
-                if(!movePiece && !board.check[!side] && board.board[location.x+1][location.y+dir].what_piece == king)
+                if(!movePiece && !board.check[!side] && board.board[location.x-1][location.y+dir].what_piece == king)
                     board.check[!side] = true;
                 else if(board.board[location.x-1][location.y+dir].what_piece!=blank)
                 {
