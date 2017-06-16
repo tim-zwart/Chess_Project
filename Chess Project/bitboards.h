@@ -91,10 +91,6 @@ private:
     // Board of pieces
     Piece board[8][8];
 
-    // Squares that are controlled
-    int whiteControl[8][8];
-    int blackControl[8][8];
-
     // Count of pieces
     int w[6];
     int b[6];
@@ -132,7 +128,7 @@ public:
     // Calculate all possible moves from a position as well as
     void calculate(colour side);
 
-    void do_move(move_store thisMove);
+    void do_move(move_store thisMove, bool calc);
 
     // Evaluate board
     void evalBoard();
