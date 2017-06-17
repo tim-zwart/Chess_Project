@@ -9,17 +9,17 @@ const int positionalWeight=1;
 // Weight of pieces
 const int pieceWeight[] =
 {
-5000, // King
-9,    // Queen
-5,    // Rook
-3,    // Bishop
-3,    // Knight
-1     // Pawn
+    5000, // King
+    9,    // Queen
+    5,    // Rook
+    3,    // Bishop
+    3,    // Knight
+    1     // Pawn
 };
 
 int calc_develop()
 {
-	return 0;
+    return 0;
 }
 
 void Board::evalBoard()
@@ -29,7 +29,7 @@ void Board::evalBoard()
 
     // Store material score
     int materialScore = 0;
-    for(int i=0;i<6;i++)
+    for(int i=0; i<6; i++)
         materialScore += pieceWeight[i] * (w[i] - b[i]);
 
     // Add material scores to the total score
@@ -43,9 +43,9 @@ void Board::evalBoard()
         for(int y = 3; y < 5; y++)
         {
             if(board[x][y].side == white)
-                positionalScore += 3;
+                positionalScore += 5;
             else if(board[x][y].side == black)
-                positionalScore -= 3;
+                positionalScore -= 5;
         }
     }
 

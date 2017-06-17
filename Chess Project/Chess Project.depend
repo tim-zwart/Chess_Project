@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1497488055 source:c:\users\tim\documents\github\chess_project\chess project\bitboards.cpp
+1497624125 source:c:\users\tim\documents\github\chess_project\chess project\bitboards.cpp
 	"bitboards.h"
 
-1497487860 c:\users\tim\documents\github\chess_project\chess project\bitboards.h
+1497625396 c:\users\tim\documents\github\chess_project\chess project\bitboards.h
 	"libraries.h"
 
 1497487860 c:\users\tim\documents\github\chess_project\chess project\libraries.h
@@ -55,7 +55,7 @@
 
 1495719484 .h"
 
-1497625626 c:\users\huckkim\documents\github\chess_project\chess project\bitboards.h
+1497627732 c:\users\huckkim\documents\github\chess_project\chess project\bitboards.h
 	"libraries.h"
 
 1497532847 c:\users\huckkim\documents\github\chess_project\chess project\libraries.h
@@ -64,7 +64,7 @@
 	<algorithm>
 	<string>
 
-1497625626 source:c:\users\huckkim\documents\github\chess_project\chess project\bitboards.cpp
+1497628465 source:c:\users\huckkim\documents\github\chess_project\chess project\bitboards.cpp
 	"bitboards.h"
 
 1493253952 source:c:\users\matilda\documents\github\chess_project\chess project\bitboards.cpp
@@ -81,10 +81,10 @@
 	<iostream>
 	"bitboards.h"
 
-1497624511 source:c:\users\huckkim\documents\github\chess_project\chess project\movegen.cpp
+1497627732 source:c:\users\huckkim\documents\github\chess_project\chess project\movegen.cpp
 	"movegen.h"
 
-1497625626 c:\users\huckkim\documents\github\chess_project\chess project\movegen.h
+1497626431 c:\users\huckkim\documents\github\chess_project\chess project\movegen.h
 	"libraries.h"
 	"bitboards.h"
 
@@ -92,7 +92,7 @@
 	"libraries.h"
 	"bitboards.h"
 
-1497449410 source:c:\users\tim\documents\github\chess_project\chess project\movegen.cpp
+1497624178 source:c:\users\tim\documents\github\chess_project\chess project\movegen.cpp
 	"movegen.h"
 
 1497487860 source:c:\users\tim\documents\github\chess_project\chess project\boardeval.cpp
@@ -102,7 +102,7 @@
 
 1494601522 c:\users\tim\documents\github\chess_project\chess project\boardeval.h
 
-1497536631 source:c:\users\huckkim\documents\github\chess_project\chess project\boardeval.cpp
+1497627934 source:c:\users\huckkim\documents\github\chess_project\chess project\boardeval.cpp
 	"boardeval.h"
 	"bitboards.h"
 	"movegen.h"

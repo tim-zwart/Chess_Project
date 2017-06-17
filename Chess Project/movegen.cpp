@@ -65,11 +65,16 @@ void assert(bool f)
 // Breadth first search function, given a ply calculates all moves up untill that ply
 int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour calcSide, move_store* pickedMove, bool depth, bool searchDeeper)
 {
-    if(!(thisMove == noMove) && depth && !searchDeeper && (b.board[thisMove.end_loc.x][thisMove.end_loc.y].what_piece != blank || b.check[white] || b.check[black]))
-        searchDeeper = true;
+    bool capture = b.board[thisMove.end_loc.x][thisMove.end_loc.y].what_piece != blank;
 
     // Do move and then calculate control for the other side
-    b.do_move(thisMove);
+    b.do_move(thisMove, currPly != maxPly);
+    /*
+        if(currPly == 2)
+            cout << (int)(!(thisMove == noMove)) << depth << !searchDeeper << (int)(capture) << b.check[white] << b.check[black] << endl;
+    */
+    if((!(thisMove == noMove)) && depth && !searchDeeper && (capture || b.check[white] || b.check[black]))
+        searchDeeper = true;
 
     if(thisMove == noMove)
         b.calculate(calcSide);
@@ -99,6 +104,10 @@ int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour
         // Check all possible moves
         for(int i=0; i<(int)b.moves.size(); i++)
         {
+            /*if(i == 19 && currPly == 1)
+            {
+                cout << b << endl;
+            }*/
             if(depth == true && currPly == 0)
                 cout << i << endl;
 
@@ -201,7 +210,7 @@ gameState compMove(colour side, Board &b)
         depth_search(n, 13, 0, side, 0, 0, true, moves);
         n->container.do_move(moves[0]);
     */
-    b.do_move(chosenMove);
+    b.do_move(chosenMove, false);
 
     return continuing;
 }
@@ -212,7 +221,9 @@ gameState getMove(colour side, Board &b)
     move_store nothing;
 
     // Search through all possibilities a certain number of moves deep
-    int state = breadth_search(b, 2, 0, noMove, side, /* we don't want a move*/ &nothing, false, false);
+
+    //int state = breadth_search(n, 2, 0, noMove, side, true);
+    int state = breadth_search(b, 2, 0, noMove, side, &nothing, false, false);
 
     // If the postition is stalemate, the game is a draw
     if(state == stalemate)
@@ -278,7 +289,7 @@ gameState getMove(colour side, Board &b)
                 state = breadth_search(b, 2, 0, convert(start_coord, end_coord), (colour)!(bool)side, 0, false, false);
                 if(state != illegal)
                 {
-                    b.do_move(convert(start_coord, end_coord));
+                    b.do_move(convert(start_coord, end_coord), false);
                     return continuing;
                 }
             }
@@ -296,7 +307,7 @@ int depth_search(Board b, int ply, int current_ply, colour side, move_store this
     colour next_colour = (colour)!(bool)side;
 
     // Do the move that it has been instructed to
-    b.do_move(thisMove);
+    b.do_move(thisMove, ply != current_ply);
 
     // If there is no move to start with, happens on first iteration
     if(thisMove == noMove)
@@ -392,8 +403,8 @@ int depth_search(Board b, int ply, int current_ply, colour side, move_store this
     return best;
 }
 
-// Given a move_store, applies it to the board
-void Board::do_move(move_store m)
+
+void Board::do_move(move_store m, bool calc)
 {
     if(m.start_loc == m.end_loc)
         return;
@@ -414,7 +425,7 @@ void Board::do_move(move_store m)
 
     // If the king is castling...
     if(board[m.end_loc.x][m.end_loc.y].what_piece == king && abs(m.start_loc.x - m.end_loc.x) >= 2 &&
-       kingCastle[board[m.end_loc.x][m.end_loc.y].side] == true)
+            kingCastle[board[m.end_loc.x][m.end_loc.y].side] == true)
     {
         if(m.end_loc.x == 6 && rookCastle[board[m.end_loc.x][m.end_loc.y].side])
         {
@@ -447,7 +458,8 @@ void Board::do_move(move_store m)
     }
 
     // Recalculate moves
-    calculate((colour)!(board[m.end_loc.x][m.end_loc.y].side));
+    if(calc)
+        calculate((colour)!(board[m.end_loc.x][m.end_loc.y].side));
     enpassant.x = -32;
     enpassant.y = -32;
 
