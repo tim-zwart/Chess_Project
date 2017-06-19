@@ -163,7 +163,7 @@ int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour
             // If this is the first search and the caller
             *pickedMove = b.moves[b.bestMove];
         }
-        assert(bestScore >=-1000000 && bestScore <= 100000);
+        assert(bestScore >=-1000000 && bestScore <= 1000000);
         return bestScore;
     }
     else
@@ -184,15 +184,25 @@ int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour
     // Analyze and return
     assert(false);
 }
-gameState compMove(colour side, Board &b)
+gameState compMove(colour side, Board &b, vector<move_history> &history)
 {
     /*calculate(side);
     int this_move = rand() % moves.size();
     do_move(moves[this_move]);*/
 
+    bool depth = false;
+
+    if(history.size()>0)
+    {
+        depth = history[history.size()-1].check || history[history.size()-1].capture;
+
+        if(!depth && history.size() > 1)
+            depth = history[history.size()-2].capture || history[history.size()-2].check;
+    }
+
     // Search through all possibilities a certain number of moves deep
     move_store chosenMove;
-    int state = breadth_search(b, 2, 0, noMove, side, &chosenMove, true, false);
+    int state = breadth_search(b, 2, 0, noMove, side, &chosenMove, true, depth);
 
     // If the postition is stalemate, the game is a draw
     if(state == stalemate)
@@ -211,12 +221,28 @@ gameState compMove(colour side, Board &b)
         depth_search(n, 13, 0, side, 0, 0, true, moves);
         n->container.do_move(moves[0]);
     */
+    // Move to add to history
+    move_history temp;
+
+    // Set move
+    temp.thisMove = chosenMove;
+
+    // Check for capture
+    temp.capture = b.board[chosenMove.end_loc.x][chosenMove.end_loc.y].what_piece != blank;
+
+    // Do move
     b.do_move(chosenMove, false);
+
+    // Check for check
+    temp.check = b.check[!side];
+
+    // Add move to history
+    history.push_back(temp);
 
     return continuing;
 }
 
-gameState getMove(colour side, Board &b)
+gameState getMove(colour side, Board &b, vector<move_history> &history)
 {
     move_store nothing;
     // Search through all possibilities a certain number of moves deep
@@ -287,7 +313,23 @@ gameState getMove(colour side, Board &b)
                 state = breadth_search(b, 2, 0, convert(start_coord, end_coord), (colour)!(bool)side, 0, false, false);
                 if(state != illegal)
                 {
-                    b.do_move(convert(start_coord, end_coord), false);
+                    // Move to add to history
+                    move_history temp;
+
+                    // Set move
+                    temp.thisMove = convert(start_coord, end_coord);
+
+                    // Check for capture
+                    temp.capture = b.board[end_coord.x][end_coord.y].what_piece != blank;
+
+                    b.do_move(convert(start_coord, end_coord), true);
+
+                    // Check for check
+                    temp.check = b.check[!side];
+
+                    // Add move to history
+                    history.push_back(temp);
+
                     return continuing;
                 }
 
@@ -422,7 +464,7 @@ void Board::do_move(move_store m, bool calc)
     *//*
 // If the piece could castle before, make it so that it can't any more
 if(board[m.end_loc.x][m.end_loc.y].castle)
-    board[m.end_loc.x][m.end_loc.y].castle=false;
+board[m.end_loc.x][m.end_loc.y].castle=false;
 */
     // Clear the old square
     board[m.start_loc.x][m.start_loc.y].piece_clear();
