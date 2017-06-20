@@ -91,8 +91,12 @@ Piece::Piece()
     // Set everything to false / blank
     what_piece = blank;
     side = none;
+<<<<<<< HEAD
     castle=false;
     enpassant=false;
+=======
+    dir = 0;
+>>>>>>> refs/remotes/origin/master
 }
 
 // Piece constructor
@@ -561,6 +565,7 @@ Board::Board()
 {
     check[0]=false;
     check[1]=false;
+    //moves.reserve(150);
 }
 
 // Outputs a given coordinate to algebraic notation
@@ -654,7 +659,46 @@ move_store convert(coord start, coord finish)
     return m;
 }
 
+<<<<<<< HEAD
 // Resets the state of the board, adding all the pieces and giving their starting values
+=======
+void Piece::testing()
+{
+    /*
+       // Output information
+       cout<<"Source: ";
+       convert(location);
+       cout << endl;
+       cout<<"Piece:"<<what_piece<<endl;
+       cout<<"Colour:"<<side<<endl;
+
+       // Output attacking squares
+       cout<<"Attacking:";
+       for(int i = 0; i < int(attack_option.attack_coord.size()); i++)
+       {
+           convert(location);
+           cout<<"x";
+           convert(attack_option.attack_coord[i]);
+           cout<<" ";
+       }
+       cout<<endl;
+
+       // Output movement
+       cout<<"Movement:";
+       for(int i = 0; i < int(movement.size()); i++)
+       {
+           convert(movement[i]);
+           cout<<" ";
+       }
+       cout<<endl;*/
+}
+
+void Board::testing(int x, int y)
+{
+    board[x][y].testing();
+}
+
+>>>>>>> refs/remotes/origin/master
 void Board::reset()
 {
 #define start 1

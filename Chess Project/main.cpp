@@ -15,13 +15,7 @@ int main()
     // Declare chessboard
     Board b;
     b.reset();
-
-    /*
-        n->container.do_move(convert(convert("d2"), convert("d4")));
-        n->container.do_move(convert(convert("e7"), convert("e5")));
-        n->container.do_move(convert(convert("d4"), convert("e5")));
-        n->container.do_move(convert(convert("b8"), convert("c6")));
-    */
+    vector<move_history> history;
 
     cout << "Which side should the computer play as? 0 for white, 1 for black" << endl;
     colour side;
@@ -56,11 +50,11 @@ int main()
 
         // If it is the computer's turn, make it move
         if(turn == side)
-            currState = compMove(turn, b);
+            currState = compMove(turn, b, history);
 
         // If it is the user's turn, let them move
         else
-            currState = getMove(turn, b);
+            currState = getMove(turn, b, history);
 
         switch (currState)
         {

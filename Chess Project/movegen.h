@@ -14,11 +14,15 @@ struct buff_pair
 // Used to represent no move for first time run of the searches
 const move_store noMove=convert(convert("a1"), convert("a1"));
 
+<<<<<<< HEAD
 // Compute the move
 gameState compMove(colour side, Board &b);
+=======
+gameState compMove(colour side, Board &b, vector<move_history> &history);
+>>>>>>> refs/remotes/origin/master
 
 // Get input for move
-gameState getMove(colour side, Board &b);
+gameState getMove(colour side, Board &b, vector<move_history> &history);
 
 /// Prototype for the two searches
 // Breadth first search

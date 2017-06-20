@@ -24,6 +24,13 @@ struct move_store
     int eval;
 };
 
+struct move_history
+{
+    move_store thisMove;
+    bool capture;
+    bool check;
+};
+
 // Pieces that are attacked, used in Piece class
 struct attacked
 {
@@ -81,7 +88,8 @@ class Board
     friend class Piece;
     friend int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour calcSide, move_store* chosenMove, bool depth, bool searchDeeper);
     friend int depth_search(Board b, int ply, int current_ply, colour side, move_store thisMove);
-    friend gameState getMove(colour side, Board &b);
+    friend gameState getMove(colour side, Board &b, vector<move_history> &history);
+    friend gameState compMove(colour side, Board &b, vector<move_history> &history);
 private:
 
     // Coordinate for pawn that can enpassant
@@ -108,11 +116,14 @@ public:
     // Stores the current score of the board
     int score;
 
+<<<<<<< HEAD
     // Board constructor
     Board();
     // Output control board
     void outputBoard(colour side);
 
+=======
+>>>>>>> refs/remotes/origin/master
     // Reset the board to the starting configuration
     void reset();
 
