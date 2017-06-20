@@ -88,6 +88,7 @@ Piece::Piece()
     // Set everything to false / blank
     what_piece = blank;
     side = none;
+    dir = 0;
 }
 
 // Piece constructor
@@ -555,6 +556,7 @@ Board::Board()
 {
     check[0]=false;
     check[1]=false;
+    //moves.reserve(150);
 }
 
 void convert(coord position)
@@ -679,29 +681,6 @@ void Piece::testing()
 void Board::testing(int x, int y)
 {
     board[x][y].testing();
-}
-
-void Board::outputBoard(colour side)
-{
-    // Find location to read from
-    int *b[8];
-    if(side==white)
-    {
-        for (int i=0; i<8; i++)
-            b[i]=(int*)this->whiteControl[i];
-    }
-    else if(side==black)
-        for (int i=0; i<8; i++)
-            b[i]=(int*)this->blackControl[i];
-
-    // Go through board and output
-    for (int i=7; i>=0; i--)
-    {
-        for (int j=0; j<8; j++)
-            cout << b[j][i] << " ";
-        cout << endl;
-    }
-    cout<<endl;
 }
 
 void Board::reset()
