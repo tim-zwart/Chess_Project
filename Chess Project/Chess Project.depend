@@ -21,18 +21,37 @@
 	"bitboards.h"
 	"libraries.h"
 	"bitboards.h"
-<<<<<<< HEAD
 	"movegen.h"
-<<<<<<< HEAD
->>>>>>> origin/huck_branch
+	"libraries.h"
+
+1497626431 gin/huck_branch
 	<iostream>
 	"bitboards.h"
 	"movegen.h"
-=======
+	<iostream>
+	"bitboards.h"
+	"movegen.h"
+	"libraries.h"
+	"bitboards.h"
+	"libraries.h"
+	"bitboards.h"
+	"bitboards.h"
+	<iostream>
+	"bitboards.h"
+	"movegen.h"
+	"libraries.h"
+	"bitboards.h"
+	"libraries.h"
+	"bitboards.h"
+	"libraries.h"
+	"bitboards.h"
+	"movegen.h"
+	"libraries.h"
+	"bitboards.h"
 
-1493648046 s/remotes/origin/master
->>>>>>> refs/remotes/origin/master
-=======
+1495029343 "
+
+1495028209 s/remotes/origin/master
 	"libraries.h"
 	"bitboards.h"
 	"libraries.h"
@@ -43,54 +62,12 @@
 	"bitboards.h"
 	"movegen.h"
 
-1495028209 s/remotes/origin/master
->>>>>>> origin/huck_branch
-	<iostream>
-	"bitboards.h"
-	"movegen.h"
-	"libraries.h"
-	"bitboards.h"
-	"libraries.h"
-	"bitboards.h"
-<<<<<<< HEAD
-<<<<<<< HEAD
-	"libraries.h"
-=======
-	"movegen.h"
->>>>>>> origin/huck_branch
-	"bitboards.h"
-
-1495028209 gin/huck_branch
-	<iostream>
-	"bitboards.h"
-	"movegen.h"
-	"libraries.h"
-	"bitboards.h"
-	"libraries.h"
-	"bitboards.h"
-<<<<<<< HEAD
-=======
->>>>>>> refs/remotes/origin/master
-
-<<<<<<< HEAD
-1495719422 c:\users\huckkim\documents\github\chess_project\chess project\bitboards.h
-	"libraries.h"
-=======
-1495028961 c:\users\huckkim\documents\github\chess_project\chess project\bitboards.h
-<<<<<<< HEAD
->>>>>>> origin/huck_branch
-=======
-	"libraries.h"
->>>>>>> refs/remotes/origin/master
-=======
-
-1495029343 "
-
 1495719484 .h"
+	"movegen.h"
 
 1497627732 c:\users\huckkim\documents\github\chess_project\chess project\bitboards.h
 	"libraries.h"
->>>>>>> origin/huck_branch
+	"libraries.h"
 
 1497532847 c:\users\huckkim\documents\github\chess_project\chess project\libraries.h
 	<iostream>
@@ -98,65 +75,33 @@
 	<algorithm>
 	<string>
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-1495719422 source:c:\users\huckkim\documents\github\chess_project\chess project\bitboards.cpp
-	"bitboards.h"
-=======
-1495028984 source:c:\users\huckkim\documents\github\chess_project\chess project\bitboards.cpp
-<<<<<<< HEAD
->>>>>>> origin/huck_branch
-=======
-	"bitboards.h"
->>>>>>> refs/remotes/origin/master
-=======
 1497628465 source:c:\users\huckkim\documents\github\chess_project\chess project\bitboards.cpp
 	"bitboards.h"
->>>>>>> origin/huck_branch
-
-1493253952 source:c:\users\matilda\documents\github\chess_project\chess project\bitboards.cpp
 	"bitboards.h"
 
-1493242253 c:\users\matilda\documents\github\chess_project\chess project\bitboards.h
+1497927305 source:c:\users\matilda\documents\github\chess_project\chess project\bitboards.cpp
+	"bitboards.h"
+
+1497927259 c:\users\matilda\documents\github\chess_project\chess project\bitboards.h
 	"libraries.h"
 
-1493242253 c:\users\matilda\documents\github\chess_project\chess project\libraries.h
+1497923512 c:\users\matilda\documents\github\chess_project\chess project\libraries.h
 	<iostream>
 	<vector>
+	<algorithm>
+	<string>
 
 1493253685 source:c:\users\matilda\documents\github\chess_project\chess project\main.cpp
 	<iostream>
 	"bitboards.h"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-1495720468 source:c:\users\huckkim\documents\github\chess_project\chess project\movegen.cpp
-=======
-1495029142 source:c:\users\huckkim\documents\github\chess_project\chess project\movegen.cpp
->>>>>>> refs/remotes/origin/master
-=======
 1497627732 source:c:\users\huckkim\documents\github\chess_project\chess project\movegen.cpp
->>>>>>> origin/huck_branch
-	"movegen.h"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-1495719484 c:\users\huckkim\documents\github\chess_project\chess project\movegen.h
-	"libraries.h"
-	"bitboards.h"
-=======
-1495028209 c:\users\huckkim\documents\github\chess_project\chess project\movegen.h
-<<<<<<< HEAD
->>>>>>> origin/huck_branch
-=======
-	"libraries.h"
-	"bitboards.h"
->>>>>>> refs/remotes/origin/master
-=======
 1497626431 c:\users\huckkim\documents\github\chess_project\chess project\movegen.h
 	"libraries.h"
 	"bitboards.h"
->>>>>>> origin/huck_branch
+	"libraries.h"
+	"bitboards.h"
 
 1497879077 c:\users\tim\documents\github\chess_project\chess project\movegen.h
 	"libraries.h"

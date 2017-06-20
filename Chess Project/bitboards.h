@@ -116,14 +116,11 @@ public:
     // Stores the current score of the board
     int score;
 
-<<<<<<< HEAD
     // Board constructor
     Board();
     // Output control board
     void outputBoard(colour side);
 
-=======
->>>>>>> refs/remotes/origin/master
     // Reset the board to the starting configuration
     void reset();
 

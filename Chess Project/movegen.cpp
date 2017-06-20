@@ -160,7 +160,7 @@ int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour
             // If this is the first search and the caller
             *pickedMove = b.moves[b.bestMove];
         }
-        assert(bestScore >=-1000000 && bestScore <= 1000000);
+        assert(bestScore >=-1000000 && bestScore <= 100000);
         return bestScore;
     }
     else
@@ -181,62 +181,17 @@ int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour
     // Analyze and return
     assert(false);
 }
-<<<<<<< HEAD
 
 // Creates the move from the computer
 gameState compMove(colour side, Board &b)
-=======
-gameState compMove(colour side, Board &b, vector<move_history> &history)
->>>>>>> refs/remotes/origin/master
 {
     /*calculate(side);
     int this_move = rand() % moves.size();
     do_move(moves[this_move]);*/
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 
-    #define breadth 1
-
-    #if !breadth
-    vector<move_store> moves;
-    depth_search(n, 13, 0, side, 0, 0, true, moves);
-    convert(moves[0].start_loc);
-    cout<<" to ";
-    convert(moves[0].end_loc);
-    cout<<endl;
-    n->container.do_move(moves[0]);
-    n->container.evalBoard();
-    cout<<"Score is = "<<n->container.score<<endl;
-
-    #endif
-
-<<<<<<< HEAD
-    #if 1
->>>>>>> origin/huck_branch
-=======
-    #if breadth
->>>>>>> refs/remotes/origin/master
-=======
-
->>>>>>> origin/huck_branch
-=======
-
-    bool depth = false;
-
-    if(history.size()>0)
-    {
-        depth = history[history.size()-1].check || history[history.size()-1].capture;
-
-        if(!depth && history.size() > 1)
-            depth = history[history.size()-2].capture || history[history.size()-2].check;
-    }
-
->>>>>>> refs/remotes/origin/master
     // Search through all possibilities a certain number of moves deep
     move_store chosenMove;
-    int state = breadth_search(b, 2, 0, noMove, side, &chosenMove, true, depth);
+    int state = breadth_search(b, 2, 0, noMove, side, &chosenMove, true, false);
 
     // If the postition is stalemate, the game is a draw
     if(state == stalemate)
@@ -255,77 +210,13 @@ gameState compMove(colour side, Board &b, vector<move_history> &history)
         depth_search(n, 13, 0, side, 0, 0, true, moves);
         n->container.do_move(moves[0]);
     */
-    // Move to add to history
-    move_history temp;
-
-    // Set move
-    temp.thisMove = chosenMove;
-
-    // Check for capture
-    temp.capture = b.board[chosenMove.end_loc.x][chosenMove.end_loc.y].what_piece != blank;
-
-    // Do move
     b.do_move(chosenMove, false);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    vector<move_store> moves;
-    depth_search(n, 13, 0, side, 0, 0, true, moves);
-    n->container.do_move(moves[0]);
-
-=======
-    node *newNode = new node;
-    newNode->trunk = n;
-    newNode->container = n->container;
-    newNode->container.do_move(chosenMove);
-    n->branches.push_back(newNode);
-    n = newNode;
-/*
->>>>>>> refs/remotes/origin/master
-    // Delete unused nodes
-    for(int i=0; i<(int)n->branches.size(); i++)
-        if(i != n->container.bestMove)
-            destroy(n->branches[i]);
-
-    // Do move
-    n = n->branches[n->container.bestMove];
-
-    // Simplify on trunk
-    n->trunk->branches.clear();
-    n->trunk->branches.push_back(n);
-
-
-    for(int i=0; i<(int)n->branches.size(); i++)
-        destroy(n->branches[i]);
-
-    n->branches.clear();
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
-=======
-*/
->>>>>>> refs/remotes/origin/master
-=======
->>>>>>> origin/huck_branch
     return continuing;
 }
 
 // Gets the moves from the search functions
 gameState getMove(colour side, Board &b)
-=======
-    // Check for check
-    temp.check = b.check[!side];
-
-    // Add move to history
-    history.push_back(temp);
-
-    return continuing;
-}
-
-gameState getMove(colour side, Board &b, vector<move_history> &history)
->>>>>>> refs/remotes/origin/master
 {
     move_store nothing;
 
@@ -398,23 +289,7 @@ gameState getMove(colour side, Board &b, vector<move_history> &history)
                 state = breadth_search(b, 2, 0, convert(start_coord, end_coord), (colour)!(bool)side, 0, false, false);
                 if(state != illegal)
                 {
-                    // Move to add to history
-                    move_history temp;
-
-                    // Set move
-                    temp.thisMove = convert(start_coord, end_coord);
-
-                    // Check for capture
-                    temp.capture = b.board[end_coord.x][end_coord.y].what_piece != blank;
-
-                    b.do_move(convert(start_coord, end_coord), true);
-
-                    // Check for check
-                    temp.check = b.check[!side];
-
-                    // Add move to history
-                    history.push_back(temp);
-
+                    b.do_move(convert(start_coord, end_coord), false);
                     return continuing;
                 }
             }
@@ -444,46 +319,15 @@ int depth_search(Board b, int ply, int current_ply, colour side, move_store this
 
     // If it reaches the max depth stop
     if(ply == current_ply)
-<<<<<<< HEAD
-        return;
-<<<<<<< HEAD
-=======
-
-<<<<<<< HEAD
->>>>>>> origin/huck_branch
-    n->container.calcMoves(side);
-=======
-    if(first)
-=======
->>>>>>> origin/huck_branch
     {
         return breadth_search(b, 2, 0, noMove, side, 0, false, false);
     }
-<<<<<<< HEAD
->>>>>>> refs/remotes/origin/master
-
-    // creates a buff board where moves can be done
-    Board *buff_board = &(n->container);
-    Board action_board = original;
-    vector <move_store> current_var;
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-    /*for(int i = 0; i < n->container.moves.size(); i++)
-=======
-    for(int i = 0; i < n->container.moves.size(); i++)
->>>>>>> origin/huck_branch
-=======
-    for(unsigned int i = 0; i < n->container.moves.size(); i++)
->>>>>>> refs/remotes/origin/master
-=======
 
     vector <buff_pair> pairs;
     bool possibleToMove = false;
 
     // Find the score for every move
     for(unsigned int i=0; i<b.moves.size(); i++)
->>>>>>> origin/huck_branch
     {
         buff_pair temp;
         temp.thisMove = b.moves[i];
@@ -576,17 +420,6 @@ void Board::do_move(move_store m, bool calc)
 
     // Update piece location
     board[m.end_loc.x][m.end_loc.y].location = m.end_loc;
-<<<<<<< HEAD
-=======
-    /*
-        if(board[m.end_loc.x][m.end_loc.y].castle)
-            board[m.end_loc.x][m.end_loc.y].castle=false;
-    *//*
-// If the piece could castle before, make it so that it can't any more
-if(board[m.end_loc.x][m.end_loc.y].castle)
-board[m.end_loc.x][m.end_loc.y].castle=false;
-*/
->>>>>>> refs/remotes/origin/master
     // Clear the old square
     board[m.start_loc.x][m.start_loc.y].piece_clear();
 

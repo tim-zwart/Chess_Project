@@ -91,12 +91,7 @@ Piece::Piece()
     // Set everything to false / blank
     what_piece = blank;
     side = none;
-<<<<<<< HEAD
-    castle=false;
-    enpassant=false;
-=======
     dir = 0;
->>>>>>> refs/remotes/origin/master
 }
 
 // Piece constructor
@@ -659,12 +654,9 @@ move_store convert(coord start, coord finish)
     return m;
 }
 
-<<<<<<< HEAD
 // Resets the state of the board, adding all the pieces and giving their starting values
-=======
-void Piece::testing()
+/*void Piece::testing()
 {
-    /*
        // Output information
        cout<<"Source: ";
        convert(location);
@@ -690,15 +682,14 @@ void Piece::testing()
            convert(movement[i]);
            cout<<" ";
        }
-       cout<<endl;*/
+       cout<<endl;
 }
 
 void Board::testing(int x, int y)
 {
     board[x][y].testing();
-}
+}*/
 
->>>>>>> refs/remotes/origin/master
 void Board::reset()
 {
 #define start 1
