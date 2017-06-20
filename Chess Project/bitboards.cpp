@@ -17,6 +17,7 @@ ostream & operator<<(ostream & stream, vector<coord> cvec)
 // Output Board class
 ostream & operator<<(ostream & stream, Board &b)
 {
+    stream << endl;
     // Go throught the entire board
     for (int i=7; i>=0; i--)
     {
@@ -63,16 +64,19 @@ ostream & operator<<(ostream & stream, Board &b)
     return stream;
 }
 
+/// Assignment operators
+// Assignment operator for coordinates
 bool operator==(coord first, coord second)
 {
     return (first.x == second.x && first.y == second.y);
 }
-
+// Assignment operator for move_store
 bool operator==(move_store first, move_store second)
 {
     return (first.start_loc == second.start_loc && first.end_loc == second.end_loc);
 }
 
+// Converts a given x and y
 coord toCoord(int x, int y)
 {
     coord c;
@@ -100,10 +104,7 @@ Piece::Piece(coord l, chess_piece p, colour s)
     side = s;
 
     // Set direction depending on side
-    if(s == white)
-        dir = 1;
-    else
-        dir = -1;
+    dir = (side-0.5) * -2;
 
     // Chec whether pieces can castle
     if((p == king || p == rook) && l.y==3.5-3.5*dir)
@@ -113,28 +114,9 @@ Piece::Piece(coord l, chess_piece p, colour s)
     enpassant=false;
 }
 
-void Piece::moves(Board &board)
+// Generates the moves for a board state
+void Piece::moves(Board &board, bool movePiece)
 {
-    // Get adress to read from depending on colour
-    int *b[8];
-    if(side==white)
-    {
-        for (int i=0; i<8; i++)
-            b[i]=(int*)board.blackControl[i];
-    }
-    else if(side==black)
-        for (int i=0; i<8; i++)
-            b[i]=(int*)board.whiteControl[i];
-
-    // Reset vectors
-    movement.clear();
-    control.clear();
-    attack_option.attack_coord.clear();
-    /*movement.reserve(30);
-    control.reserve(30);
-    attack_option.attack_coord.reserve(10);*/
-    //attack_option.which_piece.clear();
-
     // The depth for rooks and bishops to move
     int distance = 8;
 
@@ -156,86 +138,168 @@ void Piece::moves(Board &board)
         // Go through as if the king was a bishop and a rook but only going one square
         distance = 2;
 
-        if(castle)
+        if(board.kingCastle[side])
         {
             int y = 3.5-3.5*dir;
 
             // Queenside castle
-            if(board.board[0][y].castle && b[1][y] + b[2][y] + b[3][y] + b[4][y]==0 && board.board[1][y].what_piece==blank
+            if(board.board[0][y].castle/* && b[1][y] + b[2][y] + b[3][y] + b[4][y]==0*/ && board.board[1][y].what_piece==blank
                     && board.board[2][y].what_piece==blank && board.board[3][y].what_piece==blank)
-                movement.push_back(toCoord(2, y));
+                board.moves.push_back(convert(location, toCoord(2, y)));
 
             // Kingside castle
-            if(board.board[7][y].castle && b[6][y] + b[5][y] + b[4][y]==0 && board.board[6][y].what_piece==blank
+            if(board.board[7][y].castle/* && b[6][y] + b[5][y] + b[4][y]==0*/ && board.board[6][y].what_piece==blank
                     && board.board[5][y].what_piece==blank)
-                movement.push_back(toCoord(6, y));
+                board.moves.push_back(convert(location, toCoord(6, y)));
         }
 
     case queen:
     // Go through as if the queen was a bishop and a rook
 
     case bishop:
+
+        /// Movement for the Bishop
         for (int i=1; i<distance; i++)
         {
-            // Top Right
-            if(tr && location.x+i<8 && location.y+i<8)
-                control.push_back(toCoord(location.x+i, location.y+i));
+            /// Top Right
             // If the position is off of the board or a piece of the same colour is in the way, you can't move there
             if(tr && (location.x+i>7 || location.y+i>7 || board.board[location.x+i][location.y+i].side==side))
                 tr=false;
-            else if(tr && board.board[location.x+i][location.y+i].side != side && board.board[location.x+i][location.y+i].side != none)
+            else if(tr && board.board[location.x+i][location.y+i].side == !side)
             {
-                attack_option.attack_coord.push_back(toCoord(location.x+i, location.y+i));
+                if(!movePiece)
+                {
+                    if(!board.check[!side] && board.board[location.x+i][location.y+i].what_piece == king)
+                        board.check[!side] = true;
+                }
+                else if(board.board[location.x+i][location.y+i].side != none)
+                {
+                    board.moves.push_back(convert(location, toCoord(location.x+i, location.y+i)));
+                    if(!board.check[!side] && board.board[location.x+i][location.y+i].what_piece == king)
+                        board.check[!side] = true;
+                }
                 //attack_option.which_piece.push_back(board.board[location.x+i][location.y+i].what_piece);
                 tr=false;
             }
-            else if(tr)
-                movement.push_back(toCoord(location.x+i, location.y+i));
+            else if(movePiece && tr)
+                board.moves.push_back(convert(location, toCoord(location.x+i, location.y+i)));
 
-            // Top Left
-            if(tl && location.x-i>=0 && location.y+i<8)
-                control.push_back(toCoord(location.x-i, location.y+i));
+            /// Top Left
             // If the position is off of the board or a piece of the same colour is in the way, you can't move there
-            if(tl && (location.x-i < 0 || location.y+i > 7 || board.board[location.x-i][location.y+i].side == side))
+            if(tl && (location.x-i<0 || location.y+i>7 || board.board[location.x-i][location.y+i].side==side))
                 tl=false;
-            else if(tl && board.board[location.x-i][location.y+i].side != side && board.board[location.x-i][location.y+i].side != none)
+            else if(tl && board.board[location.x-i][location.y+i].side == !side)
             {
-                attack_option.attack_coord.push_back(toCoord(location.x-i, location.y+i));
-                //attack_option.which_piece.push_back(board.board[location.x-i][location.y+i].what_piece);
+                if(!movePiece)
+                {
+                    if(!board.check[!side] && board.board[location.x-i][location.y+i].what_piece == king)
+                        board.check[!side] = true;
+                }
+                else if(board.board[location.x-i][location.y+i].side != none)
+                {
+                    board.moves.push_back(convert(location, toCoord(location.x-i, location.y+i)));
+                    if(!board.check[!side] && board.board[location.x-i][location.y+i].what_piece == king)
+                        board.check[!side] = true;
+                }
+                //attack_option.which_piece.push_back(board.board[location.x+i][location.y+i].what_piece);
                 tl=false;
             }
-            else if(tl)
-                movement.push_back(toCoord(location.x-i, location.y+i));
+            else if(movePiece && tl)
+                board.moves.push_back(convert(location, toCoord(location.x-i, location.y+i)));
 
-            // Bottom Right
-            if(br && location.x+i<8 && location.y-i>0)
-                control.push_back(toCoord(location.x+i, location.y-i));
+            /// Bottom Left
+            // If the position is off of the board or a piece of the same colour is in the way, you can't move there
+            if(bl && (location.x-i<0 || location.y-i<0 || board.board[location.x-i][location.y-i].side==side))
+                bl=false;
+            else if(bl && board.board[location.x-i][location.y-i].side == !side)
+            {
+                if(!movePiece)
+                {
+                    if(!board.check[!side] && board.board[location.x-i][location.y-i].what_piece == king)
+                        board.check[!side] = true;
+                }
+                else if(board.board[location.x-i][location.y-i].side != none)
+                {
+                    board.moves.push_back(convert(location, toCoord(location.x-i, location.y-i)));
+                    if(!board.check[!side] && board.board[location.x-i][location.y-i].what_piece == king)
+                        board.check[!side] = true;
+                }
+                //attack_option.which_piece.push_back(board.board[location.x+i][location.y+i].what_piece);
+                bl=false;
+            }
+            else if(movePiece && bl)
+                board.moves.push_back(convert(location, toCoord(location.x-i, location.y-i)));
+
+            /// Bottom Right
             // If the position is off of the board or a piece of the same colour is in the way, you can't move there
             if(br && (location.x+i>7 || location.y-i<0 || board.board[location.x+i][location.y-i].side==side))
                 br=false;
-            else if(br && board.board[location.x+i][location.y-i].side != side && board.board[location.x+i][location.y-i].side != none)
+            else if(br && board.board[location.x+i][location.y-i].side == !side)
             {
-                attack_option.attack_coord.push_back(toCoord(location.x+i, location.y-i));
-                //attack_option.which_piece.push_back(board.board[location.x+i][location.y-i].what_piece);
+                if(!movePiece)
+                {
+                    if(!board.check[!side] && board.board[location.x+i][location.y-i].what_piece == king)
+                        board.check[!side] = true;
+                }
+                else if(board.board[location.x+i][location.y-i].side != none)
+                {
+                    board.moves.push_back(convert(location, toCoord(location.x+i, location.y-i)));
+                    if(!board.check[!side] && board.board[location.x+i][location.y-i].what_piece == king)
+                        board.check[!side] = true;
+                }
+                //attack_option.which_piece.push_back(board.board[location.x+i][location.y+i].what_piece);
                 br=false;
             }
-            else if(br)
-                movement.push_back(toCoord(location.x+i, location.y-i));
+            else if(movePiece && br)
+                board.moves.push_back(convert(location, toCoord(location.x+i, location.y-i)));
 
-            // Bottom Left
-            if(bl && location.x-i>=0 && location.y-i>=0)
-                control.push_back(toCoord(location.x-i, location.y-i));
+            ///Bottom Left
             // If the position is off of the board or a piece of the same colour is in the way, you can't move there
             if(bl && (location.x-i<0 || location.y-i<0 || board.board[location.x-i][location.y-i].side==side))
                 bl=false;
             else if(bl && board.board[location.x-i][location.y-i].side != side && board.board[location.x-i][location.y-i].side != none)
             {
-                attack_option.attack_coord.push_back(toCoord(location.x-i, location.y-i));
+                if(!movePiece)
+                {
+                    if(!board.check[!side] && board.board[location.x-i][location.y-i].what_piece == king)
+                        board.check[!side] = true;
+                }
+                else if(board.board[location.x-i][location.y-i].side != none)
+                {
+                    board.moves.push_back(convert(location, toCoord(location.x-i, location.y-i)));
+                    if(!board.check[!side] && board.board[location.x-i][location.y-i].what_piece == king)
+                        board.check[!side] = true;
+                }
+                //at
                 //attack_option.which_piece.push_back(board.board[location.x-i][location.y-i].what_piece);
                 bl=false;
             }
             else if(bl)
-                movement.push_back(toCoord(location.x-i, location.y-i));
+                board.moves.push_back(convert(location, toCoord(location.x-i, location.y-i)));
+
+            /// Bottom Right
+            // If the position is off of the board or a piece of the same colour is in the way, you can't move there
+            if(br && (location.x+i>7 || location.y-i<0 || board.board[location.x+i][location.y-i].side==side))
+                br=false;
+            else if(br && board.board[location.x+i][location.y-i].side != side && board.board[location.x+i][location.y-i].side != none)
+            {
+                if(!movePiece)
+                {
+                    if(!board.check[!side] && board.board[location.x+i][location.y-i].what_piece == king)
+                        board.check[!side] = true;
+                }
+                else if(board.board[location.x+i][location.y-i].side != none)
+                {
+                    board.moves.push_back(convert(location, toCoord(location.x+i, location.y-i)));
+                    if(!board.check[!side] && board.board[location.x+i][location.y-i].what_piece == king)
+                        board.check[!side] = true;
+                }
+                //at
+                //attack_option.which_piece.push_back(board.board[location.x+i][location.y-i].what_piece);
+                br=false;
+            }
+            else if(br)
+                board.moves.push_back(convert(location, toCoord(location.x+i, location.y-i)));
 
             // If the bishop is restricted by pieces in all diagonals, end movement
             if(!tr && !tl && !br && !bl)
@@ -245,200 +309,261 @@ void Piece::moves(Board &board)
             break;
 
     case rook:
+
+        /// Movement for the Rook
         for(int i=1; i<distance; i++)
         {
-            // Move Up
-            if(u && location.y+i<8)
-                control.push_back(toCoord(location.x, location.y+i));
+            /// Move Up
             if(u && (location.y+i>7 || board.board[location.x][location.y+i].side == side))
                 u=false;
-            else if(u && board.board[location.x][location.y+i].what_piece != blank && board.board[location.x][location.y+i].side != side)
+            else if(u && board.board[location.x][location.y+i].what_piece != blank)
             {
-                attack_option.attack_coord.push_back(toCoord(location.x, location.y+i));
-                //attack_option.which_piece.push_back(board.board[location.x][location.y+i].what_piece);
+                if(!movePiece)
+                {
+                    if(!board.check[!side] && board.board[location.x][location.y+i].what_piece == king)
+                        board.check[!side] = true;
+                }
+                else
+                {
+                    board.moves.push_back(convert(location, toCoord(location.x, location.y+i)));
+                    if(!board.check[!side] && board.board[location.x][location.y+i].what_piece == king)
+                        board.check[!side] = true;
+                }
                 u=false;
             }
-            else if (u)
-                movement.push_back(toCoord(location.x, location.y+i));
+            else if (movePiece && u)
+                board.moves.push_back(convert(location, toCoord(location.x, location.y+i)));
 
-            // Move Down
-            if(d && location.y-i>=0)
-                control.push_back(toCoord(location.x, location.y-i));
+            /// Move Down
             if(d && (location.y-i<0 || board.board[location.x][location.y-i].side == side))
                 d=false;
             else if(d && board.board[location.x][location.y-i].what_piece != blank)
             {
-                attack_option.attack_coord.push_back(toCoord(location.x, location.y-i));
-                //attack_option.which_piece.push_back(board.board[location.x][location.y-i].what_piece);
+                if(!movePiece)
+                {
+                    if(!board.check[!side] && board.board[location.x][location.y-i].what_piece == king)
+                        board.check[!side] = true;
+                }
+                else
+                {
+                    board.moves.push_back(convert(location, toCoord(location.x, location.y-i)));
+                    if(!board.check[!side] && board.board[location.x][location.y-i].what_piece == king)
+
+                        board.check[!side] = true;
+                }
                 d=false;
             }
-            else if (d)
-                movement.push_back(toCoord(location.x, location.y-i));
+            else if (movePiece && d)
+                board.moves.push_back(convert(location, toCoord(location.x, location.y-i)));
 
-            // Move Right
-            if(r && location.x+i<8)
-                control.push_back(toCoord(location.x+i, location.y));
+            /// Move Right
             if(r && (location.x+i>7 || board.board[location.x+i][location.y].side == side))
                 r=false;
             else if(r && board.board[location.x+i][location.y].what_piece != blank && board.board[location.x+i][location.y].side != side)
             {
-                attack_option.attack_coord.push_back(toCoord(location.x+i, location.y));
-                //attack_option.which_piece.push_back(board.board[location.x+i][location.y].what_piece);
+                if(!movePiece)
+                {
+                    if(!board.check[!side] && board.board[location.x+i][location.y].what_piece == king)
+                        board.check[!side] = true;
+                }
+                else
+                {
+                    board.moves.push_back(convert(location, toCoord(location.x+i, location.y)));
+                    if(!board.check[!side] && board.board[location.x+i][location.y].what_piece == king)
+                        board.check[!side] = true;
+                }
                 r=false;
             }
-            else if (r)
-                movement.push_back(toCoord(location.x+i, location.y));
+            else if (movePiece && r)
+                board.moves.push_back(convert(location, toCoord(location.x+i, location.y)));
 
-            // Move Left
-            if(l && location.x-i>=0)
-                control.push_back(toCoord(location.x-i, location.y));
+            /// Move Left
             if(l && (location.x-i<0 || board.board[location.x-i][location.y].side == side))
                 l=false;
             else if(l && board.board[location.x-i][location.y].what_piece != blank && board.board[location.x-i][location.y].side != side)
             {
-                attack_option.attack_coord.push_back(toCoord(location.x-i, location.y));
-                //attack_option.which_piece.push_back(board.board[location.x-i][location.y].what_piece);
+                if(!movePiece)
+                {
+                    if(!board.check[!side] && board.board[location.x-i][location.y].what_piece == king)
+                        board.check[!side] = true;
+                }
+                else
+                {
+                    board.moves.push_back(convert(location, toCoord(location.x-i, location.y)));
+                    if(!board.check[!side] && board.board[location.x-i][location.y].what_piece == king)
+                        board.check[!side] = true;
+                }
 
                 l=false;
             }
-            else if (l)
-                movement.push_back(toCoord(location.x-i, location.y));
+            else if (movePiece && l)
+                board.moves.push_back(convert(location, toCoord(location.x-i, location.y)));
+
+            if(!l && !r && !d && !u)
+                break;
         }
         break;
 
     case knight:
 
-        // Knight Movement for tr, tl, dr, dl
+        /// Knight Movement for tr, tl, dr, dl
         for(int i = -2; i <= 2; i += 4)
         {
             // Checks if the location is within the board and doesn't contain a piece from their side
             if(location.x + i < 8 && location.x + i >= 0 && location.y + 1 < 8)
             {
-                control.push_back(toCoord(location.x + i, location.y + 1));
                 if(board.board[location.x + i][location.y + 1].side != side)
                 {
-                    //Checks if the location isn't blank
-                    if(board.board[location.x + i][location.y + 1].what_piece != blank)
+                    if(!movePiece)
                     {
-                        attack_option.attack_coord.push_back(toCoord(location.x + i, location.y + 1));
-                        //attack_option.which_piece.push_back(board.board[location.x + i][location.y + 1].what_piece);
+                        if(!board.check[!side] && board.board[location.x+i][location.y+1].what_piece == king)
+                            board.check[!side] = true;
+                    }
+                    //Checks if the location isn't blank
+                    else if(board.board[location.x + i][location.y + 1].what_piece != blank)
+                    {
+                        board.moves.push_back(convert(location, toCoord(location.x + i, location.y + 1)));
+                        if(!board.check[!side] && board.board[location.x + i][location.y + 1].what_piece == king)
+                            board.check[!side] = true;
                     }
                     // If there isn't a piece adds it to movement
                     else
-                        movement.push_back(toCoord(location.x + i, location.y + 1));
+                        board.moves.push_back(convert(location, toCoord(location.x + i, location.y + 1)));
                 }
             }
 
             // Checks if the location is within the board and doesn't contain a piece from their side
             if(location.x + i < 8 && location.x + i >= 0 && location.y - 1 >= 0)
             {
-                control.push_back(toCoord(location.x + i, location.y - 1));
                 if(board.board[location.x + i][location.y - 1].side != side)
                 {
-                    //Checks if the location isn't blank
-                    if(board.board[location.x + i][location.y - 1].what_piece != blank)
+                    if(!movePiece)
                     {
-                        attack_option.attack_coord.push_back(toCoord(location.x + i, location.y - 1));
-                        //attack_option.which_piece.push_back(board.board[location.x + i][location.y - 1].what_piece);
+                        if(!board.check[!side] && board.board[location.x + i][location.y - 1].what_piece == king)
+                            board.check[!side] = true;
+                    }
+                    //Checks if the location isn't blank
+                    else if(board.board[location.x + i][location.y - 1].what_piece != blank)
+                    {
+                        board.moves.push_back(convert(location, toCoord(location.x + i, location.y - 1)));
+                        if(!board.check[!side] && board.board[location.x+i][location.y-1].what_piece == king)
+                            board.check[!side] = true;
                     }
                     // If there isn't a piece adds it to movement
                     else
-                        movement.push_back(toCoord(location.x + i, location.y - 1));
+                        board.moves.push_back(convert(location, toCoord(location.x + i, location.y - 1)));
                 }
             }
             if(location.x + 1 < 8 && location.y + i < 8 && location.y + i >= 0)
             {
-                control.push_back(toCoord(location.x + 1, location.y + i));
                 if(board.board[location.x + 1][location.y + i].side != side)
                 {
-                    //Checks if the location isn't blank
-                    if(board.board[location.x + 1][location.y + i].what_piece != blank)
+                    if(!movePiece)
                     {
-                        attack_option.attack_coord.push_back(toCoord(location.x + 1, location.y + i));
-                        //attack_option.which_piece.push_back(board.board[location.x + 1][location.y + i].what_piece);
+                        if(!board.check[!side] && board.board[location.x + 1][location.y + i].what_piece == king)
+                            board.check[!side] = true;
+                    }
+                    //Checks if the location isn't blank
+                    else if(board.board[location.x + 1][location.y + i].what_piece != blank)
+                    {
+                        board.moves.push_back(convert(location, toCoord(location.x + 1, location.y + i)));
+                        if(!board.check[!side] && board.board[location.x+1][location.y+i].what_piece == king)
+                            board.check[!side] = true;
                     }
                     // If there isn't a piece adds it to movement
                     else
-                        movement.push_back(toCoord(location.x + 1, location.y + i));
+                        board.moves.push_back(convert(location, toCoord(location.x + 1, location.y + i)));
                 }
             }
             if(location.x - 1 >= 0 && location.y + i < 8 && location.y + i >= 0)
             {
-                control.push_back(toCoord(location.x - 1, location.y + i));
                 if(board.board[location.x - 1][location.y + i].side != side)
                 {
-                    //Checks if the location isn't blank
-                    if(board.board[location.x - 1][location.y + i].what_piece != blank)
+                    if(!movePiece)
                     {
-                        attack_option.attack_coord.push_back(toCoord(location.x - 1, location.y + i));
-                        //attack_option.which_piece.push_back(board.board[location.x - 1][location.y + i].what_piece);
+                        if(!board.check[!side] && board.board[location.x - 1][location.y + i].what_piece == king)
+                            board.check[!side] = true;
+                    }
+                    //Checks if the location isn't blank
+                    else if(board.board[location.x - 1][location.y + i].what_piece != blank)
+                    {
+                        board.moves.push_back(convert(location, toCoord(location.x - 1, location.y + i)));
+                        if(!board.check[!side] && board.board[location.x-1][location.y+i].what_piece == king)
+                            board.check[!side] = true;
                     }
                     // If there isn't a piece adds it to movement
                     else
-                        movement.push_back(toCoord(location.x - 1, location.y + i));
+                        board.moves.push_back(convert(location, toCoord(location.x - 1, location.y + i)));
                 }
             }
         }
         break;
 
     case pawn:
-        // Moves for pawns
+        /// Moves for pawns
 
         // Moving forward
-        if(board.board[location.x][location.y+dir].what_piece==blank)
+        if(movePiece && board.board[location.x][location.y+dir].what_piece==blank)
         {
-            movement.push_back(toCoord(location.x, location.y+dir));
+            board.moves.push_back(convert(location, toCoord(location.x, location.y+dir)));
 
             // Moving forward 2 from the seventh rank
             if(location.y==(3.5-2.5*dir) && board.board[location.x][location.y+2*dir].what_piece==blank)
-                movement.push_back(toCoord(location.x, location.y+2*dir));
+                board.moves.push_back(convert(location, toCoord(location.x, location.y+2*dir)));
         }
 
         // Take to the right
         if(location.x<7)
         {
-            control.push_back(toCoord(location.x+1, location.y+dir));
-            if(board.board[location.x+1][location.y+dir].side!=side && board.board[location.x+1][location.y+dir].what_piece!=blank)
+            if(board.board[location.x+1][location.y+dir].side!=side)
             {
-                attack_option.attack_coord.push_back(toCoord(location.x+1, location.y+dir));
-                //attack_option.which_piece.push_back(board.board[location.x + 1][location.y+dir].what_piece);
+                if(!movePiece && !board.check[!side] && board.board[location.x+1][location.y+dir].what_piece == king)
+                    board.check[!side] = true;
+                else if(board.board[location.x+1][location.y+dir].what_piece != blank)
+                {
+                    board.moves.push_back(convert(location, toCoord(location.x+1, location.y+dir)));
+                    if(!board.check[!side] && board.board[location.x+1][location.y+dir].what_piece == king)
+                        board.check[!side] = true;
+                }
             }
-
             // Taking via en passant to the right
-            if(location.y==3.5+0.5*dir && board.board[location.x+1][location.y].enpassant)
-            {
-                attack_option.attack_coord.push_back(toCoord(location.x+1, location.y+dir));
-                //attack_option.which_piece.push_back(board.board[location.x + 1][location.y].what_piece);
-            }
+            if(location.y==3.5+0.5*dir && board.enpassant.x == location.x+1 && board.enpassant.y == location.y)
+                board.moves.push_back(convert(location, toCoord(location.x+1, location.y+dir)));
         }
-
         // Take to the left
         if(location.x>0)
         {
-            control.push_back(toCoord(location.x-1, location.y+dir));
-            if(board.board[location.x-1][location.y+dir].what_piece!=blank && board.board[location.x-1][location.y+dir].side!=side)
+            if(board.board[location.x-1][location.y+dir].side!=side)
             {
-                attack_option.attack_coord.push_back(toCoord(location.x-1, location.y+dir));
-                //attack_option.which_piece.push_back(board.board[location.x - 1][location.y + dir].what_piece);
+                if(!movePiece && !board.check[!side] && board.board[location.x-1][location.y+dir].what_piece == king)
+                    board.check[!side] = true;
+                else if(board.board[location.x-1][location.y+dir].what_piece!=blank)
+                {
+                    board.moves.push_back(convert(location, toCoord(location.x-1, location.y+dir)));
+                    if(!board.check[!side] && board.board[location.x-1][location.y+dir].what_piece == king)
+                        board.check[!side] = true;
+                }
             }
-
-
             // Taking via en passant to the left
-            if(location.y==3.5+0.5*dir && board.board[location.x-1][location.y].enpassant)
-            {
-                attack_option.attack_coord.push_back(toCoord(location.x-1, location.y+dir));
-                //attack_option.which_piece.push_back(board.board[location.x - 1][location.y].what_piece);
-            }
+            if(location.y==3.5+0.5*dir && board.enpassant.x == location.x-1 && board.enpassant.y == location.y)
+                board.moves.push_back(convert(location, toCoord(location.x-1, location.y+dir)));
         }
         break;
 
     default:
         return;
     }
-
     return;
 }
 
+// Board constructor changes the check values to false
+Board::Board()
+{
+    check[0]=false;
+    check[1]=false;
+}
+
+// Outputs a given coordinate to algebraic notation
 void convert(coord position)
 {
     // Convert x and y (from 0 to 7) to chess notation
@@ -447,6 +572,7 @@ void convert(coord position)
     cout<<position.y + 1;
 }
 
+// Converts a given string to a coord
 coord convert(string s)
 {
     // Value to return
@@ -519,6 +645,7 @@ coord convert(string s)
     return c;
 }
 
+// Converts to coordinates to a move_store
 move_store convert(coord start, coord finish)
 {
     move_store m;
@@ -527,100 +654,7 @@ move_store convert(coord start, coord finish)
     return m;
 }
 
-void Piece::testing()
-{
-    // Output information
-    cout<<"Source: ";
-    convert(location);
-    cout << endl;
-    cout<<"Piece:"<<what_piece<<endl;
-    cout<<"Colour:"<<side<<endl;
-
-    // Output attacking squares
-    cout<<"Attacking:";
-    for(int i = 0; i < int(attack_option.attack_coord.size()); i++)
-    {
-        convert(location);
-        cout<<"x";
-        convert(attack_option.attack_coord[i]);
-        cout<<" ";
-    }
-    cout<<endl;
-
-    // Output movement
-    cout<<"Movement:";
-    for(int i = 0; i < int(movement.size()); i++)
-    {
-        convert(movement[i]);
-        cout<<" ";
-    }
-    cout<<endl;
-}
-
-void Board::testing(int x, int y)
-{
-    board[x][y].testing();
-}
-
-void Board::outputBoard(colour side)
-{
-    // Find location to read from
-    int *b[8];
-    if(side==white)
-    {
-        for (int i=0; i<8; i++)
-            b[i]=(int*)this->whiteControl[i];
-    }
-    else if(side==black)
-        for (int i=0; i<8; i++)
-            b[i]=(int*)this->blackControl[i];
-
-    // Go through board and output
-    for (int i=7; i>=0; i--)
-    {
-        for (int j=0; j<8; j++)
-            cout << b[j][i] << " ";
-        cout << endl;
-    }
-    cout<<endl;
-}
-
-// Add up the squares that are being attacked
-void Board::calcBoard(colour side)
-{
-    // Find location to write to
-    int *b[8];
-    if(side==white)
-    {
-        for (int i=0; i<8; i++)
-            b[i]=(int*)this->whiteControl[i];
-    }
-    else if(side==black)
-        for (int i=0; i<8; i++)
-            b[i]=(int*)this->blackControl[i];
-
-    // Set everything to 0
-    for (int x=0; x<8; x++)
-        for (int y=0; y<8; y++)
-            b[x][y] = 0;
-
-    // Add all of the attacks and movements
-    for (int x=0; x<8; x++)
-        for (int y=0; y<8; y++)
-        {
-            // If the piece is the right side
-            if(board[x][y].side == side)
-            {
-                // Add all of the possible movements to the board
-                for (int z=0; z<int(board[x][y].control.size()); z++)
-                {
-                    coord temp = board[x][y].control[z];
-                    b[temp.x][temp.y]++;
-                }
-            }
-        }
-}
-
+// Resets the state of the board, adding all the pieces and giving their starting values
 void Board::reset()
 {
 #define start 1
@@ -634,6 +668,13 @@ void Board::reset()
         // Set up black pawns
         Piece blackPawn(toCoord(i, 6), pawn, black);
         board[i][6]=blackPawn;
+    }
+    for(int i =0; i < 2; i++)
+    {
+        // Values for castling for both sides
+        kingCastle[i] = true;
+        rookCastle[i] = true;
+        rookCastle2[i] = true;
     }
     // Create white rooks
     Piece whiteRook(toCoord(0, 0), rook, white);
@@ -764,61 +805,45 @@ void Board::reset()
 #endif // !start
 }
 
+// Member function that clears a piece
 void Piece::piece_clear()
 {
-    movement.clear();
-    attack_option.attack_coord.clear();
-    attack_option.which_piece.clear();
     side = none;
     what_piece = blank;
 }
 
-void Board::calculate(colour side)
-{
-    if(side == white)
-    {
-        calcMoves(black);
-        calcBoard(black);
-        calcMoves(white);
-    }
-    else
-    {
-        calcMoves(white);
-        calcBoard(white);
-        calcMoves(black);
-    }
-
-}
-
+// Assignment function for two pieces
 void Piece::operator =(const Piece& startLoc)
 {
-    movement = startLoc.movement;
-    control = startLoc.control;
-    attack_option = startLoc.attack_option;
     location = startLoc.location;
     what_piece = startLoc.what_piece;
     side = startLoc.side;
     dir = startLoc.dir;
-    castle = startLoc.castle;
-    enpassant = startLoc.enpassant;
 }
 
+// Assignment operator for two boards objects
 void Board::operator =(const Board& startLoc)
 {
     for(int x = 0; x < 8; x++)
     {
         for(int y = 0; y < 8; y++)
-        {
             board[x][y] = startLoc.board[x][y];
-            whiteControl[x][y] = startLoc.whiteControl[x][y];
-            blackControl[x][y] = startLoc.blackControl[x][y];
-        }
     }
-    for(int i=0;i<6;i++){
-    w[i] = startLoc.w[i];
-    b[i] = startLoc.b[i];}
+    for(int i=0; i<6; i++)
+    {
+        w[i] = startLoc.w[i];
+        b[i] = startLoc.b[i];
+    }
+    for(int i = 0; i < 2; i ++)
+    {
+        kingCastle[i] = startLoc.kingCastle[i];
+        rookCastle[i] = startLoc.rookCastle[i];
+        rookCastle2[i] = startLoc.rookCastle2[i];
+        castledKing[i] = startLoc.castledKing[i];
+    }
 }
 
+// Destroys a node
 void destroy(node *& n)
 {
     for(int i=0; i<(int)n->branches.size(); i++)

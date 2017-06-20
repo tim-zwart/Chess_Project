@@ -9,23 +9,25 @@
 #include "movegen.h"
 
 using namespace std;
-int countSearches = 0;
+
 int main()
 {
     // Declare chessboard
-    node *n = new node;
-    n->container.reset();
-/*
-    n->container.do_move(convert(convert("d2"), convert("d4")));
-    n->container.do_move(convert(convert("e7"), convert("e5")));
-    n->container.do_move(convert(convert("d4"), convert("e5")));
-    n->container.do_move(convert(convert("b8"), convert("c6")));
-*/
+    Board b;
+    b.reset();
+
+    /*
+        n->container.do_move(convert(convert("d2"), convert("d4")));
+        n->container.do_move(convert(convert("e7"), convert("e5")));
+        n->container.do_move(convert(convert("d4"), convert("e5")));
+        n->container.do_move(convert(convert("b8"), convert("c6")));
+    */
+
     cout << "Which side should the computer play as? 0 for white, 1 for black" << endl;
     colour side;
 
     do
-    {countSearches = 0;
+    {
         int num;
         cin >> num;
 
@@ -40,24 +42,25 @@ int main()
             side = (colour)num;
             break;
         }
-    } while(true);
+    }
+    while(true);
 
     colour turn = white;
     cout << endl;
     while(true)
     {
         // Output board
-        cout << n->container << endl;
+        cout << b << endl;
 
         gameState currState;
 
         // If it is the computer's turn, make it move
         if(turn == side)
-            currState = compMove(turn, n);
+            currState = compMove(turn, b);
 
         // If it is the user's turn, let them move
         else
-            currState = getMove(turn, n);
+            currState = getMove(turn, b);
 
         switch (currState)
         {
@@ -69,6 +72,9 @@ int main()
             return 0;
         case draw:
             cout << "It's a draw!" << endl;
+            return 0;
+        case end_game:
+            cout << "Aborting" << endl;
             return 0;
         default:
             break;

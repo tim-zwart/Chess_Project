@@ -4,24 +4,29 @@
 #include "libraries.h"
 #include "bitboards.h"
 
-struct eval_pair
+// Links the move_store witb it's score value, move store is the start and end coord location
+struct buff_pair
 {
-    move_store curr_move;
+    move_store thisMove;
     int score;
 };
 
+// Used to represent no move for first time run of the searches
 const move_store noMove=convert(convert("a1"), convert("a1"));
 
-gameState compMove(colour side, node *&n);
+// Compute the move
+gameState compMove(colour side, Board &b);
 
 // Get input for move
-gameState getMove(colour side, node *&n);
+gameState getMove(colour side, Board &b);
 
-int breadth_search(node *parent, int maxPly, int currPly, move_store thisMove, colour calcSide, bool first);
-int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour calcSide, move_store* first);
-void depth_search(node *parent, int ply, int current_ply, colour side, int white_score, int black_score, bool first, vector <move_store> &moves);
+/// Prototype for the two searches
+// Breadth first search
+int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour calcSide, move_store* chosenMove, bool depth, bool searchDeeper);
+// Depth first search
+int depth_search(Board b, int ply, int current_ply, colour side, move_store thisMove);
 
-typedef vector<attacked> avec;
+// Typedefs for vector of coords to shorten
 typedef vector<coord> cvec;
 
 #endif // MOVEGEN_H_INCLUDED
