@@ -6,10 +6,6 @@ bool highestFirst(const buff_pair &a, const buff_pair &b)
 {
     return a.score > b.score;
 }
-bool lowestFirst(const buff_pair &a, const buff_pair &b)
-{
-    return a.score < b.score;
-}
 
 /** \brief Calculates the move for the state of the board
  *
@@ -72,68 +68,75 @@ void assert(bool f)
 
 int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour calcSide, move_store* pickedMove, bool depth, bool searchDeeper)
 {
+    // Is this move a capture
     bool capture = b.board[thisMove.end_loc.x][thisMove.end_loc.y].what_piece != blank;
 
     // Do move and then calculate control for the other side
     b.do_move(thisMove, currPly != maxPly);
-    /*
-        if(currPly == 2)
-            cout << (int)(!(thisMove == noMove)) << depth << !searchDeeper << (int)(capture) << b.check[white] << b.check[black] << endl;
-    */
+
+    // If there has been a capture or check, search deeper
     if((!(thisMove == noMove)) && depth && !searchDeeper && (capture || b.check[white] || b.check[black]))
         searchDeeper = true;
 
+    // If this is the top layer, calculate the possible moves
     if(thisMove == noMove)
         b.calculate(calcSide);
 
     // Find other colour
     colour other = (colour)!(bool)calcSide;
 
+    // If the other side's king is in check (capture is possible), say that that was an illegal move
     if(b.check[other])
         return illegal;
 
     // Calculate and do next move
     if(maxPly != currPly)
     {
+        // Best score so far
         int bestScore = bool(calcSide)*50000-25000;
 
+        // Has a legal move been found yet
         bool possibleToMove = false;
 
+        // For debugging
         if(depth == true && currPly == 0)
             cout << b.moves.size() << endl;
 
         // Check all possible moves
         for(int i=0; i<(int)b.moves.size(); i++)
         {
-            /*if(i == 19 && currPly == 1)
-            {
-                cout << b << endl;
-            }*/
+            // For debugging
             if(depth == true && currPly == 0)
                 cout << i << endl;
 
+            // Search the next node
             int moveScore = breadth_search(b, maxPly, currPly+1, b.moves[i], other, 0, depth, searchDeeper);
 
-            /*if(b.kingCastle[calcSide])
-                cout<<"cool kids"<<endl;*/
+            // If the king could have been taken, say that that was an illegal move
             if (moveScore == takeKing)
             {
                 assert(illegal >= 0 && illegal <= 100000);
                 return illegal;
             }
+
+            // If the past move was not illegal...
             if(moveScore != (int)illegal)
             {
+                // If that was checkmate, the move score is +/- 1000
                 if(moveScore == checkmate)
                     moveScore = -2000 * (calcSide - 0.5);
 
+                // If that was stalemate, the move score is 0
                 if(moveScore == stalemate)
                     moveScore = 0;
 
+                // A legal move has been found
                 if(!possibleToMove)
                     possibleToMove = true;
 
                 if(!(bool)calcSide)
                 {
+                    // If this is the new best move, save it
                     if(moveScore >= bestScore)
                     {
                         b.bestMove = i;
@@ -142,14 +145,18 @@ int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour
                 }
                 else if(moveScore <= bestScore)
                 {
+                    // If this is the new best move, save it
                     b.bestMove = i;
                     bestScore = moveScore;
                 }
             }
+
+            // If there are illegal moves happening, there may be an oppurtunity
             else if(depth && !searchDeeper)
                 searchDeeper = true;
         }
 
+        // If no legal move is found, check whether it is checkmate or stalemate
         if(!possibleToMove)
         {
             if(b.check[calcSide])
@@ -158,6 +165,7 @@ int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour
                 return stalemate;
         }
 
+        // If this is the top layer, save the best move
         if(pickedMove)
         {
             // If this is the first search and the caller
@@ -166,14 +174,19 @@ int breadth_search(Board b, int maxPly, int currPly, move_store thisMove, colour
         assert(bestScore >=-1000000 && bestScore <= 1000000);
         return bestScore;
     }
+
+    // If this is that last ply of the breadth search...
     else
     {
+        // If you should search deeper, do so
         if (depth && searchDeeper)
         {
             int ret = depth_search(b, 2, 0, calcSide, noMove);
             assert(ret >= -100000 && ret <= 100000);
             return ret;
         }
+
+        // Otherwise, return the board evaluation
         else
         {
             b.evalBoard();
@@ -349,6 +362,7 @@ int depth_search(Board b, int ply, int current_ply, colour side, move_store this
     // Do the move that it has been instructed to
     b.do_move(thisMove, ply != current_ply);
 
+    // If this is the first layer, calculate moves
     if(thisMove == noMove)
         b.calculate(side);
 
@@ -356,32 +370,36 @@ int depth_search(Board b, int ply, int current_ply, colour side, move_store this
     if(b.check[next_colour])
         return illegal;
 
-    // If it reaches the max depth stop
-    if(ply == current_ply)
-    {
-        return breadth_search(b, 2, 0, noMove, side, 0, false, false);
-    }
-
+    // Store moves with scores
     vector <buff_pair> pairs;
+
+    // Has a legal move been found
     bool possibleToMove = false;
 
     // Find the score for every move
     for(unsigned int i=0; i<b.moves.size(); i++)
     {
+        // Set up temporary container
         buff_pair temp;
         temp.thisMove = b.moves[i];
         temp.score = breadth_search(b, 2, 0, b.moves[i], next_colour, 0, false, false);
+
+        // If it was not illegal...
         if(temp.score != illegal)
         {
+            // If the move was checkmate, move score is +/- 1000
             if(temp.score == checkmate)
                 temp.score = -2000 * (side - 0.5);
 
+            // If the move was checkmate, move score is 0
             if(temp.score == stalemate)
                 temp.score = 0;
 
+            // Found legal move
             if(!possibleToMove)
                 possibleToMove = true;
 
+            // Store move and score
             pairs.push_back(temp);
         }
     }
@@ -396,32 +414,36 @@ int depth_search(Board b, int ply, int current_ply, colour side, move_store this
     }
 
     // Sort moves according to score
-    if(side == white)
-        sort(pairs.begin(), pairs.end(), highestFirst);
-    else
-        sort(pairs.begin(), pairs.end(), lowestFirst);
+    sort(pairs.begin(), pairs.end(), highestFirst);
 
+    // If it is the last layer, return score of best move
+    if(ply == current_ply)
+        return pairs[(pairs.size()-1)*side].score;
+
+    // Score of best move
     int best = 4000 * (side - 0.5);
 
     // Number of threads to search
-    int nThreads = 3;
+    int nThreads = 2;
     for(unsigned int i = 0; i < (unsigned)nThreads && i < pairs.size(); i++)
     {
+        // Find score of move
         int tempScore;
-        if(side == white)
-            tempScore = depth_search(b, ply, current_ply + 1, next_colour, pairs[i].thisMove);
-        else
-            tempScore = depth_search(b, ply, current_ply + 1, next_colour, pairs[i].thisMove);
+        tempScore = depth_search(b, ply, current_ply + 1, next_colour, pairs[i].thisMove);
 
+        // If move is legal...
         if(tempScore != (int)illegal)
         {
+            // If the move was checkmate, move score is +/- 1000
             if(tempScore == checkmate)
                 tempScore = -2000 * (side - 0.5);
 
+            // If the move was checkmate, move score is 0
             if(tempScore == stalemate)
                 tempScore = 0;
         }
 
+        // Store new best move score
         if(side == white)
             best = max(tempScore, best);
         else
@@ -429,11 +451,23 @@ int depth_search(Board b, int ply, int current_ply, colour side, move_store this
     }
     for(unsigned int i = pairs.size()-1; i >= (unsigned)nThreads && i > pairs.size()-nThreads-1; i--)
     {
+        // Find score of move
         int tempScore;
-        if(side == white)
-            tempScore = depth_search(b, ply, current_ply + 1, next_colour, pairs[i].thisMove);
-        else
-            tempScore = depth_search(b, ply, current_ply + 1, next_colour, pairs[i].thisMove);
+        tempScore = depth_search(b, ply, current_ply + 1, next_colour, pairs[i].thisMove);
+
+        // If move is legal...
+        if(tempScore != (int)illegal)
+        {
+            // If the move was checkmate, move score is +/- 1000
+            if(tempScore == checkmate)
+                tempScore = -2000 * (side - 0.5);
+
+            // If the move was checkmate, move score is 0
+            if(tempScore == stalemate)
+                tempScore = 0;
+        }
+
+        // Store new best move score
         if(side == white)
             best = max(tempScore, best);
         else

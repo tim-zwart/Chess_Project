@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1497880651 source:c:\users\tim\documents\github\chess_project\chess project\bitboards.cpp
+1497983206 source:c:\users\tim\documents\github\chess_project\chess project\bitboards.cpp
 	"bitboards.h"
 
-1497879481 c:\users\tim\documents\github\chess_project\chess project\bitboards.h
+1497983206 c:\users\tim\documents\github\chess_project\chess project\bitboards.h
 	"libraries.h"
 
 1497487860 c:\users\tim\documents\github\chess_project\chess project\libraries.h
@@ -11,7 +11,7 @@
 	<algorithm>
 	<string>
 
-1497879077 source:c:\users\tim\documents\github\chess_project\chess project\main.cpp
+1497983206 source:c:\users\tim\documents\github\chess_project\chess project\main.cpp
 	<iostream>
 	"bitboards.h"
 	"movegen.h"
@@ -93,7 +93,7 @@
 	"libraries.h"
 	"bitboards.h"
 
-1497879989 source:c:\users\tim\documents\github\chess_project\chess project\movegen.cpp
+1497985077 source:c:\users\tim\documents\github\chess_project\chess project\movegen.cpp
 	"movegen.h"
 
 1497487860 source:c:\users\tim\documents\github\chess_project\chess project\boardeval.cpp
